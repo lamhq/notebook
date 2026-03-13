@@ -1,5 +1,5 @@
 {
-  "$schema": "https://turborepo.dev/schema.json",
+  "$schema": "node_modules/turbo/schema.json",
   "tasks": {
     "build": {
       "dependsOn": [
@@ -13,6 +13,11 @@
     },
     "prebuild": {},
     "lint": {},
-    "check-types": {}
+    "check-types": {},
+    "dev": {
+      "with": ["api#dev"],
+      "persistent": true,
+      "cache": false
+    }
   }
 }
