@@ -7,7 +7,8 @@
     "dev": "turbo watch dev",
     "build": "turbo run build",
     "lint": "eslint",
-    "test": "turbo run test"
+    "test": "turbo run test",
+    "prepare": "node .husky/install.mjs"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
@@ -31,6 +32,7 @@
     "eslint-plugin-testing-library": "^7.16.0",
     "git-branch-is": "^4.0.0",
     "globals": "^17.4.0",
+    "husky": "9.1.7",
     "lint-staged": "^16.3.3",
     "prettier": "^3.8.1",
     "prettier-plugin-organize-imports": "^4.1.0",
