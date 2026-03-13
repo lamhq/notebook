@@ -7,7 +7,15 @@
     "dev": "turbo watch dev",
     "test": "turbo run test"
   },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@nestjs/core",
+      "@swc/core"
+    ]
+  },
   "devDependencies": {
+    "prettier": "^3.8.1",
+    "prettier-plugin-organize-imports": "^4.1.0",
     "turbo": "^2.8.16"
   }
 }
