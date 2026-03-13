@@ -31,6 +31,7 @@
     "eslint-plugin-testing-library": "^7.16.0",
     "git-branch-is": "^4.0.0",
     "globals": "^17.4.0",
+    "lint-staged": "^16.3.3",
     "prettier": "^3.8.1",
     "prettier-plugin-organize-imports": "^4.1.0",
     "turbo": "^2.8.16",
