@@ -4,7 +4,8 @@
   "private": true,
   "packageManager": "pnpm@8.15.6",
   "scripts": {
-    "dev": "turbo watch dev"
+    "dev": "turbo watch dev",
+    "test": "turbo run test"
   },
   "devDependencies": {
     "turbo": "^2.8.16"

@@ -14,6 +14,7 @@
     "prebuild": {},
     "lint": {},
     "check-types": {},
+    "test": {},
     "dev": {
       "with": ["api#dev"],
       "persistent": true,
