@@ -100,7 +100,7 @@ export default tseslint.config(
   // Jest test files
   {
     name: 'Jest test files',
-    files: ['**/*.test.ts(x)?'],
+    files: ['**/*.(test|spec).ts(x)?'],
     plugins: { jest },
     languageOptions: {
       globals: jest.environments.globals.globals,
