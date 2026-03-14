@@ -9,10 +9,11 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import storybook from 'eslint-plugin-storybook';
 import testingLibrary from 'eslint-plugin-testing-library';
+import { defineConfig } from 'eslint/config';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
-export default tseslint.config(
+export default defineConfig(
   {
     name: 'Ignores',
     ignores: [
@@ -29,14 +30,14 @@ export default tseslint.config(
   // Base JavaScript configuration
   {
     name: 'JavaScript files',
-    files: ['**/*.{js,jsx}'],
+    files: ['**/*.{js,ts,jsx,tsx}'],
     extends: [eslint.configs.recommended],
   },
 
   // Config files (eslint, jest, vitest, vite, etc.)
   {
     name: 'Config files',
-    files: ['*.config.js', '*.config.mjs'],
+    files: ['*.config.(m)?js'],
     languageOptions: {
       globals: globals.node,
     },
@@ -45,17 +46,17 @@ export default tseslint.config(
   // TypeScript files
   {
     name: 'TypeScript files',
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      ...tseslint.configs.strictTypeChecked,
-      ...tseslint.configs.stylisticTypeChecked,
-    ],
+    files: ['**/*.ts(x)?'],
     languageOptions: {
       parserOptions: {
         projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
     },
+    extends: [
+      ...tseslint.configs.strictTypeChecked,
+      ...tseslint.configs.stylisticTypeChecked,
+    ],
     rules: {
       '@typescript-eslint/no-extraneous-class': 'off',
     },
@@ -66,10 +67,7 @@ export default tseslint.config(
     name: 'React (TypeScript) files',
     files: ['**/*.tsx'],
     languageOptions: {
-      globals: {
-        ...globals.browser,
-        ...globals.node,
-      },
+      globals: globals.browser,
       parserOptions: {
         projectService: true,
         tsconfigRootDir: import.meta.dirname,
@@ -78,16 +76,7 @@ export default tseslint.config(
     settings: {
       react: { version: 'detect' },
     },
-    plugins: {
-      react,
-      'react-hooks': reactHooks,
-    },
-    rules: {
-      ...react.configs.recommended.rules,
-      ...reactHooks.configs.recommended.rules,
-      'react/react-in-jsx-scope': 'off',
-      'react/prop-types': 'off',
-    },
+    extends: [react.configs.flat.all, reactHooks.configs.flat.recommended],
   },
 
   // React Refresh (Vite Fast Refresh)
@@ -95,6 +84,19 @@ export default tseslint.config(
     name: 'React Refresh (Vite)',
     files: ['**/*.tsx'],
     extends: [reactRefresh.configs.vite],
+  },
+
+  // React Testing Library
+  {
+    name: 'React Testing Library',
+    files: ['**/*.test.tsx'],
+    extends: [testingLibrary.configs['flat/react']],
+  },
+
+  // Storybook
+  {
+    name: 'Storybook',
+    extends: [...storybook.configs['flat/recommended']],
   },
 
   // Jest test files
@@ -118,19 +120,6 @@ export default tseslint.config(
     files: ['**/*.test.ts(x)?'],
     ...vitest.configs.all,
     name: 'Vitest tests',
-  },
-
-  // React Testing Library
-  {
-    name: 'React Testing Library',
-    files: ['**/*.test.tsx'],
-    extends: [testingLibrary.configs['flat/react']],
-  },
-
-  // Storybook
-  {
-    name: 'Storybook',
-    extends: [...storybook.configs['flat/recommended']],
   },
 
   // Playwright tests
