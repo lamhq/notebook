@@ -46,7 +46,7 @@ export default defineConfig(
   // TypeScript files
   {
     name: 'TypeScript files',
-    files: ['**/*.ts(x)?'],
+    files: ['**/*.{ts,tsx}'],
     languageOptions: {
       parserOptions: {
         projectService: true,
@@ -58,7 +58,8 @@ export default defineConfig(
       ...tseslint.configs.stylisticTypeChecked,
     ],
     rules: {
-      '@typescript-eslint/no-extraneous-class': 'off',
+      // use `type` instead of `interface`
+      '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
     },
   },
 
@@ -76,7 +77,10 @@ export default defineConfig(
     settings: {
       react: { version: 'detect' },
     },
-    extends: [react.configs.flat.all, reactHooks.configs.flat.recommended],
+    extends: [
+      react.configs.flat['jsx-runtime'],
+      reactHooks.configs.flat.recommended,
+    ],
   },
 
   // React Refresh (Vite Fast Refresh)
