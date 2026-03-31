@@ -1,5 +1,7 @@
 # Notebook
 
+## Introduction
+
 A full-stack monorepo containing a NestJS REST API and a React web application, managed with Turborepo and pnpm workspaces.
 
 ## Installation
