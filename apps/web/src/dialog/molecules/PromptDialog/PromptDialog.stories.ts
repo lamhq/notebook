@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { fn } from '@storybook/test';
-import ConfirmDialog from './ConfirmDialog';
+import { fn } from 'storybook/test';
+import PromptDialog from './PromptDialog';
 
 const meta = {
-  component: ConfirmDialog,
-} satisfies Meta<typeof ConfirmDialog>;
+  component: PromptDialog,
+} satisfies Meta<typeof PromptDialog>;
 
 export default meta;
 

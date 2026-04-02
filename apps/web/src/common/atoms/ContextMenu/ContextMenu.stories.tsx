@@ -1,7 +1,7 @@
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Button from '@mui/material/Button';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { type MouseEvent, useState } from 'react';
 import { ItemIcon, ItemText, Menu, MenuItem } from './ContextMenu';
 

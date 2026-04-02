@@ -57,7 +57,7 @@ pnpm lint
 Run lint for an application:
 
 ```bash
-pnpx eslint app/{app-name}/src
+pnpx eslint apps/{app-name}/src
 ```
 
 ### Build the project
