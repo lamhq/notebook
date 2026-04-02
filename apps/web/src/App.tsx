@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router';
+import { requireAuth } from './auth';
 import AuthCallbackPage from './auth/pages/AuthCallbackPage';
 import SignedOutPage from './auth/pages/SignedOutPage';
 import NotFoundPage from './common/pages/NotFoundPage';
@@ -9,6 +10,10 @@ import UpdateActivityPage from './diary/pages/UpdateActivityPage';
 import { ErrorBoundary } from './error';
 import { AUTH_CALLBACK_ROUTE, AUTH_SIGNOUT_ROUTE, HOME_ROUTE } from './routes';
 
+const ProtectedListActivityPage = requireAuth(ListActivityPage);
+const ProtectedAddActivityPage = requireAuth(AddActivityPage);
+const ProtectedUpdateActivityPage = requireAuth(UpdateActivityPage);
+
 export default function App() {
   return (
     <ErrorBoundary>
@@ -16,9 +21,9 @@ export default function App() {
         <Route path={AUTH_CALLBACK_ROUTE} element={<AuthCallbackPage />} />
         <Route path={AUTH_SIGNOUT_ROUTE} element={<SignedOutPage />} />
         <Route element={<MainLayout />}>
-          <Route path={HOME_ROUTE} element={<ListActivityPage />} />
-          <Route path="/activities/new" element={<AddActivityPage />} />
-          <Route path="/activities/:id" element={<UpdateActivityPage />} />
+          <Route path={HOME_ROUTE} element={<ProtectedListActivityPage />} />
+          <Route path="/activities/new" element={<ProtectedAddActivityPage />} />
+          <Route path="/activities/:id" element={<ProtectedUpdateActivityPage />} />
         </Route>
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

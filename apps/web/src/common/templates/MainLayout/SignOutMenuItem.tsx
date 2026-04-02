@@ -12,8 +12,13 @@ export default function SignOutMenuItem() {
     // call the end session endpoint and redirect to sign out page
     void auth.signoutRedirect({
       extraQueryParams: {
-        logout_uri: getAbsoluteURL(AUTH_SIGNOUT_ROUTE),
         client_id: auth.settings.client_id,
+
+        // for Amazon Cognito, specifying logout_uri to redirect back to the app after signing out
+        logout_uri: getAbsoluteURL(AUTH_SIGNOUT_ROUTE),
+
+        // for Keycloak, specifying post_logout_redirect_uri to redirect back to the app after signing out
+        post_logout_redirect_uri: getAbsoluteURL(AUTH_SIGNOUT_ROUTE),
       },
     });
   return (
