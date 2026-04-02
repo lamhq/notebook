@@ -17,6 +17,7 @@ export default defineConfig(
   {
     name: 'Ignores',
     ignores: [
+      '**/*.js',
       'eslint.config.mjs',
       '**/dist',
       '**/build',
