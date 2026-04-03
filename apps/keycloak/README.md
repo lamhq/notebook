@@ -17,7 +17,7 @@ When the Keycloak container starts with the `--import-realm` flag, it automatica
 
 ## Realm Configuration
 
-### notebook-web Client
+### Client
 
 The client is configured for local development with:
 
@@ -33,17 +33,10 @@ The client is configured for local development with:
   - `http://localhost:3000`
 - **Flows**: Standard, Implicit, and Direct Access Grant flows enabled
 
-## Usage
-
-### Test User Credentials
+### Test User
 
 - **Username**: `testuser`
 - **Password**: `password123`
-
-### Client Credentials (for server-to-server auth)
-
-- **Client ID**: `notebook-web`
-- **Client Secret**: `notebook-local-secret-dev`
 
 ## Accessing Keycloak
 
