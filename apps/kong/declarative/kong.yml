@@ -1,8 +1,30 @@
 _format_version: '3.0'
 services:
   - name: api-service
-    url: http://api:3000
+    url: http://host.docker.internal:4069
     routes:
       - name: api-route
         paths:
-          - /api
+          - /
+plugins:
+  - name: jwt
+    service: api-service
+    config:
+      header_names:
+        - authorization
+      uri_param_names:
+        - jwt
+      claims_to_verify:
+        - exp
+      key_claim_name: iss
+      secret_is_base64: false
+      run_on_preflight: true
+
+consumers:
+  - username: notebook-service
+    custom_id: notebook-service-client
+    jwt_secrets:
+      - key: notebook-realm
+        algorithm: RS256
+        rsa_public_key: '@/kong/declarative/public_key.pem'
+        secret: dummy
