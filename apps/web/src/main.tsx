@@ -44,12 +44,6 @@ const userManager = new UserManager({
   response_type: 'code',
   scope: 'email openid profile',
   userStore: new WebStorageStateStore({ store: new IndexedDBStorage() }),
-  /**
-   * required for exchanging authorization code with access token
-   * exposing the client secret on the client side can be insecure, but let's leave it for now
-   */
-  client_authentication: 'client_secret_basic',
-  client_secret: import.meta.env.VITE_OIDC_CLIENT_SECRET,
 });
 
 const oidcConfig: AuthProviderProps = {

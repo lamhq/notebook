@@ -7,7 +7,6 @@ type ViteTypeOptions = {
 type ImportMetaEnv = {
   readonly VITE_OIDC_AUTHORITY?: string;
   readonly VITE_OIDC_CLIENT_ID?: string;
-  readonly VITE_OIDC_CLIENT_SECRET?: string;
   readonly VITE_API_URL?: string;
   // more env variables...
 };
