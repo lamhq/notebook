@@ -4,25 +4,28 @@ import {
   CognitoIdentityProviderClient,
   UserNotFoundException,
 } from '@aws-sdk/client-cognito-identity-provider';
-import type { BasePreSignUpTriggerEvent, Handler } from 'aws-lambda';
 
 const client = new CognitoIdentityProviderClient();
 
 /**
  * The Pre sign-up Lambda trigger for Cognito user pool
- * It prevent user signup from external identity providers
- * and link external accounts with existing users in the user pool
- * https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-lambda-pre-sign-up.html
+ * It prevents user signup from external identity providers
+ * and links external accounts with existing users in the user pool
+ *
+ * @see https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-lambda-pre-sign-up.html
+ * @typedef {import('aws-lambda').BasePreSignUpTriggerEvent<string>} PreSignUpEvent
+ * @type {import('aws-lambda').Handler<PreSignUpEvent>}
  */
-export const handler: Handler<BasePreSignUpTriggerEvent<string>> = async (event) => {
+export const handler = async (event) => {
   if (event.triggerSource !== 'PreSignUp_ExternalProvider') {
     event.response.autoConfirmUser = true;
     return event;
   }
 
-  // process when user sign up with external provider (Google)
+  // Process when user signs up with external provider (Google)
   const email = event.request.userAttributes.email;
   const userPoolId = event.userPoolId;
+
   try {
     // Check if the user exists in the user pool
     await client.send(

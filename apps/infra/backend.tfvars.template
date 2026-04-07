@@ -1,0 +1,5 @@
+region               = "aws-region"
+workspace_key_prefix = "project-name"
+bucket               = "s3-bucket-containing-terraform-state-file"
+key                  = "name-of-state-file.tfstate"
+use_lockfile         = true
