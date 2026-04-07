@@ -20,7 +20,7 @@ export async function getNestApp() {
     .setVersion('1.0')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, documentFactory);
+  SwaggerModule.setup('docs', app, documentFactory);
 
   return app;
 }

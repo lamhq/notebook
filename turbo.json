@@ -16,7 +16,9 @@
       "cache": false
     },
     "web#dev": {
-      "with": ["api#dev"]
+      "with": ["api#dev"],
+      "persistent": true,
+      "cache": false
     }
   }
 }

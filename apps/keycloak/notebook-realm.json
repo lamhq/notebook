@@ -3,16 +3,16 @@
   "enabled": true,
   "users": [
     {
-      "username": "testuser",
+      "username": "test",
       "enabled": true,
       "emailVerified": true,
       "firstName": "Test",
       "lastName": "User",
-      "email": "user@example.com",
+      "email": "test@example.com",
       "credentials": [
         {
           "type": "password",
-          "value": "password123",
+          "value": "123",
           "temporary": false
         }
       ]
