@@ -21,11 +21,6 @@ output "api_url" {
   value       = aws_api_gateway_stage.api_stage.invoke_url
 }
 
-output "api_lambda_function" {
-  description = "API Lambda function name"
-  value       = aws_lambda_function.api_handler.function_name
-}
-
 output "oidc_client_id" {
   description = "OIDC Client ID"
   value       = aws_cognito_user_pool_client.user_pool_client.id
@@ -37,10 +32,26 @@ output "oidc_authority" {
 }
 
 # ============================================================================
-# CI/CD Outputs
+# For deployment (web, api)
 # ============================================================================
 
 output "ci_role_arn" {
   description = "IAM role ARN for CI/CD deployment (GitHub Actions)"
   value       = aws_iam_role.ci_role.arn
 }
+
+output "api_lambda_function" {
+  description = "API Lambda function name"
+  value       = aws_lambda_function.api_handler.function_name
+}
+
+output "app_bucket" {
+  description = "S3 bucket for application storage"
+  value       = aws_s3_bucket.app_bucket.bucket
+}
+
+output "web_distribution" {
+  description = "CloudFront distribution for web application"
+  value       = aws_cloudfront_distribution.web_distribution.id
+}
+

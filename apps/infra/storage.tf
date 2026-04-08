@@ -9,7 +9,7 @@ resource "random_pet" "app_bucket_name" {
   separator = "-"
 }
 
-# S3 bucket for API deployment artifacts and web static files
+# Object storage for project
 resource "aws_s3_bucket" "app_bucket" {
   bucket = random_pet.app_bucket_name.id
 }

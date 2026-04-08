@@ -1,19 +1,20 @@
-name: Deploy API
+name: Deploy Web
 
 # Required CI Variables (GitHub Settings > Environments > {dev/prod} > Environment variables):
 # - AWS_REGION: AWS region for deployment (e.g., us-east-1)
-# - CI_ROLE: IAM role the CI will assume for deployment
-# - API_LAMBDA: Lambda function name to deploy
+# - CI_ROLE: AWS IAM role ARN for OIDC authentication
+# - S3_BUCKET: S3 bucket name for hosting the web app
+# - CF_DISTRIBUTION: CloudFront distribution ID for cache invalidation
 
 env:
-  BUILD_OUTPUT_PATH: apps/api/dist/
+  BUILD_OUTPUT_PATH: apps/web/dist/
 
 on:
   # push:
   pull_request:
     branches: [main]
     paths:
-      - 'apps/api/**'
+      - 'apps/web/**'
 
 permissions:
   id-token: write # Allows OIDC token requests
@@ -26,17 +27,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Setup Node environment
+      - name: Setup node environment
         uses: ./.github/actions/setup-node-env
 
-      - name: Build API
-        working-directory: apps/api
-        run: pnpm -F api build
+      - name: Build application
+        run: pnpm -F web build
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: api-build
+          name: build-output
           path: ${{ env.BUILD_OUTPUT_PATH }}
 
   deploy:
@@ -48,12 +48,8 @@ jobs:
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
-          name: api-build
+          name: build-output
           path: ${{ env.BUILD_OUTPUT_PATH }}
-
-      - name: Create Lambda deployment package
-        run: |
-          cd ${{ env.BUILD_OUTPUT_PATH }} && zip -r ../../../api.zip .
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v6
@@ -61,15 +57,15 @@ jobs:
           role-to-assume: ${{ vars.CI_ROLE }}
           aws-region: ${{ vars.AWS_REGION }}
 
-      - name: Deploy to Lambda
+      - name: Sync build to S3
         run: |
-          aws lambda update-function-code \
-            --function-name ${{ vars.API_LAMBDA }} \
-            --zip-file fileb://api.zip \
+          aws s3 sync ${{ env.BUILD_OUTPUT_PATH }} s3://${{ vars.S3_BUCKET }}/web \
+            --delete \
             --region ${{ vars.AWS_REGION }}
 
-      - name: Wait for Lambda update
+      - name: Invalidate CloudFront cache
         run: |
-          aws lambda wait function-updated \
-            --function-name ${{ vars.API_LAMBDA }} \
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ vars.CF_DISTRIBUTION }} \
+            --paths "/index.html" \
             --region ${{ vars.AWS_REGION }}

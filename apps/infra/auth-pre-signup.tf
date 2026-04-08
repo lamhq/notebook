@@ -12,7 +12,7 @@ data "archive_file" "pre_signup_trigger_archive" {
 # Lambda function for pre-signup trigger
 resource "aws_lambda_function" "pre_sign_up_lambda" {
   function_name = "${local.name_prefix}-pre-signup-trigger"
-  handler       = "pre-signup.handler"
+  handler       = "pre-signup-trigger.handler"
   role          = aws_iam_role.pre_sign_up_role.arn
   runtime       = "nodejs24.x"
   timeout       = 10
