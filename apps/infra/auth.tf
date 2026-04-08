@@ -45,7 +45,7 @@ resource "aws_cognito_user_pool_client" "user_pool_client" {
   name                         = "${local.name_prefix}-user-pool-client"
   user_pool_id                 = aws_cognito_user_pool.user_pool.id
   supported_identity_providers = ["Google"]
-  generate_secret              = true
+  generate_secret              = false
   callback_urls = [
     "http://localhost:5173/auth/callback",
     "${var.api_web_url}/auth/callback"

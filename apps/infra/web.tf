@@ -128,7 +128,6 @@ resource "aws_s3_object" "index_html" {
   bucket       = aws_s3_bucket.app_bucket.id
   key          = "web/index.html"
   source       = "index.html"
-  etag         = filemd5("index.html")
   content_type = "text/html"
 }
 

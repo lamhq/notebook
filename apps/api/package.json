@@ -11,12 +11,6 @@
     "test": "jest",
     "seed:run": "ts-node ./node_modules/typeorm-extension/bin/cli.cjs seed:run -d ./src/database/data-source.ts --preserveFilePaths"
   },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@nestjs/core",
-      "@swc/core"
-    ]
-  },
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.721.0",
     "@codegenie/serverless-express": "^4.16.0",

@@ -36,7 +36,6 @@ jobs:
       - name: Build application
         run: |
           echo "${{ vars.DOT_ENV }}" > apps/web/.env
-          cat apps/web/.env
           pnpm -F web build
 
       - name: Upload build artifacts
