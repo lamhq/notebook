@@ -21,6 +21,11 @@ output "api_url" {
   value       = aws_api_gateway_stage.api_stage.invoke_url
 }
 
+output "api_lambda_function" {
+  description = "API Lambda function name"
+  value       = aws_lambda_function.api_handler.function_name
+}
+
 output "oidc_client_id" {
   description = "OIDC Client ID"
   value       = aws_cognito_user_pool_client.user_pool_client.id
