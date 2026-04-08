@@ -14,7 +14,7 @@ resource "aws_lambda_function" "pre_sign_up_lambda" {
   function_name = "${local.name_prefix}-pre-signup-trigger"
   handler       = "pre-signup.handler"
   role          = aws_iam_role.pre_sign_up_role.arn
-  runtime       = "nodejs22.x"
+  runtime       = "nodejs24.x"
   timeout       = 10
   memory_size   = 256
   architectures = ["arm64"]
