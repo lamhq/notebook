@@ -54,7 +54,7 @@ resource "aws_lambda_function" "api_handler" {
   function_name = "${local.name_prefix}-api-handler"
   handler       = "lambda.handler"
   role          = aws_iam_role.api_lambda_role.arn
-  runtime       = "nodejs24.x"
+  runtime       = "nodejs22.x"
   timeout       = 10
   memory_size   = 256
 

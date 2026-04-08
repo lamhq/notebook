@@ -7,7 +7,7 @@ await build({
   outdir: 'dist',
   sourcemap: true,
   platform: 'node',
-  target: 'node20',
+  target: 'node22',
   bundle: true,
   minify: true,
   external: [
