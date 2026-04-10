@@ -25,7 +25,7 @@ api_env_vars = {
 # ============================================================================
 google_client_id     = "your-google-client-id"
 google_client_secret = "your-google-client-secret"
-api_web_url          = "http://localhost:3000"
+web_url              = "http://localhost:5173"
 
 # ============================================================================
 # CloudFront Configuration

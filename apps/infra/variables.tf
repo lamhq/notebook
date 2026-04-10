@@ -37,7 +37,7 @@ variable "google_client_secret" {
   description = "Google OAuth 2.0 Client Secret"
 }
 
-variable "api_web_url" {
+variable "web_url" {
   description = "URL of the web application (used for Cognito redirects)"
   type        = string
 }

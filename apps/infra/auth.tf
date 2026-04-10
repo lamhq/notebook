@@ -48,11 +48,11 @@ resource "aws_cognito_user_pool_client" "user_pool_client" {
   generate_secret              = false
   callback_urls = [
     "http://localhost:5173/auth/callback",
-    "${var.api_web_url}/auth/callback"
+    "${var.web_url}/auth/callback"
   ]
   logout_urls = [
     "http://localhost:5173/auth/signout",
-    "${var.api_web_url}/auth/signout"
+    "${var.web_url}/auth/signout"
   ]
 
   allowed_oauth_flows_user_pool_client = true

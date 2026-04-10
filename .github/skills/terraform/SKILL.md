@@ -1,7 +1,43 @@
 ---
 name: terraform
-description: Knowledge when working with Terraform. Use when managing infrastructure, writing Terraform code, creating modules, and deploying applications.
+description: Use when working with Terraform, IaC, managing infrastructure, writing or refactoring Terraform code, deploying applications.
 ---
+
+## Deployment
+
+Follow this step‑by‑step workflow to apply infrastructure changes:
+
+1. Initialize Terraform by following the section **Initializing Terraform**. Do this once per project (or after adding new providers/modules).
+
+2. Ask the user about the environment to deploy to (e.g., `dev`, `prod`). Switch to the workspace of that environment (for production environment `prod`, use the `default` workspace):
+
+   ```bash
+   terraform workspace select dev
+   ```
+
+3. Create the variable definition file for that environment (e.g., `config/dev.tfvars`) if it does not exist by copying from the example file `config/tfvars.example` and ask user to fill in the required values.
+
+4. Preview the changes (plan):
+
+   ```bash
+   terraform plan -var-file=config/dev.tfvars
+   ```
+
+5. Summarize the changes to be applied. Ask for user confirmation before applying the changes:
+   ```bash
+   terraform apply -var-file=config/dev.tfvars
+   ```
+
+## Initializing Terraform
+
+Follow these steps to initialize Terraform:
+
+1. Create a backend configuration file `config/s3.tfbackend` if it does not exist by copying from the example file `config/tfbackend.example` and ask user to fill in the required values.
+
+2. Run init command to initialize Terraform in the working directory. .
+   ```bash
+   terraform init -backend-config=config/s3.tfbackend -reconfigure -upgrade
+   ```
 
 ## Project Structure
 
@@ -50,7 +86,7 @@ infra/
         └── outputs.tf
 ```
 
-## Terraform Modules
+## Module Structure
 
 A Terraform module includes `main.tf`, `variables.tf`, and `outputs.tf` (similar to the project root).
 
@@ -61,6 +97,22 @@ Each resource in a module is tightly coupled with each other. For examples:
 - A Lambda function with its CloudWatch log group, IAM role, and role policy.
 - An API Gateway with its stages, resources, methods, and integrations.
 - A Cognito User Pool with its clients, identity providers, domain.
+
+## Managing Environments
+
+This project uses Terraform workspaces to manage infrastructure across multiple environments (e.g., `dev`, `staging`, `prod`).
+
+Each environment corresponds to a workspace.
+
+The `default` workspace is for production.
+
+## Configuration Files
+
+Environment-specific values are defined in `.tfvars` files (e.g., `config/dev.tfvars`).
+
+Terraform backend configuration (e.g., S3 bucket name, DynamoDB table name) is defined in `.tfbackend` files (e.g., `config/s3.tfbackend`).
+
+These may contain sensitive data, so exclude them from version control.
 
 ## Conventions
 
@@ -75,7 +127,7 @@ Examples:
 - ✅ `presignup-trigger.tf`, not ❌ `presignup-lambda.tf`.
 - ✅ `user-db.tf`, not ❌ `rds.tf`.
 
-### Resource local name
+### Resource block local name
 
 Follow the format `{name}_{type}`:
 
@@ -91,9 +143,9 @@ resource "aws_s3_bucket" "report_bucket" {
 }
 ```
 
-### Infrastructure object's name
+### Cloud resource name
 
-An infrastructure object's name is the resource's identifier in the cloud provider, assigned to a resource when it's created, and shown in the provider's console, CLI, or API.
+A cloud resource name is the resource's identifier in the cloud provider, assigned to a resource when it's created, and shown in the provider's console, CLI, or API.
 
 Follow the format `{project}-{env}-{name}-{type}` to ensure uniqueness:
 
@@ -121,53 +173,3 @@ Order arguments in a Terraform resource block as follows:
 - Follow with optional arguments that affect behavior or configuration (e.g., `retention_in_days`, `memory_size`, `timeout`).
 - Place structured blocks after simple arguments (e.g., `tags {}`, `ingress {}`, `lifecycle {}`).
 - Finally, include Terraform’s special meta‑arguments (e.g., `depends_on`, `count`, `for_each`, `lifecycle`).
-
-## Managing Environments
-
-Use separate Terraform workspaces to manage infrastructure across multiple environments (e.g., `dev`, `staging`, `prod`) by creating a workspace for each environment.
-
-The `default` workspace is for production.
-
-## Config
-
-Environment-specific values are defined in `.tfvars` files (e.g., `config/dev.tfvars`).
-
-Terraform back
-
-These may contain sensitive data, so exclude them from version control.
-
-Always switch to the correct workspace and use the matching `.tfvars` file before applying changes to the infrastructure.
-
-## Making Changes to Infrastructure
-
-Follow this step‑by‑step workflow for making changes to infrastructure:
-
-1. Initialize the working directory. Run this once per project (or after adding new providers/modules).
-
-   ```bash
-   terraform init
-   ```
-
-2. Format and validate your code
-
-   ```bash
-   terraform fmt
-   terraform validate
-   ```
-
-3. Ask the user about the environment to deploy to (e.g., `dev`, `staging`, `prod`). Switch to the workspace of that environment (for production environment `prod`, use the `default` workspace):
-
-   ```bash
-   terraform workspace select dev
-   ```
-
-4. Preview the changes (plan):
-
-   ```bash
-   terraform plan -var-file=config/dev.tfvars
-   ```
-
-5. Summarize the changes to be applied. Ask for user confirmation before applying the changes:
-   ```bash
-   terraform apply -var-file=config/dev.tfvars
-   ```

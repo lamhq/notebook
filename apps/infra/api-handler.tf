@@ -45,7 +45,7 @@ resource "aws_iam_role_policy" "api_lambda_policy" {
 data "archive_file" "api_archive" {
   type        = "zip"
   source_file = "${path.module}/assets/api-handler.js"
-  output_path = "${path.module}/api-handler.zip"
+  output_path = "${path.module}/assets/api-handler.zip"
 }
 
 # Lambda function for API
@@ -65,6 +65,10 @@ resource "aws_lambda_function" "api_handler" {
       NO_COLOR     = "true"
       NODE_OPTIONS = "--enable-source-maps"
     })
+  }
+
+  lifecycle {
+    ignore_changes = [source_code_hash]
   }
 }
 

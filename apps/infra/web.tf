@@ -129,6 +129,10 @@ resource "aws_s3_object" "index_html" {
   key          = "web/index.html"
   source       = "assets/index.html"
   content_type = "text/html"
+
+  lifecycle {
+    ignore_changes = [source, tags_all]
+  }
 }
 
 # S3 bucket policy to allow CloudFront access

@@ -5,8 +5,8 @@
 # Deployment package for Lambda functions
 data "archive_file" "pre_signup_trigger_archive" {
   type        = "zip"
-  source_file = "pre-signup-trigger.mjs"
-  output_path = "pre-signup-trigger.zip"
+  source_file = "assets/pre-signup-trigger.mjs"
+  output_path = "${path.module}/assets/pre-signup-trigger.zip"
 }
 
 # Lambda function for pre-signup trigger
