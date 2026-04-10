@@ -49,6 +49,7 @@ resource "aws_lambda_function" "lambda" {
   handler       = var.handler
   runtime       = "nodejs22.x"
   role          = aws_iam_role.lambda.arn
+  # source_code_hash intentionally omitted; code updates via CI/CD pipeline
 
   architectures = ["arm64"]
   memory_size   = 256

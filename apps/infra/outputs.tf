@@ -18,7 +18,7 @@ output "web_url" {
 
 output "api_url" {
   description = "API endpoint URL"
-  value       = aws_api_gateway_stage.api_stage.invoke_url
+  value       = module.api_gateway.invoke_url
 }
 
 output "oidc_client_id" {

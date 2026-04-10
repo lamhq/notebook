@@ -81,7 +81,7 @@ resource "aws_cloudfront_distribution" "web_distribution" {
   origin {
     origin_id   = "${local.name_prefix}-api-origin"
     origin_path = "/v1"
-    domain_name = "${aws_api_gateway_rest_api.api_gateway.id}.execute-api.${var.aws_region}.amazonaws.com"
+    domain_name = "${module.api_gateway.api_id}.execute-api.${var.aws_region}.amazonaws.com"
     custom_origin_config {
       http_port              = 80
       https_port             = 443
