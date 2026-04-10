@@ -1,17 +1,8 @@
 # ============================================================================
-# AWS Configuration
+# Common Configuration
 # ============================================================================
 aws_region = "us-east-1"
-
-# ============================================================================
-# Project Configuration
-# ============================================================================
-project = "notebook"
-
-# ============================================================================
-# GitHub Configuration (for CI/CD)
-# ============================================================================
-github_repo_id = "github-username/repository-name"
+project    = "notebook"
 
 # ============================================================================
 # API Configuration
@@ -21,19 +12,15 @@ api_env_vars = {
 }
 
 # ============================================================================
-# OAuth Configuration
+# Web Configuration
 # ============================================================================
+web_domain           = "example.com"
+acm_certificate_arn  = "arn:aws:acm:us-east-1:123456789012:certificate/12345678-1234-1234-1234-123456789012"
 google_client_id     = "your-google-client-id"
 google_client_secret = "your-google-client-secret"
-web_url              = "http://localhost:5173"
 
 # ============================================================================
-# CloudFront Configuration
+# CI/CD Configuration
 # ============================================================================
-web_domain          = "example.com"
-acm_certificate_arn = "arn:aws:acm:us-east-1:123456789012:certificate/12345678-1234-1234-1234-123456789012"
-
-# ============================================================================
-# GitHub OIDC (optional)
-# ============================================================================
-github_oidc_provider_arn = ""
+github_repo_id           = "github-username/repository-name"
+github_oidc_provider_arn = "arn:aws:iam::123456789012:oidc-provider/token.actions.githubusercontent.com"

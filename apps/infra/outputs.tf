@@ -7,19 +7,14 @@ output "environment" {
   value       = local.env
 }
 
-# ============================================================================
-# Application Outputs
-# ============================================================================
-
-output "web_url" {
-  description = "Web app URL"
-  value       = aws_cloudfront_distribution.web_distribution.domain_name
-}
-
 output "api_url" {
   description = "API endpoint URL"
   value       = module.api_gateway.invoke_url
 }
+
+# ============================================================================
+# Environment for Web Application
+# ============================================================================
 
 output "oidc_client_id" {
   description = "OIDC Client ID"
@@ -32,11 +27,11 @@ output "oidc_authority" {
 }
 
 # ============================================================================
-# For deployment (web, api)
+# For CI/CD Pipelines
 # ============================================================================
 
 output "ci_role_arn" {
-  description = "IAM role ARN for CI/CD deployment (GitHub Actions)"
+  description = "IAM role to assume for deployment"
   value       = aws_iam_role.ci_role.arn
 }
 
@@ -46,7 +41,7 @@ output "api_lambda_function" {
 }
 
 output "app_bucket" {
-  description = "S3 bucket for application storage"
+  description = "S3 bucket to deploy web application artifacts"
   value       = module.app_storage.bucket_name
 }
 
