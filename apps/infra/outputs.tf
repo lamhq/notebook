@@ -28,7 +28,7 @@ output "oidc_client_id" {
 
 output "oidc_authority" {
   description = "OIDC Authority"
-  value       = module.cognito.user_pool_domain
+  value       = "https://${module.cognito.user_pool_endpoint}"
 }
 
 # ============================================================================
