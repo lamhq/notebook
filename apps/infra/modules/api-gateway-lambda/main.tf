@@ -15,12 +15,18 @@ resource "aws_api_gateway_deployment" "api_deployment" {
   rest_api_id = aws_api_gateway_rest_api.api_gateway.id
 
   triggers = {
-    redeployment = sha1(jsonencode([
-      aws_api_gateway_resource.api_proxy_resource.id,
-      aws_api_gateway_method.api_proxy_method.id,
-      aws_api_gateway_integration.api_lambda_integration.id,
-      aws_api_gateway_authorizer.api_cognito_authorizer.id,
-    ]))
+    redeployment = sha1(jsonencode({
+      method_config = [
+        aws_api_gateway_method.api_proxy_method.http_method,
+        aws_api_gateway_method.api_proxy_method.authorization,
+        aws_api_gateway_method.api_proxy_method.authorizer_id,
+      ]
+      integration_config = [
+        aws_api_gateway_integration.api_lambda_integration.type,
+        aws_api_gateway_integration.api_lambda_integration.uri,
+      ]
+      authorizer_id = aws_api_gateway_authorizer.api_cognito_authorizer.id,
+    }))
   }
 
   lifecycle {
@@ -42,11 +48,21 @@ resource "aws_api_gateway_resource" "api_proxy_resource" {
   path_part   = "{proxy+}"
 }
 
+# API Gateway Cognito authorizer
+resource "aws_api_gateway_authorizer" "api_cognito_authorizer" {
+  name            = "${var.name}-authorizer"
+  type            = "COGNITO_USER_POOLS"
+  rest_api_id     = aws_api_gateway_rest_api.api_gateway.id
+  provider_arns   = [var.user_pool_arn]
+  identity_source = "method.request.header.Authorization"
+}
+
 # API Gateway method
 resource "aws_api_gateway_method" "api_proxy_method" {
-  rest_api_id   = aws_api_gateway_rest_api.api_gateway.id
-  resource_id   = aws_api_gateway_resource.api_proxy_resource.id
-  http_method   = "ANY"
+  rest_api_id = aws_api_gateway_rest_api.api_gateway.id
+  resource_id = aws_api_gateway_resource.api_proxy_resource.id
+  http_method = "ANY"
+  # authorization = "NONE"
   authorization = "COGNITO_USER_POOLS"
   authorizer_id = aws_api_gateway_authorizer.api_cognito_authorizer.id
 }
@@ -59,15 +75,6 @@ resource "aws_api_gateway_integration" "api_lambda_integration" {
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
   uri                     = var.lambda_invoke_arn
-}
-
-# API Gateway Cognito authorizer
-resource "aws_api_gateway_authorizer" "api_cognito_authorizer" {
-  name            = "${var.name}-authorizer"
-  type            = "COGNITO_USER_POOLS"
-  rest_api_id     = aws_api_gateway_rest_api.api_gateway.id
-  provider_arns   = [var.user_pool_arn]
-  identity_source = "method.request.header.Authorization"
 }
 
 # Lambda permission to allow API Gateway to invoke function
