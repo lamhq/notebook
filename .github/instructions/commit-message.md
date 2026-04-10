@@ -1,3 +1,3 @@
-Maximum length of 72 characters.
+Maximum length of 54 characters.
 
 Follows the conventional commit format (without scope).
