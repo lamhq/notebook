@@ -69,3 +69,12 @@ resource "aws_api_gateway_authorizer" "api_cognito_authorizer" {
   provider_arns   = [aws_cognito_user_pool.user_pool.arn]
   identity_source = "method.request.header.Authorization"
 }
+
+# Lambda permission to allow API Gateway to invoke function
+resource "aws_lambda_permission" "api_gateway_invoke" {
+  statement_id  = "AllowAPIGatewayInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.api_handler.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_api_gateway_rest_api.api_gateway.execution_arn}/*/*"
+}

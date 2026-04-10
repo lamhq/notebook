@@ -68,3 +68,12 @@ resource "aws_cognito_user_pool_domain" "user_pool_domain" {
   domain       = "nb1"
   user_pool_id = aws_cognito_user_pool.user_pool.id
 }
+
+# Lambda permission to allow Cognito to invoke pre-signup trigger
+resource "aws_lambda_permission" "cognito_invoke_pre_sign_up" {
+  statement_id  = "AllowCognitoInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.pre_sign_up_lambda.function_name
+  principal     = "cognito-idp.amazonaws.com"
+  source_arn    = aws_cognito_user_pool.user_pool.arn
+}

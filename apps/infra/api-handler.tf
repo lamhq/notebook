@@ -56,6 +56,7 @@ resource "aws_lambda_function" "api_handler" {
   runtime       = "nodejs22.x"
   timeout       = 10
   memory_size   = 256
+  architectures = ["arm64"]
 
   filename         = data.archive_file.api_archive.output_path
   source_code_hash = data.archive_file.api_archive.output_base64sha256
@@ -66,23 +67,10 @@ resource "aws_lambda_function" "api_handler" {
       NODE_OPTIONS = "--enable-source-maps"
     })
   }
-
-  lifecycle {
-    ignore_changes = [source_code_hash]
-  }
 }
 
 # CloudWatch log group for API Lambda
 resource "aws_cloudwatch_log_group" "api_log_group" {
   name              = "/aws/lambda/${aws_lambda_function.api_handler.function_name}"
   retention_in_days = 7
-}
-
-# Lambda permission to allow API Gateway to invoke function
-resource "aws_lambda_permission" "api_gateway_invoke" {
-  statement_id  = "AllowAPIGatewayInvoke"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.api_handler.function_name
-  principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_api_gateway_rest_api.api_gateway.execution_arn}/*/*"
 }
