@@ -73,7 +73,7 @@ resource "aws_cloudfront_distribution" "web_distribution" {
   origin {
     origin_id                = "${local.name_prefix}-web-origin"
     origin_path              = "/web"
-    domain_name              = aws_s3_bucket.app_bucket.bucket_regional_domain_name
+    domain_name              = module.app_storage.bucket_domain
     origin_access_control_id = aws_cloudfront_origin_access_control.web_s3_oac.id
   }
 
@@ -125,7 +125,7 @@ resource "aws_cloudfront_distribution" "web_distribution" {
 
 # Upload sample index.html to S3
 resource "aws_s3_object" "index_html" {
-  bucket       = aws_s3_bucket.app_bucket.id
+  bucket       = module.app_storage.bucket_id
   key          = "web/index.html"
   source       = "assets/index.html"
   content_type = "text/html"
@@ -137,7 +137,7 @@ resource "aws_s3_object" "index_html" {
 
 # S3 bucket policy to allow CloudFront access
 resource "aws_s3_bucket_policy" "app_bucket_policy" {
-  bucket = aws_s3_bucket.app_bucket.id
+  bucket = module.app_storage.bucket_id
 
   policy = jsonencode({
     Version = "2008-10-17",
@@ -150,7 +150,7 @@ resource "aws_s3_bucket_policy" "app_bucket_policy" {
           Service = "cloudfront.amazonaws.com"
         },
         Action   = "s3:GetObject",
-        Resource = "${aws_s3_bucket.app_bucket.arn}/web/*",
+        Resource = "${module.app_storage.bucket_arn}/web/*",
         Condition = {
           StringEquals = {
             "AWS:SourceArn" = "${aws_cloudfront_distribution.web_distribution.arn}"

@@ -46,8 +46,8 @@ resource "aws_iam_policy" "ci_policy" {
           "s3:ListBucket"
         ]
         Resource = [
-          "${aws_s3_bucket.app_bucket.arn}",
-          "${aws_s3_bucket.app_bucket.arn}/*"
+          "${module.app_storage.bucket_arn}",
+          "${module.app_storage.bucket_arn}/*"
         ]
       },
       # CloudFront invalidation

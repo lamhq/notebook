@@ -47,7 +47,7 @@ output "api_lambda_function" {
 
 output "app_bucket" {
   description = "S3 bucket for application storage"
-  value       = aws_s3_bucket.app_bucket.bucket
+  value       = module.app_storage.bucket_name
 }
 
 output "web_distribution" {
