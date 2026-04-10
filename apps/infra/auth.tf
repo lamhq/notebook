@@ -12,7 +12,7 @@ resource "aws_cognito_user_pool" "user_pool" {
   }
 
   lambda_config {
-    pre_sign_up = aws_lambda_function.pre_sign_up_lambda.arn
+    pre_sign_up = module.pre_signup.function_arn
   }
 }
 
@@ -73,7 +73,7 @@ resource "aws_cognito_user_pool_domain" "user_pool_domain" {
 resource "aws_lambda_permission" "cognito_invoke_pre_sign_up" {
   statement_id  = "AllowCognitoInvoke"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.pre_sign_up_lambda.function_name
+  function_name = module.pre_signup.function_name
   principal     = "cognito-idp.amazonaws.com"
   source_arn    = aws_cognito_user_pool.user_pool.arn
 }

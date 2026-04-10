@@ -163,7 +163,7 @@ resource "aws_s3_bucket" "report_bucket" {
 }
 ```
 
-### Arguments Ordering
+### Terraform Arguments Ordering
 
 Order arguments in a Terraform resource block as follows:
 

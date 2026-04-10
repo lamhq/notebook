@@ -42,7 +42,7 @@ output "ci_role_arn" {
 
 output "api_lambda_function" {
   description = "API Lambda function name"
-  value       = aws_lambda_function.api_handler.function_name
+  value       = module.api_handler.function_name
 }
 
 output "app_bucket" {
