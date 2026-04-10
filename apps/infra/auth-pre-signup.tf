@@ -23,7 +23,7 @@ module "pre_signup" {
         "cognito-idp:AdminGetUser",
         "cognito-idp:AdminLinkProviderForUser"
       ]
-      Resource = aws_cognito_user_pool.user_pool.arn
+      Resource = module.cognito.user_pool_arn
     }
   ]
 }

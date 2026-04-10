@@ -23,12 +23,12 @@ output "api_url" {
 
 output "oidc_client_id" {
   description = "OIDC Client ID"
-  value       = aws_cognito_user_pool_client.user_pool_client.id
+  value       = module.cognito.user_pool_client_id
 }
 
 output "oidc_authority" {
   description = "OIDC Authority"
-  value       = aws_cognito_user_pool_domain.user_pool_domain.domain
+  value       = module.cognito.user_pool_domain
 }
 
 # ============================================================================
