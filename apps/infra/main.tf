@@ -1,4 +1,11 @@
 terraform {
+  # stores the state as a given key in a given bucket on Amazon S3
+  # other arguments are defined in separate backend configuration files (e.g., `config/s3.tfbackend`) that are not included in version control
+  # see https://developer.hashicorp.com/terraform/language/backend#partial-configuration
+  backend "s3" {
+    encrypt = true
+  }
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -29,4 +36,10 @@ provider "aws" {
       Project = "notebook"
     }
   }
+}
+
+# User-defined values used in Terraform code
+locals {
+  env         = terraform.workspace == "default" ? "prod" : terraform.workspace
+  name_prefix = "${var.project}-${local.env}"
 }

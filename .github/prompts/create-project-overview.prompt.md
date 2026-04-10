@@ -1,14 +1,14 @@
 ---
-name: create-project-charter
-description: Create Project Charter documentation for the project
+name: create-project-overview
+description: Create Project Overview documentation for the project
 ---
 
 Follow these steps:
 
 1. Review the documentation structure at `docs/documentation-structure.md`.
-2. Learn how to write a [Project Charter](http://localhost:3000/se/documentation/project-charter.html).
+2. Learn how to write a [Project Overview](http://localhost:3000/se/documentation/project-overview.html).
 3. Interview the user to gather input.
-4. Draft the Project Charter based on the gathered information.
+4. Draft the Project Overview based on the gathered information.
 
 ## Guidelines for interview
 

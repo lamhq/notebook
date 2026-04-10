@@ -42,10 +42,9 @@ resource "aws_iam_role_policy" "api_lambda_policy" {
 }
 
 # Deployment package for the API
-# TODO: Replace source_file with actual NestJS built code from apps/api/dist
 data "archive_file" "api_archive" {
   type        = "zip"
-  source_file = "${path.module}/api-handler.js"
+  source_file = "${path.module}/assets/api-handler.js"
   output_path = "${path.module}/api-handler.zip"
 }
 
