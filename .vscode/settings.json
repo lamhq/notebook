@@ -10,5 +10,10 @@
   },
   "[terraform-vars]": {
     "editor.defaultFormatter": "hashicorp.terraform"
-  }
+  },
+  "github.copilot.chat.commitMessageGeneration.instructions": [
+    {
+      "file": ".github/instructions/commit-message.md"
+    }
+  ]
 }
