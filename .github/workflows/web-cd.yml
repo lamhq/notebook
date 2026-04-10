@@ -5,7 +5,7 @@ name: Deploy Web
 # - CI_ROLE: AWS IAM role ARN for OIDC authentication
 # - S3_BUCKET: S3 bucket name for hosting the web app
 # - CF_DISTRIBUTION: CloudFront distribution ID for cache invalidation
-# - DOT_ENV: content of .env file for buidding the web app
+# - WEB_ENV: content of .env file for buidding the web app
 
 env:
   BUILD_OUTPUT_PATH: apps/web/dist/
@@ -35,7 +35,7 @@ jobs:
 
       - name: Build application
         run: |
-          echo "${{ vars.DOT_ENV }}" > apps/web/.env
+          echo "${{ vars.WEB_ENV }}" > apps/web/.env
           pnpm -F web build
 
       - name: Upload build artifacts
