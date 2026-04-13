@@ -34,7 +34,7 @@ variable "s3_bucket_path" {
   default     = "web"
 }
 
-variable "api_invoke_url" {
-  description = "API Gateway invoke URL"
+variable "api_domain" {
+  description = "API Gateway domain name (e.g., xxx.execute-api.region.amazonaws.com)"
   type        = string
 }

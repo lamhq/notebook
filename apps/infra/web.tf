@@ -8,5 +8,5 @@ module "cloudfront" {
   s3_bucket_domain = module.app_storage.bucket_domain
   s3_bucket_id     = module.app_storage.bucket_id
   s3_bucket_arn    = module.app_storage.bucket_arn
-  api_invoke_url   = module.api_gateway.invoke_url
+  api_domain       = replace(module.api_gateway.invoke_url, "https://", "")
 }

@@ -6,13 +6,6 @@ resource "aws_cloudfront_origin_access_control" "web_s3_oac" {
   signing_protocol                  = "sigv4"
 }
 
-# Parse API invoke URL to extract domain and path
-locals {
-  api_url_parts = regex("^https://([^/]+)(/.*)$", var.api_invoke_url)
-  api_domain    = local.api_url_parts[0]
-  api_path      = local.api_url_parts[1]
-}
-
 # CloudFront function to rewrite SPA routes
 resource "aws_cloudfront_function" "spa_route_rewrite" {
   name    = "${var.name_prefix}-spa-uri-rewrite"
@@ -76,7 +69,7 @@ resource "aws_cloudfront_distribution" "web_distribution" {
     }
   }
 
-  # S3 origin for web static files
+  # S3 origin for serving web files
   origin {
     origin_id                = "${var.name_prefix}-web-origin"
     origin_path              = "/${var.s3_bucket_path}"
@@ -84,11 +77,10 @@ resource "aws_cloudfront_distribution" "web_distribution" {
     origin_access_control_id = aws_cloudfront_origin_access_control.web_s3_oac.id
   }
 
-  # API Gateway origin
+  # API Gateway origin (HTTP API)
   origin {
     origin_id   = "${var.name_prefix}-api-origin"
-    origin_path = local.api_path
-    domain_name = local.api_domain
+    domain_name = var.api_domain
     custom_origin_config {
       http_port              = 80
       https_port             = 443
