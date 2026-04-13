@@ -3,7 +3,7 @@
 # ============================================================================
 
 module "api_gateway" {
-  source = "./modules/api-gateway-lambda"
+  source = "./modules/rest-api"
 
   name                 = "${local.name_prefix}-api"
   user_pool_arn        = module.cognito.user_pool_arn
