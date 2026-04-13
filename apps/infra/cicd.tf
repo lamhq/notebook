@@ -29,9 +29,9 @@ resource "aws_iam_role" "ci_role" {
 }
 
 # IAM policy for CI/CD deployment
-resource "aws_iam_policy" "ci_policy" {
-  name        = "${local.name_prefix}-ci-policy"
-  description = "Permissions to deploy API and Web applications"
+resource "aws_iam_role_policy" "ci_policy" {
+  name = "${local.name_prefix}-ci-policy"
+  role = aws_iam_role.ci_role.id
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -68,9 +68,4 @@ resource "aws_iam_policy" "ci_policy" {
       }
     ]
   })
-}
-
-resource "aws_iam_role_policy_attachment" "ci_deploy_policy_attachment" {
-  role       = aws_iam_role.ci_role.name
-  policy_arn = aws_iam_policy.ci_policy.arn
 }
