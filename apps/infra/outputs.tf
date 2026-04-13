@@ -47,6 +47,6 @@ output "app_bucket" {
 
 output "web_distribution" {
   description = "CloudFront distribution for web application"
-  value       = aws_cloudfront_distribution.web_distribution.id
+  value       = module.cloudfront.distribution_id
 }
 

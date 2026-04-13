@@ -54,7 +54,7 @@ resource "aws_iam_policy" "ci_policy" {
       {
         Effect   = "Allow"
         Action   = ["cloudfront:CreateInvalidation"]
-        Resource = "${aws_cloudfront_distribution.web_distribution.arn}"
+        Resource = module.cloudfront.distribution_arn
       },
       # Lambda function code updates
       {
