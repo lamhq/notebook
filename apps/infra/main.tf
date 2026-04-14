@@ -25,6 +25,12 @@ terraform {
       source  = "hashicorp/random"
       version = "~> 3.6.0"
     }
+
+    # GitHub provider for managing repository settings and CI/CD configurations
+    github = {
+      source  = "integrations/github"
+      version = "~> 6.11.1"
+    }
   }
 }
 
@@ -36,6 +42,11 @@ provider "aws" {
       Project = "notebook"
     }
   }
+}
+
+provider "github" {
+  owner = var.github_owner
+  token = var.github_token
 }
 
 # User-defined values used in Terraform code

@@ -2,10 +2,10 @@ name: Deploy Web
 
 # Required CI Variables (GitHub Settings > Environments > {dev/prod} > Environment variables):
 # - AWS_REGION: AWS region for deployment (e.g., us-east-1)
-# - CI_ROLE: AWS IAM role ARN for OIDC authentication
-# - S3_BUCKET: S3 bucket name for hosting the web app
-# - CF_DISTRIBUTION: CloudFront distribution ID for cache invalidation
-# - WEB_ENV: content of .env file for buidding the web app
+# - DEPLOYMENT_ROLE_ARN: AWS IAM role ARN for OIDC authentication
+# - APP_BUCKET: S3 bucket name for hosting the web app
+# - CF_DIST_ID: CloudFront distribution ID for cache invalidation
+# - WEB_ENV_VARS: content of .env file for buidling the web app
 
 env:
   BUILD_OUTPUT_PATH: apps/web/dist/
@@ -35,7 +35,7 @@ jobs:
 
       - name: Build application
         run: |
-          echo "${{ vars.WEB_ENV }}" > apps/web/.env
+          echo "${{ vars.WEB_ENV_VARS }}" > apps/web/.env
           pnpm -F web build
 
       - name: Upload build artifacts
@@ -59,18 +59,18 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v6
         with:
-          role-to-assume: ${{ vars.CI_ROLE }}
+          role-to-assume: ${{ vars.DEPLOYMENT_ROLE_ARN }}
           aws-region: ${{ vars.AWS_REGION }}
 
       - name: Sync build to S3
         run: |
-          aws s3 sync ${{ env.BUILD_OUTPUT_PATH }} s3://${{ vars.S3_BUCKET }}/web \
+          aws s3 sync ${{ env.BUILD_OUTPUT_PATH }} s3://${{ vars.APP_BUCKET }}/web \
             --delete \
             --region ${{ vars.AWS_REGION }}
 
       - name: Invalidate CloudFront cache
         run: |
           aws cloudfront create-invalidation \
-            --distribution-id ${{ vars.CF_DISTRIBUTION }} \
+            --distribution-id ${{ vars.CF_DIST_ID }} \
             --paths "/index.html" \
             --region ${{ vars.AWS_REGION }}

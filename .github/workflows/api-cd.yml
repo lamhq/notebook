@@ -2,8 +2,8 @@ name: Deploy API
 
 # Required CI Variables (GitHub Settings > Environments > {dev/prod} > Environment variables):
 # - AWS_REGION: AWS region for deployment (e.g., us-east-1)
-# - CI_ROLE: IAM role the CI will assume for deployment
-# - API_LAMBDA: Lambda function name to deploy
+# - DEPLOYMENT_ROLE_ARN: IAM role the CI will assume for deployment
+# - API_HANDLER_LAMBDA: Lambda function name to deploy
 
 env:
   BUILD_OUTPUT_PATH: apps/api/dist/
@@ -58,18 +58,18 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v6
         with:
-          role-to-assume: ${{ vars.CI_ROLE }}
+          role-to-assume: ${{ vars.DEPLOYMENT_ROLE_ARN }}
           aws-region: ${{ vars.AWS_REGION }}
 
       - name: Deploy to Lambda
         run: |
           aws lambda update-function-code \
-            --function-name ${{ vars.API_LAMBDA }} \
+            --function-name ${{ vars.API_HANDLER_LAMBDA }} \
             --zip-file fileb://api.zip \
             --region ${{ vars.AWS_REGION }}
 
       - name: Wait for Lambda update
         run: |
           aws lambda wait function-updated \
-            --function-name ${{ vars.API_LAMBDA }} \
+            --function-name ${{ vars.API_HANDLER_LAMBDA }} \
             --region ${{ vars.AWS_REGION }}

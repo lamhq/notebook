@@ -48,14 +48,24 @@ variable "google_client_secret" {
 # CI/CD Configuration Variables
 # ============================================================================
 
-variable "github_repo_id" {
-  description = "GitHub repository the project. Required for CI/CD"
-  type        = string
-  default     = "github-username/repository-name"
-}
-
 variable "github_oidc_provider_arn" {
   type        = string
   description = "ARN of GitHub OIDC provider"
   default     = "arn:aws:iam::{account-id}:oidc-provider/token.actions.githubusercontent.com"
+}
+
+variable "github_owner" {
+  type        = string
+  description = "GitHub repository owner/organization"
+}
+
+variable "github_repo" {
+  description = "GitHub repository name (without owner)"
+  type        = string
+}
+
+variable "github_token" {
+  type        = string
+  sensitive   = true
+  description = "GitHub personal access token (or GITHUB_TOKEN)"
 }

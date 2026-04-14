@@ -21,5 +21,7 @@ google_client_secret = "your-google-client-secret"
 # ============================================================================
 # CI/CD Configuration
 # ============================================================================
-github_repo_id           = "github-username/repository-name"
 github_oidc_provider_arn = "arn:aws:iam::123456789012:oidc-provider/token.actions.githubusercontent.com"
+github_owner             = "your-github-username"
+github_repo              = "your-repo-name"
+github_token             = "ghp_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
