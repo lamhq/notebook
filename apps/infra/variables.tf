@@ -44,6 +44,11 @@ variable "google_client_secret" {
   description = "Google OAuth 2.0 Client Secret"
 }
 
+variable "admin_email" {
+  type        = string
+  description = "Email address for the initial user"
+}
+
 # ============================================================================
 # CI/CD Configuration Variables
 # ============================================================================

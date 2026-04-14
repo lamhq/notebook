@@ -19,3 +19,10 @@ module "cognito" {
     "https://${var.domain}/auth/signout"
   ]
 }
+
+module "cognito_user" {
+  source = "./modules/cognito-user"
+
+  user_pool_id = module.cognito.user_pool_id
+  admin_email  = var.admin_email
+}

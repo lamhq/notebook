@@ -9,7 +9,7 @@ variable "oidc_client_id" {
 }
 
 variable "oidc_issuer" {
-  description = "OIDC issuer domain (format: {user-pool-domain}.auth.{region}.amazoncognito.com)"
+  description = "OIDC issuer (format: https://{user-pool-domain}.auth.{region}.amazoncognito.com)"
   type        = string
 }
 

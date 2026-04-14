@@ -17,6 +17,7 @@ api_env_vars = {
 domain           = "example.com"
 google_client_id     = "your-google-client-id"
 google_client_secret = "your-google-client-secret"
+admin_email          = "admin@example.com"
 
 # ============================================================================
 # CI/CD Configuration

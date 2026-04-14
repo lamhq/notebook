@@ -24,7 +24,7 @@ resource "aws_apigatewayv2_authorizer" "jwt_authorizer" {
   name             = "${var.name}-jwt-authorizer"
   jwt_configuration {
     audience = [var.oidc_client_id]
-    issuer   = "https://${var.oidc_issuer}"
+    issuer   = var.oidc_issuer
   }
 }
 
