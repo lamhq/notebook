@@ -24,4 +24,9 @@ google_client_secret = "your-google-client-secret"
 github_oidc_provider_arn = "arn:aws:iam::123456789012:oidc-provider/token.actions.githubusercontent.com"
 github_owner             = "your-github-username"
 github_repo              = "your-repo-name"
-github_token             = "ghp_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+
+# ============================================================================
+# Cloudflare Configuration Variables
+# ============================================================================
+cloudflare_api_token = "cfut_xxx"
+cloudflare_zone_id   = ""

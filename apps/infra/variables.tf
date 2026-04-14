@@ -64,8 +64,17 @@ variable "github_repo" {
   type        = string
 }
 
-variable "github_token" {
+# ============================================================================
+# Cloudflare Configuration Variables
+# ============================================================================
+
+variable "cloudflare_api_token" {
   type        = string
   sensitive   = true
-  description = "GitHub personal access token (or GITHUB_TOKEN)"
+  description = "Cloudflare API token"
+}
+
+variable "cloudflare_zone_id" {
+  type        = string
+  description = "Cloudflare zone ID for the domain"
 }
