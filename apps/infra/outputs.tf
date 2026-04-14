@@ -9,7 +9,7 @@ output "environment" {
 
 output "api_url" {
   description = "API endpoint URL"
-  value       = module.api_gateway.invoke_url
+  value       = module.api_gateway.api_endpoint
 }
 
 # ============================================================================
