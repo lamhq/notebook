@@ -28,5 +28,4 @@ github_repo              = "your-repo-name"
 # ============================================================================
 # Cloudflare Configuration Variables
 # ============================================================================
-cloudflare_api_token = "cfut_xxx"
-cloudflare_zone_id   = ""
+cloudflare_zone_id = ""

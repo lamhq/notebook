@@ -31,12 +31,6 @@ terraform {
       source  = "integrations/github"
       version = "~> 6.11.1"
     }
-
-    # Cloudflare provider for DNS management
-    cloudflare = {
-      source  = "cloudflare/cloudflare"
-      version = "~> 5"
-    }
   }
 }
 
@@ -52,10 +46,6 @@ provider "aws" {
 
 provider "github" {
   owner = var.github_owner
-}
-
-provider "cloudflare" {
-  api_token = var.cloudflare_api_token
 }
 
 # User-defined values used in Terraform code

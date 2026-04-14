@@ -4,6 +4,7 @@ module "cloudfront" {
 
   name             = local.name_prefix
   domain           = var.domain
+  certificate_arn  = module.domain.certificate_arn
   s3_bucket_domain = module.app_storage.bucket_domain
   s3_bucket_id     = module.app_storage.bucket_id
   s3_bucket_arn    = module.app_storage.bucket_arn

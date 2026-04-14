@@ -48,16 +48,6 @@ function handler(event) {
 EOF
 }
 
-resource "aws_acm_certificate" "domain_cert" {
-  domain_name       = var.domain
-  validation_method = "DNS"
-  region            = "us-east-1"
-
-  lifecycle {
-    create_before_destroy = true
-  }
-}
-
 # CloudFront Distribution
 resource "aws_cloudfront_distribution" "cdn_distribution" {
   comment             = var.name
@@ -68,7 +58,7 @@ resource "aws_cloudfront_distribution" "cdn_distribution" {
   aliases             = [var.domain]
 
   viewer_certificate {
-    acm_certificate_arn      = aws_acm_certificate.domain_cert.arn
+    acm_certificate_arn      = var.certificate_arn
     ssl_support_method       = "sni-only"
     minimum_protocol_version = "TLSv1.2_2021"
   }

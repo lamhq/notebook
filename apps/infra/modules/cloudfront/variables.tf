@@ -8,6 +8,11 @@ variable "domain" {
   type        = string
 }
 
+variable "certificate_arn" {
+  description = "ACM certificate ARN for the domain"
+  type        = string
+}
+
 variable "s3_bucket_domain" {
   description = "S3 bucket regional domain name"
   type        = string
