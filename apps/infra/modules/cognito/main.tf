@@ -3,7 +3,7 @@
 # ============================================================================
 
 resource "aws_cognito_user_pool" "user_pool" {
-  name = "${var.name_prefix}-user-pool"
+  name = var.name
 
   admin_create_user_config {
     # disable user self registration
@@ -19,7 +19,7 @@ resource "aws_cognito_user_pool" "user_pool" {
 # Cognito Google Identity Provider
 # ============================================================================
 
-resource "aws_cognito_identity_provider" "google_idp" {
+resource "aws_cognito_identity_provider" "google_provider" {
   user_pool_id  = aws_cognito_user_pool.user_pool.id
   provider_name = "Google"
   provider_type = "Google"
@@ -46,8 +46,8 @@ resource "aws_cognito_identity_provider" "google_idp" {
 # Cognito User Pool Client
 # ============================================================================
 
-resource "aws_cognito_user_pool_client" "user_pool_client" {
-  name                         = "${var.name_prefix}-user-pool-client"
+resource "aws_cognito_user_pool_client" "public_client" {
+  name                         = "${var.name}-public-client"
   user_pool_id                 = aws_cognito_user_pool.user_pool.id
   supported_identity_providers = ["Google"]
   generate_secret              = false
@@ -59,15 +59,15 @@ resource "aws_cognito_user_pool_client" "user_pool_client" {
   allowed_oauth_flows                  = ["code"]
   allowed_oauth_scopes                 = ["email", "openid", "profile"]
 
-  depends_on = [aws_cognito_identity_provider.google_idp]
+  depends_on = [aws_cognito_identity_provider.google_provider]
 }
 
 # ============================================================================
 # Cognito User Pool Domain
 # ============================================================================
 
-resource "aws_cognito_user_pool_domain" "user_pool_domain" {
-  domain       = var.name_prefix
+resource "aws_cognito_user_pool_domain" "pool_domain" {
+  domain       = var.name
   user_pool_id = aws_cognito_user_pool.user_pool.id
 }
 
@@ -75,7 +75,7 @@ resource "aws_cognito_user_pool_domain" "user_pool_domain" {
 # Lambda Permission for Pre-Sign-Up Trigger
 # ============================================================================
 
-resource "aws_lambda_permission" "cognito_invoke_pre_sign_up" {
+resource "aws_lambda_permission" "presignup_permission" {
   statement_id  = "AllowCognitoInvoke"
   action        = "lambda:InvokeFunction"
   function_name = var.pre_sign_up_fn_name

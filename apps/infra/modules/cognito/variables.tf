@@ -1,5 +1,5 @@
-variable "name_prefix" {
-  description = "Prefix for resource names"
+variable "name" {
+  description = "Name of Cognito user pool"
   type        = string
 }
 

@@ -64,7 +64,7 @@ resource "aws_iam_role_policy" "ci_policy" {
           "lambda:GetFunction",
           "lambda:GetFunctionConfiguration"
         ]
-        Resource = "arn:aws:lambda:${var.aws_region}:${split(":", module.api_handler.function_arn)[4]}:function:${local.name_prefix}-*"
+        Resource = "${join(":", slice(split(":", module.api_handler.function_arn), 0, 6))}:${local.name_prefix}-*"
       }
     ]
   })

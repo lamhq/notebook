@@ -35,18 +35,31 @@ output "ci_role_arn" {
   value       = aws_iam_role.ci_role.arn
 }
 
-output "api_lambda_function" {
-  description = "API Lambda function name"
+output "api_handler_function" {
+  description = "The Lambda function where API app is deployed"
   value       = module.api_handler.function_name
 }
 
-output "app_bucket" {
-  description = "S3 bucket to deploy web application artifacts"
+output "s3_bucket" {
+  description = "S3 bucket where the SPA web app is deployed"
   value       = module.app_storage.bucket_name
 }
 
-output "web_distribution" {
-  description = "CloudFront distribution for web application"
+output "cf_dist_id" {
+  description = "CloudFront distribution ID that serves the web app"
   value       = module.cloudfront.distribution_id
 }
 
+# ============================================================================
+# DNS Validation for ACM Certificate
+# ============================================================================
+
+output "certificate_validation_record_name" {
+  description = "Name of the DNS record to create to validate the certificate"
+  value       = module.cloudfront.resource_record_name
+}
+
+output "certificate_validation_record_value" {
+  description = "Value the DNS record needs to have"
+  value       = module.cloudfront.resource_record_value
+}

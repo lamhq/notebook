@@ -1,15 +1,10 @@
-variable "name_prefix" {
+variable "name" {
   description = "Prefix for resource names"
   type        = string
 }
 
 variable "domain" {
   description = "Custom domain name for the website"
-  type        = string
-}
-
-variable "domain_cert" {
-  description = "ARN of the SSL certificate for the web domain (must be in us-east-1)"
   type        = string
 }
 

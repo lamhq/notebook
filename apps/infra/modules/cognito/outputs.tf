@@ -10,5 +10,5 @@ output "user_pool_endpoint" {
 
 output "user_pool_client_id" {
   description = "Cognito User Pool Client ID"
-  value       = aws_cognito_user_pool_client.user_pool_client.id
+  value       = aws_cognito_user_pool_client.public_client.id
 }

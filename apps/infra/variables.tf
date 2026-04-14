@@ -29,14 +29,9 @@ variable "api_env_vars" {
 # Web Configuration Variables
 # ============================================================================
 
-variable "web_domain" {
+variable "domain" {
   type        = string
-  description = "Custom domain name for the website"
-}
-
-variable "acm_certificate_arn" {
-  type        = string
-  description = "ARN of the SSL certificate for the web domain (stored in AWS Certificate Manager, must be in us-east-1)"
+  description = "Custom domain for the website"
 }
 
 variable "google_client_id" {

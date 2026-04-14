@@ -5,17 +5,17 @@
 module "cognito" {
   source = "./modules/cognito"
 
-  name_prefix          = local.name_prefix
+  name                 = local.name_prefix
   google_client_id     = var.google_client_id
   google_client_secret = var.google_client_secret
   pre_sign_up_fn_arn   = module.pre_signup.function_arn
   pre_sign_up_fn_name  = module.pre_signup.function_name
   callback_urls = [
     "http://localhost:5173/auth/callback",
-    "https://${var.web_domain}/auth/callback"
+    "https://${var.domain}/auth/callback"
   ]
   logout_urls = [
     "http://localhost:5173/auth/signout",
-    "https://${var.web_domain}/auth/signout"
+    "https://${var.domain}/auth/signout"
   ]
 }

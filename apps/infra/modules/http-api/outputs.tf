@@ -1,6 +1,6 @@
 output "api_id" {
   description = "HTTP API ID"
-  value       = aws_apigatewayv2_api.api.id
+  value       = aws_apigatewayv2_api.http_api.id
 }
 
 output "invoke_url" {

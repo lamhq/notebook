@@ -11,9 +11,9 @@ data "archive_file" "pre_signup_archive" {
 module "pre_signup" {
   source = "./modules/lambda"
 
-  function_name = "${local.name_prefix}-pre-signup-trigger"
-  filename      = data.archive_file.pre_signup_archive.output_path
-  handler       = "pre-signup-trigger.handler"
+  name     = "${local.name_prefix}-pre-signup-trigger"
+  filename = data.archive_file.pre_signup_archive.output_path
+  handler  = "pre-signup-trigger.handler"
 
   environment_variables = {} # Only NODE_OPTIONS (auto-added in module)
   iam_policy_statements = [
