@@ -16,4 +16,9 @@ resource "aws_cognito_user" "admin_user" {
   attributes = {
     email = var.admin_email
   }
+
+  # Ignore changes to attributes that are managed by AWS
+  lifecycle {
+    ignore_changes = [attributes]
+  }
 }

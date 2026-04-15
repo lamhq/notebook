@@ -3,6 +3,7 @@
 # ============================================================================
 aws_region = "us-east-1"
 project    = "notebook"
+admin_email          = "admin@example.com"
 
 # ============================================================================
 # API Configuration
@@ -14,10 +15,9 @@ api_env_vars = {
 # ============================================================================
 # Web Configuration
 # ============================================================================
-domain           = "example.com"
+domain               = "example.com"
 google_client_id     = "your-google-client-id"
 google_client_secret = "your-google-client-secret"
-admin_email          = "admin@example.com"
 
 # ============================================================================
 # CI/CD Configuration

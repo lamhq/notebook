@@ -14,6 +14,11 @@ variable "project" {
   default     = "notebook"
 }
 
+variable "admin_email" {
+  type        = string
+  description = "Email address for the initial user"
+}
+
 # ============================================================================
 # API Configuration Variables
 # ============================================================================
@@ -42,11 +47,6 @@ variable "google_client_id" {
 variable "google_client_secret" {
   type        = string
   description = "Google OAuth 2.0 Client Secret"
-}
-
-variable "admin_email" {
-  type        = string
-  description = "Email address for the initial user"
 }
 
 # ============================================================================

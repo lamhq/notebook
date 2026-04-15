@@ -35,9 +35,11 @@ resource "cloudflare_dns_record" "domain" {
 # Cloudflare CNAME record for SSL certificate validation
 resource "cloudflare_dns_record" "acm_validation" {
   zone_id = var.cloudflare_zone_id
-  name    = one(aws_acm_certificate.domain_cert.domain_validation_options[*].resource_record_name)
   type    = "CNAME"
-  content = one(aws_acm_certificate.domain_cert.domain_validation_options[*].resource_record_value)
+  # Strip trailing dots to prevent unnecessary Terraform updates
+  # since AWS returns values with trailing dots but Cloudflare automatically removes them
+  name    = trimsuffix(one(aws_acm_certificate.domain_cert.domain_validation_options[*].resource_record_name), ".")
+  content = trimsuffix(one(aws_acm_certificate.domain_cert.domain_validation_options[*].resource_record_value), ".")
   ttl     = 1 # automatic
   comment = "Validate the certificate for ${var.domain}. Do not modify, it's managed by Terraform."
 }
