@@ -1,3 +1,8 @@
+# GitHub provider configuration
+provider "github" {
+  owner = var.github_owner
+}
+
 # ============================================================================
 # CI/CD Role & Permissions
 # ============================================================================

@@ -6,13 +6,6 @@ project    = "notebook"
 admin_email          = "admin@example.com"
 
 # ============================================================================
-# API Configuration
-# ============================================================================
-api_env_vars = {
-  DB_URI = "mongodb://localhost:27017/notebook-dev"
-}
-
-# ============================================================================
 # Web Configuration
 # ============================================================================
 domain               = "example.com"
@@ -30,3 +23,10 @@ github_repo              = "your-repo-name"
 # Cloudflare Configuration Variables
 # ============================================================================
 cloudflare_zone_id = ""
+
+# ============================================================================
+# MongoDB Atlas Configuration Variables
+# ============================================================================
+mongodb_atlas_project_id = "your-mongodb-atlas-project-id"
+
+

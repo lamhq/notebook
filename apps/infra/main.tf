@@ -31,6 +31,18 @@ terraform {
       source  = "integrations/github"
       version = "~> 6.11.1"
     }
+
+    # MongoDB Atlas provider for managing MongoDB clusters and database users
+    mongodbatlas = {
+      source  = "mongodb/mongodbatlas"
+      version = "~> 2.10.0"
+    }
+
+    # Cloudflare provider for managing DNS records and domain configuration
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "~> 5"
+    }
   }
 }
 
@@ -44,8 +56,8 @@ provider "aws" {
   }
 }
 
-provider "github" {
-  owner = var.github_owner
+provider "mongodbatlas" {
+  # Credentials are read from environment variables for security
 }
 
 # User-defined values used in Terraform code

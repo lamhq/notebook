@@ -20,17 +20,6 @@ variable "admin_email" {
 }
 
 # ============================================================================
-# API Configuration Variables
-# ============================================================================
-
-variable "api_env_vars" {
-  description = "Environment variables for the API application"
-  type = object({
-    DB_URI = string
-  })
-}
-
-# ============================================================================
 # Web Configuration Variables
 # ============================================================================
 
@@ -77,3 +66,14 @@ variable "cloudflare_zone_id" {
   type        = string
   description = "Cloudflare zone ID for the domain"
 }
+
+# ============================================================================
+# MongoDB Atlas Configuration Variables
+# ============================================================================
+
+variable "mongodb_atlas_project_id" {
+  type        = string
+  description = "MongoDB Atlas project ID"
+}
+
+

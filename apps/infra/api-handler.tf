@@ -15,8 +15,9 @@ module "api_handler" {
   filename = data.archive_file.api_handler_archive.output_path
   handler  = "lambda.handler"
 
-  environment_variables = merge(var.api_env_vars, {
+  environment_variables = {
+    DB_URI   = module.mongodb_cluster.connection_string
     NO_COLOR = "true"
-  })
+  }
   iam_policy_statements = [] # Only needs CloudWatch logs (auto-generated in module)
 }
