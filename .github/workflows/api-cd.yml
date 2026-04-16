@@ -9,7 +9,10 @@ env:
   BUILD_OUTPUT_PATH: apps/api/dist/
 
 on:
-  # push:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/api/**'
   pull_request:
     branches: [main]
     paths:
@@ -39,10 +42,45 @@ jobs:
           name: api-build
           path: ${{ env.BUILD_OUTPUT_PATH }}
 
-  deploy:
+  deploy-dev:
     needs: build
     runs-on: ubuntu-latest
     environment: dev
+
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: api-build
+          path: ${{ env.BUILD_OUTPUT_PATH }}
+
+      - name: Create Lambda deployment package
+        run: |
+          cd ${{ env.BUILD_OUTPUT_PATH }} && zip -r ../../../api.zip .
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ vars.DEPLOYMENT_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Deploy to Lambda
+        run: |
+          aws lambda update-function-code \
+            --function-name ${{ vars.API_HANDLER_LAMBDA }} \
+            --zip-file fileb://api.zip \
+            --region ${{ vars.AWS_REGION }}
+
+      - name: Wait for Lambda update
+        run: |
+          aws lambda wait function-updated \
+            --function-name ${{ vars.API_HANDLER_LAMBDA }} \
+            --region ${{ vars.AWS_REGION }}
+
+  deploy-prod:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: prod
 
     steps:
       - name: Download build artifacts
