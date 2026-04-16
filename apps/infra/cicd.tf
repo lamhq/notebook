@@ -4,6 +4,28 @@ provider "github" {
 }
 
 # ============================================================================
+# OIDC Provider for GitHub Actions
+# ============================================================================
+
+data "aws_iam_openid_connect_provider" "github_oidc_provider" {
+  url = "https://token.actions.githubusercontent.com"
+}
+
+resource "aws_iam_openid_connect_provider" "github_oidc_provider" {
+  count          = data.aws_iam_openid_connect_provider.github_oidc_provider == null ? 1 : 0
+  url            = "https://token.actions.githubusercontent.com"
+  client_id_list = ["sts.amazonaws.com"]
+  thumbprint_list = [
+    "6938fd4d98bab03faadb97b34396831e3780aea1",
+    "1c58a3a8518e8759bf075b76b750d4f2df264fcd"
+  ]
+}
+
+locals {
+  github_oidc_arn = try(data.aws_iam_openid_connect_provider.github_oidc_provider.arn, aws_iam_openid_connect_provider.github_oidc_provider[0].arn)
+}
+
+# ============================================================================
 # CI/CD Role & Permissions
 # ============================================================================
 
@@ -17,7 +39,7 @@ resource "aws_iam_role" "ci_role" {
       {
         Effect = "Allow",
         Principal = {
-          Federated = var.github_oidc_provider_arn
+          Federated = local.github_oidc_arn
         },
         Action = "sts:AssumeRoleWithWebIdentity",
         Condition = {

@@ -1,31 +1,34 @@
 # ============================================================================
-# Common Configuration
+# Common
 # ============================================================================
-aws_region = "us-east-1"
-project    = "notebook"
-admin_email          = "admin@example.com"
+aws_region               = "us-east-1"
+project                  = "notebook"
+admin_email              = "admin@example.com"
 
 # ============================================================================
-# Web Configuration
+# Web Application
 # ============================================================================
-domain               = "example.com"
-google_client_id     = "your-google-client-id"
-google_client_secret = "your-google-client-secret"
+domain                   = "example.com"
 
 # ============================================================================
-# CI/CD Configuration
+# Google Authentication
 # ============================================================================
-github_oidc_provider_arn = "arn:aws:iam::123456789012:oidc-provider/token.actions.githubusercontent.com"
+google_client_id         = "your-google-client-id"
+google_client_secret     = "your-google-client-secret"
+
+# ============================================================================
+# CI/CD
+# ============================================================================
 github_owner             = "your-github-username"
 github_repo              = "your-repo-name"
 
 # ============================================================================
-# Cloudflare Configuration Variables
+# Cloudflare
 # ============================================================================
-cloudflare_zone_id = ""
+cloudflare_zone_id       = ""
 
 # ============================================================================
-# MongoDB Atlas Configuration Variables
+# MongoDB Atlas
 # ============================================================================
 mongodb_atlas_project_id = "your-mongodb-atlas-project-id"
 

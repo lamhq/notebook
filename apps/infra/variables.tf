@@ -1,5 +1,5 @@
 # ============================================================================
-# Common Configuration Variables
+# Common
 # ============================================================================
 
 variable "aws_region" {
@@ -20,13 +20,17 @@ variable "admin_email" {
 }
 
 # ============================================================================
-# Web Configuration Variables
+# Web Application
 # ============================================================================
 
 variable "domain" {
   type        = string
   description = "Custom domain for the website"
 }
+
+# ============================================================================
+# Google Authentication
+# ============================================================================
 
 variable "google_client_id" {
   type        = string
@@ -39,14 +43,8 @@ variable "google_client_secret" {
 }
 
 # ============================================================================
-# CI/CD Configuration Variables
+# CI/CD
 # ============================================================================
-
-variable "github_oidc_provider_arn" {
-  type        = string
-  description = "ARN of GitHub OIDC provider"
-  default     = "arn:aws:iam::{account-id}:oidc-provider/token.actions.githubusercontent.com"
-}
 
 variable "github_owner" {
   type        = string
@@ -59,7 +57,7 @@ variable "github_repo" {
 }
 
 # ============================================================================
-# Cloudflare Configuration Variables
+# Cloudflare
 # ============================================================================
 
 variable "cloudflare_zone_id" {
@@ -68,7 +66,7 @@ variable "cloudflare_zone_id" {
 }
 
 # ============================================================================
-# MongoDB Atlas Configuration Variables
+# MongoDB Atlas
 # ============================================================================
 
 variable "mongodb_atlas_project_id" {
