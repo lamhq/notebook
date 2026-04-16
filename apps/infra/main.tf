@@ -60,6 +60,15 @@ provider "mongodbatlas" {
   # Credentials are read from environment variables for security
 }
 
+provider "github" {
+  owner = var.github_owner
+  # Token is read from GITHUB_TOKEN environment variable
+}
+
+provider "cloudflare" {
+  # API token is read from CLOUDFLARE_API_TOKEN environment variable
+}
+
 # User-defined values used in Terraform code
 locals {
   env         = terraform.workspace == "default" ? "prod" : terraform.workspace
