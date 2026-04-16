@@ -68,8 +68,4 @@ module "github_ci" {
     CF_DIST_ID          = module.cloudfront.distribution_id
     WEB_ENV_VARS        = local.web_env_vars
   }
-
-  providers = {
-    github = github
-  }
 }
