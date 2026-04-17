@@ -8,3 +8,5 @@ async function bootstrap() {
 bootstrap().catch((error: unknown) => {
   console.error('Unhandled error during bootstrap:', error);
 });
+
+// test code to test release-please-action
