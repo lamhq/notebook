@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/lamhq/notebook/compare/api-v0.1.0...api-v0.2.0) (2026-04-17)
+
+
+### Features
+
+* small feature ([ac0b82a](https://github.com/lamhq/notebook/commit/ac0b82a9bbf29c762117533930e17b7f46cd5559))
+
 ## [0.1.0](https://github.com/lamhq/notebook/compare/api-v0.0.1...api-v0.1.0) (2026-04-17)
 
 
