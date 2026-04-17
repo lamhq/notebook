@@ -2,8 +2,8 @@ name: Deploy API
 description: Download build artifact and deploy API to Lambda
 
 inputs:
-  build_name:
-    description: Build artifact name
+  build_id:
+    description: Build artifact ID
     required: true
   aws_region:
     description: AWS region for deployment (e.g., us-east-1)
@@ -15,16 +15,13 @@ inputs:
     description: Lambda function name to deploy
     required: true
 
-env:
-  BUILD_OUTPUT_PATH: apps/api/dist/
-
 runs:
   using: composite
   steps:
     - name: Download build artifacts
       uses: actions/download-artifact@v4
       with:
-        name: ${{ inputs.build_name }}
+        name: ${{ inputs.build_id }}
         path: apps/api/dist/
 
     - name: Create Lambda deployment package

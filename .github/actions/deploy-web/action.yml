@@ -2,11 +2,8 @@ name: Deploy Web
 description: Download build artifact and deploy web app to S3 with CloudFront invalidation
 
 inputs:
-  build_name:
-    description: Build artifact name
-    required: true
-  build_path:
-    description: Build output path
+  build_id:
+    description: Build artifact ID
     required: true
   aws_region:
     description: AWS region for deployment (e.g., us-east-1)
@@ -27,8 +24,8 @@ runs:
     - name: Download build artifacts
       uses: actions/download-artifact@v4
       with:
-        name: ${{ inputs.build_name }}
-        path: ${{ inputs.build_path }}
+        name: ${{ inputs.build_id }}
+        path: apps/web/dist/
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v6
@@ -39,7 +36,7 @@ runs:
     - name: Sync build to S3
       shell: bash
       run: |
-        aws s3 sync ${{ inputs.build_path }} s3://${{ inputs.app_bucket }}/web \
+        aws s3 sync apps/web/dist/ s3://${{ inputs.app_bucket }}/web \
           --delete \
           --region ${{ inputs.aws_region }}
 

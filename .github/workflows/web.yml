@@ -26,9 +26,6 @@ permissions:
   id-token: write # Allows OIDC token requests
   contents: read # Allows reading repo contents
 
-env:
-  BUILD_OUTPUT_PATH: apps/web/dist/
-
 jobs:
   lint:
     if: github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
@@ -95,7 +92,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: web-build-${{ matrix.environment }}-${{ github.sha }}
-          path: ${{ env.BUILD_OUTPUT_PATH }}
+          path: apps/web/dist/
 
   deploy-dev:
     # TODO: revert to `github.event_name == 'push' && github.ref == 'refs/heads/main'` after deploy to dev success
@@ -111,8 +108,7 @@ jobs:
       - name: Deploy Web
         uses: ./.github/actions/deploy-web
         with:
-          build_name: web-build-dev-${{ github.sha }}
-          build_path: ${{ env.BUILD_OUTPUT_PATH }}
+          build_id: web-build-dev-${{ github.sha }}
           aws_region: ${{ vars.AWS_REGION }}
           deployment_role_arn: ${{ vars.DEPLOYMENT_ROLE_ARN }}
           app_bucket: ${{ vars.APP_BUCKET }}
@@ -131,8 +127,7 @@ jobs:
       - name: Deploy Web
         uses: ./.github/actions/deploy-web
         with:
-          build_name: web-build-prod-${{ github.sha }}
-          build_path: ${{ env.BUILD_OUTPUT_PATH }}
+          build_id: web-build-prod-${{ github.sha }}
           aws_region: ${{ vars.AWS_REGION }}
           deployment_role_arn: ${{ vars.DEPLOYMENT_ROLE_ARN }}
           app_bucket: ${{ vars.APP_BUCKET }}
