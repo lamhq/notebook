@@ -24,9 +24,6 @@ permissions:
   id-token: write # Allows OIDC token requests
   contents: read # Allows reading repo contents
 
-env:
-  BUILD_OUTPUT_PATH: apps/api/dist/
-
 jobs:
   lint:
     if: github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
@@ -87,7 +84,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: api-build-${{ github.sha }}
-          path: ${{ env.BUILD_OUTPUT_PATH }}
+          path: apps/api/dist/
 
   deploy-to-dev:
     # TODO: revert to `github.event_name == 'push' && github.ref == 'refs/heads/main'` after deploy to dev success

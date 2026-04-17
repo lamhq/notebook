@@ -25,12 +25,12 @@ runs:
       uses: actions/download-artifact@v4
       with:
         name: ${{ inputs.build_name }}
-        path: ${{ inputs.BUILD_OUTPUT_PATH }}
+        path: apps/api/dist/
 
     - name: Create Lambda deployment package
       shell: bash
       run: |
-        cd ${{ inputs.BUILD_OUTPUT_PATH }} && zip -r ../../../api.zip .
+        cd apps/api/dist/ && zip -r ../../../api.zip .
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v6
