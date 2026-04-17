@@ -72,7 +72,6 @@ jobs:
 
   build:
     if: github.event_name == 'push'
-    needs: [lint, unit-test, e2e-test]
     runs-on: ubuntu-latest
     strategy:
       matrix:
