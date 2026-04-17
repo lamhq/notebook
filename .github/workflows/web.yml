@@ -1,4 +1,4 @@
-name: Web CICD
+name: Deploy Web
 
 # Required environment variables (GitHub Settings > Environments > {dev/prod} > Environment variables):
 # - AWS_REGION: AWS region for deployment (e.g., us-east-1)
@@ -13,6 +13,8 @@ on:
     paths:
       - 'apps/web/**'
       - 'packages/**'
+      # TODO: remove this when deploy to dev success
+      - '.github/workflows/web.yml'
   push:
     branches: [main]
     tags: ['web-v*']
@@ -23,9 +25,6 @@ on:
 permissions:
   id-token: write # Allows OIDC token requests
   contents: read # Allows reading repo contents
-
-env:
-  BUILD_OUTPUT_PATH: apps/web/dist/
 
 jobs:
   lint:
@@ -71,7 +70,7 @@ jobs:
         run: echo "✓ E2E tests passed"
 
   build:
-    if: github.event_name == 'push'
+    if: github.event_name == 'pull_request' || github.event_name == 'push'
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -93,10 +92,11 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: web-build-${{ matrix.environment }}-${{ github.sha }}
-          path: ${{ env.BUILD_OUTPUT_PATH }}
+          path: apps/web/dist/
 
   deploy-dev:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    # TODO: revert to `github.event_name == 'push' && github.ref == 'refs/heads/main'` after deploy to dev success
+    if: github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
     needs: [build]
     runs-on: ubuntu-latest
     environment: dev
@@ -108,8 +108,11 @@ jobs:
       - name: Deploy Web
         uses: ./.github/actions/deploy-web
         with:
-          build_name: web-build-dev-${{ github.sha }}
-          build_path: ${{ env.BUILD_OUTPUT_PATH }}
+          build_id: web-build-dev-${{ github.sha }}
+          aws_region: ${{ vars.AWS_REGION }}
+          deployment_role_arn: ${{ vars.DEPLOYMENT_ROLE_ARN }}
+          app_bucket: ${{ vars.APP_BUCKET }}
+          cf_dist_id: ${{ vars.CF_DIST_ID }}
 
   deploy-prod:
     if: startsWith(github.ref, 'refs/tags/')
@@ -124,5 +127,8 @@ jobs:
       - name: Deploy Web
         uses: ./.github/actions/deploy-web
         with:
-          build_name: web-build-prod-${{ github.sha }}
-          build_path: ${{ env.BUILD_OUTPUT_PATH }}
+          build_id: web-build-prod-${{ github.sha }}
+          aws_region: ${{ vars.AWS_REGION }}
+          deployment_role_arn: ${{ vars.DEPLOYMENT_ROLE_ARN }}
+          app_bucket: ${{ vars.APP_BUCKET }}
+          cf_dist_id: ${{ vars.CF_DIST_ID }}

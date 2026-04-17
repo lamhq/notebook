@@ -1,4 +1,4 @@
-name: API CICD
+name: Deploy API
 
 # Required environment variables (GitHub Settings > Environments > {dev/staging/prod} > Environment variables):
 # - AWS_REGION: AWS region for deployment (e.g., us-east-1)
@@ -11,6 +11,8 @@ on:
     paths:
       - 'apps/api/**'
       - 'packages/**'
+      # TODO: remove this when deploy to dev success
+      - '.github/workflows/api.yml'
   push:
     branches: [main]
     tags: ['api-v*']
@@ -21,9 +23,6 @@ on:
 permissions:
   id-token: write # Allows OIDC token requests
   contents: read # Allows reading repo contents
-
-env:
-  BUILD_OUTPUT_PATH: apps/api/dist/
 
 jobs:
   lint:
@@ -69,7 +68,7 @@ jobs:
         run: echo "✓ Integration tests passed"
 
   build:
-    if: github.event_name == 'push'
+    if: github.event_name == 'pull_request' || github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -85,10 +84,11 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: api-build-${{ github.sha }}
-          path: ${{ env.BUILD_OUTPUT_PATH }}
+          path: apps/api/dist/
 
-  deploy-to-dev:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+  deploy-dev:
+    # TODO: revert to `github.event_name == 'push' && github.ref == 'refs/heads/main'` after deploy to dev success
+    if: github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
     runs-on: ubuntu-latest
     needs: [lint, unit-test, integration-test, build]
     environment: dev
@@ -100,26 +100,12 @@ jobs:
       - name: Deploy API
         uses: ./.github/actions/deploy-api
         with:
-          build_name: api-build-${{ github.sha }}
-          build_path: ${{ env.BUILD_OUTPUT_PATH }}
+          build_id: api-build-${{ github.sha }}
+          aws_region: ${{ vars.AWS_REGION }}
+          deployment_role_arn: ${{ vars.DEPLOYMENT_ROLE_ARN }}
+          api_handler_lambda: ${{ vars.API_HANDLER_LAMBDA }}
 
-  # deploy-to-staging:
-  #   if: startsWith(github.ref, 'refs/tags/')
-  #   runs-on: ubuntu-latest
-  #   needs: [build]
-  #   environment: staging
-
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v6
-
-  #     - name: Deploy API
-  #       uses: ./.github/actions/deploy-api
-  #       with:
-  #         build_name: api-build-${{ github.sha }}
-  #         build_path: ${{ env.BUILD_OUTPUT_PATH }}
-
-  deploy-to-production:
+  deploy-prod:
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     needs: [build]
@@ -132,5 +118,7 @@ jobs:
       - name: Deploy API
         uses: ./.github/actions/deploy-api
         with:
-          build_name: api-build-${{ github.sha }}
-          build_path: ${{ env.BUILD_OUTPUT_PATH }}
+          build_id: api-build-${{ github.sha }}
+          aws_region: ${{ vars.AWS_REGION }}
+          deployment_role_arn: ${{ vars.DEPLOYMENT_ROLE_ARN }}
+          api_handler_lambda: ${{ vars.API_HANDLER_LAMBDA }}

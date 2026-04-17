@@ -2,11 +2,17 @@ name: Deploy API
 description: Download build artifact and deploy API to Lambda
 
 inputs:
-  build_name:
-    description: Build artifact name
+  build_id:
+    description: Build artifact ID
     required: true
-  build_path:
-    description: Build output path
+  aws_region:
+    description: AWS region for deployment (e.g., us-east-1)
+    required: true
+  deployment_role_arn:
+    description: IAM role the CI will assume for deployment
+    required: true
+  api_handler_lambda:
+    description: Lambda function name to deploy
     required: true
 
 runs:
@@ -15,31 +21,31 @@ runs:
     - name: Download build artifacts
       uses: actions/download-artifact@v4
       with:
-        name: ${{ inputs.build_name }}
-        path: ${{ inputs.build_path }}
+        name: ${{ inputs.build_id }}
+        path: apps/api/dist/
 
     - name: Create Lambda deployment package
       shell: bash
       run: |
-        cd ${{ inputs.build_path }} && zip -r ../../../api.zip .
+        cd apps/api/dist/ && zip -r ../../../api.zip .
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v6
       with:
-        role-to-assume: ${{ vars.DEPLOYMENT_ROLE_ARN }}
-        aws-region: ${{ vars.AWS_REGION }}
+        role-to-assume: ${{ inputs.deployment_role_arn }}
+        aws-region: ${{ inputs.aws_region }}
 
     - name: Deploy to Lambda
       shell: bash
       run: |
         aws lambda update-function-code \
-          --function-name ${{ vars.API_HANDLER_LAMBDA }} \
+          --function-name ${{ inputs.api_handler_lambda }} \
           --zip-file fileb://api.zip \
-          --region ${{ vars.AWS_REGION }}
+          --region ${{ inputs.aws_region }}
 
     - name: Wait for Lambda update
       shell: bash
       run: |
         aws lambda wait function-updated \
-          --function-name ${{ vars.API_HANDLER_LAMBDA }} \
-          --region ${{ vars.AWS_REGION }}
+          --function-name ${{ inputs.api_handler_lambda }} \
+          --region ${{ inputs.aws_region }}
