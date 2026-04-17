@@ -6,7 +6,7 @@ Follow these steps to deploy the infrastructure to an environment:
 
 2. Ask user the environment to deploy to (e.g., `dev`, `prod`) unless provided.
 
-3. Switch to the workspace of that environment (for production environment `prod`, use the `default` workspace):
+3. Switch to the workspace of that environment:
 
    ```bash
    terraform workspace select dev
