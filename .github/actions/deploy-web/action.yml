@@ -8,6 +8,18 @@ inputs:
   build_path:
     description: Build output path
     required: true
+  aws_region:
+    description: AWS region for deployment (e.g., us-east-1)
+    required: true
+  deployment_role_arn:
+    description: AWS IAM role ARN for OIDC authentication
+    required: true
+  app_bucket:
+    description: S3 bucket name for hosting the web app
+    required: true
+  cf_dist_id:
+    description: CloudFront distribution ID for cache invalidation
+    required: true
 
 runs:
   using: composite
@@ -21,20 +33,20 @@ runs:
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v6
       with:
-        role-to-assume: ${{ vars.DEPLOYMENT_ROLE_ARN }}
-        aws-region: ${{ vars.AWS_REGION }}
+        role-to-assume: ${{ inputs.deployment_role_arn }}
+        aws-region: ${{ inputs.aws_region }}
 
     - name: Sync build to S3
       shell: bash
       run: |
-        aws s3 sync ${{ inputs.build_path }} s3://${{ vars.APP_BUCKET }}/web \
+        aws s3 sync ${{ inputs.build_path }} s3://${{ inputs.app_bucket }}/web \
           --delete \
-          --region ${{ vars.AWS_REGION }}
+          --region ${{ inputs.aws_region }}
 
     - name: Invalidate CloudFront cache
       shell: bash
       run: |
         aws cloudfront create-invalidation \
-          --distribution-id ${{ vars.CF_DIST_ID }} \
+          --distribution-id ${{ inputs.cf_dist_id }} \
           --paths "/index.html" \
-          --region ${{ vars.AWS_REGION }}
+          --region ${{ inputs.aws_region }}
