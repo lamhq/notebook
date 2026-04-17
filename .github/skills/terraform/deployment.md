@@ -29,3 +29,9 @@ Follow these steps to deploy the infrastructure to an environment:
    ```bash
    terraform apply -var-file=config/${env}.tfvars
    ```
+
+9. In GCP, update Google Auth Platform / Clients:
+   - Set **Authorized JavaScript origins** to `https://<cognito-domain>`
+   - Set **Authorized redirect URIs** to `https://<cognito-domain>/oauth2/idpresponse`
+
+10. In GCP, update Google Auth Platform / Branding, add Cognito domain to **Authorized domains**
