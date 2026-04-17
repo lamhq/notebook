@@ -1,0 +1,40 @@
+name: Deploy Web
+description: Download build artifact and deploy web app to S3 with CloudFront invalidation
+
+inputs:
+  build_name:
+    description: Build artifact name
+    required: true
+  build_path:
+    description: Build output path
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.build_name }}
+        path: ${{ inputs.build_path }}
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v6
+      with:
+        role-to-assume: ${{ vars.DEPLOYMENT_ROLE_ARN }}
+        aws-region: ${{ vars.AWS_REGION }}
+
+    - name: Sync build to S3
+      shell: bash
+      run: |
+        aws s3 sync ${{ inputs.build_path }} s3://${{ vars.APP_BUCKET }}/web \
+          --delete \
+          --region ${{ vars.AWS_REGION }}
+
+    - name: Invalidate CloudFront cache
+      shell: bash
+      run: |
+        aws cloudfront create-invalidation \
+          --distribution-id ${{ vars.CF_DIST_ID }} \
+          --paths "/index.html" \
+          --region ${{ vars.AWS_REGION }}
