@@ -46,21 +46,39 @@ module "github_oidc" {
 }
 
 # ============================================================================
-# GitHub Actions Environment & Variables
+# GitHub CI/CD Configuration
 # ============================================================================
 
 locals {
   # .env file content for building the web app
   web_env_vars = "VITE_API_URL=/api\nVITE_OIDC_AUTHORITY=${module.cognito.user_pool_endpoint}\nVITE_OIDC_CLIENT_ID=${module.cognito.user_pool_client_id}"
+
+  # Deployment restrictions: prod only allows deployments from main branch and release tags
+  branch_policies = local.env == "prod" ? [
+    {
+      name_pattern = "main"
+      type         = "branch"
+    },
+    {
+      name_pattern = "api-v*"
+      type         = "tag"
+    },
+    {
+      name_pattern = "web-v*"
+      type         = "tag"
+    }
+  ] : []
 }
 
-module "github_ci" {
-  source = "./modules/github-ci"
+module "github_env" {
+  source = "./modules/github-env"
 
-  github_repo = var.github_repo
+  repository  = var.github_repo
   environment = local.env
 
-  github_environment_variables = {
+  deployment_policies = local.branch_policies
+
+  variables = {
     AWS_REGION          = var.aws_region
     DEPLOYMENT_ROLE_ARN = module.github_oidc.ci_role_arn
     API_HANDLER_LAMBDA  = module.api_handler.function_name
