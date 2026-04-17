@@ -1,42 +1,124 @@
-# Turborepo starter with shell commands
+# Notebook
 
-This Turborepo starter is maintained by the Turborepo core team. This template is great for issue reproductions and exploring building task graphs without frameworks.
+## Introduction
 
-## Using this example
+A full-stack monorepo containing a NestJS REST API and a React web application, managed with Turborepo and pnpm workspaces.
 
-Run the following command:
+## Installation
 
-```sh
-npx create-turbo@latest -e with-shell-commands
+```bash
+git clone <repo-url>
+cd notebook
+pnpm install
 ```
 
-### For bug reproductions
+## Usage
 
-Giving the Turborepo core team a minimal reproduction is the best way to create a tight feedback loop for a bug you'd like to report.
+### Run in development mode
 
-Because most monorepos will rely on more tooling than Turborepo (frameworks, linters, formatters, etc.), it's often useful for us to have a reproduction that strips away all of this other tooling so we can focus _only_ on Turborepo's role in your repo. This example does exactly that, giving you a good starting point for creating a reproduction.
+Start all applications:
 
-- Feel free to rename/delete packages for your reproduction so that you can be confident it most closely matches your use case.
-- If you need to use a different package manager to produce your bug, run `npx @turbo/workspaces convert` to switch package managers.
-- It's possible that your bug really **does** have to do with the interaction of Turborepo and other tooling within your repository. If you find that your bug does not reproduce in this minimal example and you're confident Turborepo is still at fault, feel free to bring that other tooling into your reproduction.
+```bash
+pnpm dev
+```
 
-## What's inside?
+Start a specific application:
 
-This Turborepo includes the following packages:
+```bash
+pnpm --filter api dev    # API only (http://localhost:3000)
+pnpm --filter web dev    # Web only (http://localhost:5173)
+```
 
-### Apps and Packages
+### Run tests
 
-- `app-a`: A final package that depends on all other packages in the graph and has no dependents. This could resemble an application in your monorepo that consumes everything in your monorepo through its topological tree.
-- `app-b`: Another final package with many dependencies. No dependents, lots of dependencies.
-- `pkg-a`: A package that has all scripts in the root `package.json`.
-- `pkg-b`: A package with _almost_ all scripts in the root `package.json`.
-- `tooling-config`: A package to simulate a common configuration used for all of your repository. This could resemble a configuration for tools like TypeScript or ESLint that are installed into all of your packages.
+Run all tests:
 
-### Some scripts to try
+```bash
+pnpm test
+```
 
-If you haven't yet, [install global `turbo`](https://turborepo.dev/docs/installing#install-globally) to run tasks.
+Run tests for a specific application:
 
-- `turbo build lint check-types`: Runs all tasks in the default graph.
-- `turbo build`: A basic command to build `app-a` and `app-b` in parallel.
-- `turbo build --filter=app-a`: Building only `app-a` and its dependencies.
-- `turbo lint`: A basic command for running lints in all packages in parallel.
+```bash
+pnpm --filter api test         # API unit tests
+pnpm --filter api-e2e test     # API end-to-end tests
+pnpm --filter web test         # Web unit tests
+pnpm --filter web-e2e test     # Web end-to-end tests (Playwright)
+```
+
+### Lint the code
+
+Run lint for the whole project:
+
+```bash
+pnpm lint
+```
+
+Run lint for an application:
+
+```bash
+pnpx eslint apps/{app-name}/src
+```
+
+### Build the project
+
+Build all applications:
+
+```bash
+pnpm build
+```
+
+Build a specific application:
+
+```bash
+pnpm --filter api build
+pnpm --filter web build
+```
+
+### Manage dependencies
+
+Install dependencies:
+
+```bash
+pnpm install
+```
+
+Add a dependency to a specific application:
+
+```bash
+pnpm --filter <app-name> add <package-name>
+```
+
+Remove a dependency:
+
+```bash
+pnpm --filter <app-name> remove <package-name>
+```
+
+## Applications
+
+| Name      | Description                      | Tech Stack                 |
+| --------- | -------------------------------- | -------------------------- |
+| `api`     | REST API backend                 | NestJS, TypeScript         |
+| `api-e2e` | End-to-end tests for the API     | Jest, Supertest            |
+| `web`     | React frontend                   | React 19, Vite, MUI, Jotai |
+| `web-e2e` | End-to-end tests for the web app | Playwright                 |
+
+## Repository Structure
+
+```
+notebook/
+├── apps/
+│   ├── api/            # NestJS REST API
+│   ├── api-e2e/        # API end-to-end tests (Jest + Supertest)
+│   ├── web/            # React frontend (Vite)
+│   └── web-e2e/        # Web end-to-end tests (Playwright)
+├── packages/           # Shared packages (empty)
+├── commitlint.config.mjs   # Commit message linting rules
+├── eslint.config.mjs       # ESLint configuration
+├── lint-staged.config.mjs  # Pre-commit lint-staged hooks
+├── prettier.config.mjs     # Code formatting configuration
+├── turbo.json              # Turborepo task pipeline configuration
+├── pnpm-workspace.yaml     # pnpm workspace definition
+└── package.json            # Root package scripts and dev dependencies
+```
