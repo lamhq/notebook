@@ -13,6 +13,7 @@ on:
     paths:
       - 'apps/web/**'
       - 'packages/**'
+      # TODO: remove this when deploy to dev success
       - '.github/workflows/web.yml'
   push:
     branches: [main]
@@ -97,7 +98,8 @@ jobs:
           path: ${{ env.BUILD_OUTPUT_PATH }}
 
   deploy-dev:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    # TODO: revert to `github.event_name == 'push' && github.ref == 'refs/heads/main'` after deploy to dev success
+    if: github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
     needs: [build]
     runs-on: ubuntu-latest
     environment: dev
