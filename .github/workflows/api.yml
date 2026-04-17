@@ -11,6 +11,7 @@ on:
     paths:
       - 'apps/api/**'
       - 'packages/**'
+      - '.github/workflows/api.yml'
   push:
     branches: [main]
     tags: ['api-v*']

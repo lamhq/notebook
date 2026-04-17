@@ -13,6 +13,7 @@ on:
     paths:
       - 'apps/web/**'
       - 'packages/**'
+      - '.github/workflows/web.yml'
   push:
     branches: [main]
     tags: ['web-v*']
@@ -111,7 +112,7 @@ jobs:
           build_name: web-build-dev-${{ github.sha }}
           build_path: ${{ env.BUILD_OUTPUT_PATH }}
           aws_region: ${{ vars.AWS_REGION }}
-          deployment_role_arn: ${{ secrets.DEPLOYMENT_ROLE_ARN }}
+          deployment_role_arn: ${{ vars.DEPLOYMENT_ROLE_ARN }}
           app_bucket: ${{ vars.APP_BUCKET }}
           cf_dist_id: ${{ vars.CF_DIST_ID }}
 
@@ -131,6 +132,6 @@ jobs:
           build_name: web-build-prod-${{ github.sha }}
           build_path: ${{ env.BUILD_OUTPUT_PATH }}
           aws_region: ${{ vars.AWS_REGION }}
-          deployment_role_arn: ${{ secrets.DEPLOYMENT_ROLE_ARN }}
+          deployment_role_arn: ${{ vars.DEPLOYMENT_ROLE_ARN }}
           app_bucket: ${{ vars.APP_BUCKET }}
           cf_dist_id: ${{ vars.CF_DIST_ID }}
