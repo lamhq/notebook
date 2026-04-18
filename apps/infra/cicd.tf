@@ -52,13 +52,30 @@ module "github_oidc" {
 locals {
   # .env file content for building the web app
   web_env_vars = "VITE_API_URL=/api\nVITE_OIDC_AUTHORITY=${module.cognito.user_pool_endpoint}\nVITE_OIDC_CLIENT_ID=${module.cognito.user_pool_client_id}"
+
+  # Deployment patterns for environment restrictions
+  deployment_policies = local.env == "prod" ? [
+    {
+      pattern = "main"
+      type    = "branch"
+    },
+    {
+      pattern = "api-v*"
+      type    = "tag"
+    },
+    {
+      pattern = "web-v*"
+      type    = "tag"
+    }
+  ] : []
 }
 
 module "github_env" {
   source = "./modules/github-env"
 
-  repository  = var.github_repo
-  environment = local.env
+  repository          = var.github_repo
+  environment         = local.env
+  deployment_policies = local.deployment_policies
 
   variables = {
     AWS_REGION          = var.aws_region
@@ -68,4 +85,14 @@ module "github_env" {
     CF_DIST_ID          = module.cloudfront.distribution_id
     WEB_ENV_VARS        = local.web_env_vars
   }
+}
+
+# ============================================================================
+# GitHub Repository Secrets
+# ============================================================================
+
+resource "github_actions_secret" "release_please_secret" {
+  repository      = var.github_repo
+  secret_name     = "RELEASE_ACTION_TOKEN"
+  plaintext_value = var.github_release_token
 }
