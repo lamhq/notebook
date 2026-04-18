@@ -4,7 +4,6 @@
 # This module manages GitHub Actions CI/CD configuration:
 # - GitHub Actions environment
 # - GitHub Actions environment variables
-# - Deployment protection rules (branch and tag restrictions)
 
 # GitHub provider configuration
 terraform {
@@ -23,6 +22,14 @@ terraform {
 resource "github_repository_environment" "runtime_env" {
   environment = var.environment
   repository  = var.repository
+
+  dynamic "deployment_branch_policy" {
+    for_each = length(var.deployment_policies) > 0 ? [1] : []
+    content {
+      protected_branches     = false
+      custom_branch_policies = true
+    }
+  }
 }
 
 resource "github_actions_environment_variable" "env_vars" {
@@ -35,17 +42,16 @@ resource "github_actions_environment_variable" "env_vars" {
 }
 
 # ============================================================================
-# Deployment Branch & Tag Restrictions
+# Deployment Policies
 # ============================================================================
 
-resource "github_repository_environment_deployment_policy" "deployment_policy" {
+resource "github_repository_environment_deployment_policy" "patterns" {
   for_each = {
-    for idx, policy in var.deployment_policies :
-    "${policy.type}-${idx}" => policy
+    for idx, pattern in var.deployment_policies : idx => pattern
   }
 
   repository     = var.repository
   environment    = github_repository_environment.runtime_env.environment
-  branch_pattern = each.value.type == "branch" ? each.value.name_pattern : null
-  tag_pattern    = each.value.type == "tag" ? each.value.name_pattern : null
+  branch_pattern = each.value.type == "branch" ? each.value.pattern : null
+  tag_pattern    = each.value.type == "tag" ? each.value.pattern : null
 }

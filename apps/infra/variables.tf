@@ -56,6 +56,12 @@ variable "github_repo" {
   type        = string
 }
 
+variable "github_release_token" {
+  type        = string
+  description = "GitHub token for automatic release and deployment"
+  sensitive   = true
+}
+
 # ============================================================================
 # Cloudflare
 # ============================================================================

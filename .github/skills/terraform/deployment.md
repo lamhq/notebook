@@ -6,7 +6,7 @@ Follow these steps to deploy the infrastructure to an environment:
 
 2. Ask user the environment to deploy to (e.g., `dev`, `prod`) unless provided.
 
-3. Switch to the workspace of that environment (for production environment `prod`, use the `default` workspace):
+3. Switch to the workspace of that environment:
 
    ```bash
    terraform workspace select dev
@@ -30,8 +30,4 @@ Follow these steps to deploy the infrastructure to an environment:
    terraform apply -var-file=config/${env}.tfvars
    ```
 
-9. In GCP, update Google Auth Platform / Clients:
-   - Set **Authorized JavaScript origins** to `https://<cognito-domain>`
-   - Set **Authorized redirect URIs** to `https://<cognito-domain>/oauth2/idpresponse`
-
-10. In GCP, update Google Auth Platform / Branding, add Cognito domain to **Authorized domains**
+9. List all Terraform commands you run at the end of the response.

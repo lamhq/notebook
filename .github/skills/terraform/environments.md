@@ -4,8 +4,6 @@
 
 Terraform workspaces are used to manage infrastructure for different environments (e.g., `dev`, `staging`, `prod`). Each environment corresponds to a workspace.
 
-The `default` workspace is for production.
-
 ## Variable Definition Files
 
 Variable definition files (`config/*.tfvars`) are used to provide environment-specific values for deployment.

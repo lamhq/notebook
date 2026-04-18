@@ -53,19 +53,19 @@ locals {
   # .env file content for building the web app
   web_env_vars = "VITE_API_URL=/api\nVITE_OIDC_AUTHORITY=${module.cognito.user_pool_endpoint}\nVITE_OIDC_CLIENT_ID=${module.cognito.user_pool_client_id}"
 
-  # Deployment restrictions: prod only allows deployments from main branch and release tags
-  branch_policies = local.env == "prod" ? [
+  # Deployment patterns for environment restrictions
+  deployment_policies = local.env == "prod" ? [
     {
-      name_pattern = "main"
-      type         = "branch"
+      pattern = "main"
+      type    = "branch"
     },
     {
-      name_pattern = "api-v*"
-      type         = "tag"
+      pattern = "api-v*"
+      type    = "tag"
     },
     {
-      name_pattern = "web-v*"
-      type         = "tag"
+      pattern = "web-v*"
+      type    = "tag"
     }
   ] : []
 }
@@ -73,10 +73,9 @@ locals {
 module "github_env" {
   source = "./modules/github-env"
 
-  repository  = var.github_repo
-  environment = local.env
-
-  deployment_policies = local.branch_policies
+  repository          = var.github_repo
+  environment         = local.env
+  deployment_policies = local.deployment_policies
 
   variables = {
     AWS_REGION          = var.aws_region
@@ -86,4 +85,29 @@ module "github_env" {
     CF_DIST_ID          = module.cloudfront.distribution_id
     WEB_ENV_VARS        = local.web_env_vars
   }
+}
+
+# ============================================================================
+# GitHub Repository Ruleset - Main Branch Protection (Prod Only)
+# ============================================================================
+
+module "github_repo_ruleset" {
+  # should be created once per repository
+  count = local.env == "prod" ? 1 : 0
+
+  source = "./modules/github-repo-ruleset"
+
+  repository = var.github_repo
+  branch     = "main"
+}
+
+# ============================================================================
+# GitHub Repository Secrets
+# ============================================================================
+
+# should be created once per repository
+resource "github_actions_secret" "release_please_secret" {
+  repository      = var.github_repo
+  secret_name     = "RELEASE_ACTION_TOKEN"
+  plaintext_value = var.github_release_token
 }
