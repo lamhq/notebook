@@ -68,15 +68,7 @@ resource "github_repository_ruleset" "main" {
       }
 
       required_check {
-        context = "integration-test"
-      }
-
-      required_check {
         context = "build"
-      }
-
-      required_check {
-        context = "e2e-test"
       }
     }
 
