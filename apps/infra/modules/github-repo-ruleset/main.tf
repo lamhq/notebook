@@ -36,9 +36,6 @@ resource "github_repository_ruleset" "main" {
 
   # Define the rules
   rules {
-    # Prevent updates to matching branches (restrict force pushes and updates)
-    update = true
-
     # Prevent deletions of matching branches
     deletion = true
 
