@@ -9,8 +9,6 @@ module "github_oidc" {
   github_repo  = var.github_repo
 
   github_actions_role = "${local.name_prefix}-ci-role"
-
-  # GitHub Actions permissions for deployment
   github_actions_permissions = [
     # S3 artifact management
     {

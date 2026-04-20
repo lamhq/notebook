@@ -114,9 +114,9 @@ resource "github_repository_ruleset" "main" {
 # ============================================================================
 
 resource "github_actions_secret" "secret" {
-  for_each = {
+  for_each = nonsensitive({
     for secret in var.secrets : secret.name => secret
-  }
+  })
 
   repository      = github_repository.repo.name
   secret_name     = each.key
