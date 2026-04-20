@@ -1,4 +1,3 @@
-# CloudFront Module
 module "cloudfront" {
   source = "./modules/cloudfront"
 

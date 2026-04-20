@@ -38,7 +38,7 @@ module "github_oidc" {
         "lambda:GetFunction",
         "lambda:GetFunctionConfiguration"
       ]
-      Resource = ["${join(":", slice(split(":", module.api_handler.function_arn), 0, 6))}:${local.name_prefix}-*"]
+      Resource = ["${join(":", slice(split(":", module.api_service.function_arn), 0, 6))}:${local.name_prefix}-*"]
     }
   ]
 }
@@ -78,7 +78,7 @@ module "github_env" {
   variables = {
     AWS_REGION          = var.aws_region
     DEPLOYMENT_ROLE_ARN = module.github_oidc.ci_role_arn
-    API_HANDLER_LAMBDA  = module.api_handler.function_name
+    API_HANDLER_LAMBDA  = module.api_service.function_name
     APP_BUCKET          = module.app_storage.bucket_name
     CF_DIST_ID          = module.cloudfront.distribution_id
     WEB_ENV_VARS        = local.web_env_vars
