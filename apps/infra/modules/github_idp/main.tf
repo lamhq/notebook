@@ -11,35 +11,26 @@ terraform {
 # GitHub OIDC Provider and Deployment Role
 # ============================================================================
 # This module sets up AWS infrastructure for GitHub Actions deployments:
-# - AWS IAM OIDC provider for GitHub Actions authentication
 # - IAM role for GitHub Actions to assume
 # - IAM policy with deployment permissions
 
 # ============================================================================
 # OIDC Provider for GitHub Actions
 # ============================================================================
+
 # This is an AWS account-level resource that's reusable across projects.
-# We check if it already exists to avoid conflicts.
+# to create it, define the below resource block:
+# resource "aws_iam_openid_connect_provider" "github_oidc_provider" {
+#   url            = "https://token.actions.githubusercontent.com"
+#   client_id_list = ["sts.amazonaws.com"]
+#   thumbprint_list = [
+#     "6938fd4d98bab03faadb97b34396831e3780aea1",
+#     "1c58a3a8518e8759bf075b76b750d4f2df264fcd"
+#   ]
+# }
 
 data "aws_iam_openid_connect_provider" "github_oidc_provider" {
   url = "https://token.actions.githubusercontent.com"
-}
-
-resource "aws_iam_openid_connect_provider" "github_oidc_provider" {
-  count          = data.aws_iam_openid_connect_provider.github_oidc_provider == null ? 1 : 0
-  url            = "https://token.actions.githubusercontent.com"
-  client_id_list = ["sts.amazonaws.com"]
-  thumbprint_list = [
-    "6938fd4d98bab03faadb97b34396831e3780aea1",
-    "1c58a3a8518e8759bf075b76b750d4f2df264fcd"
-  ]
-}
-
-locals {
-  github_oidc_arn = try(
-    data.aws_iam_openid_connect_provider.github_oidc_provider.arn,
-    aws_iam_openid_connect_provider.github_oidc_provider[0].arn
-  )
 }
 
 # ============================================================================
@@ -55,7 +46,7 @@ resource "aws_iam_role" "ci_role" {
       {
         Effect = "Allow",
         Principal = {
-          Federated = local.github_oidc_arn
+          Federated = data.aws_iam_openid_connect_provider.github_oidc_provider.arn
         },
         Action = "sts:AssumeRoleWithWebIdentity",
         Condition = {

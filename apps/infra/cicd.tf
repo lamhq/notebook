@@ -3,14 +3,12 @@
 # ============================================================================
 
 module "github_oidc" {
-  source = "./modules/github-oidc"
+  source = "./modules/github_idp"
 
   github_owner = var.github_owner
   github_repo  = var.github_repo
 
   github_actions_role = "${local.name_prefix}-ci-role"
-
-  # GitHub Actions permissions for deployment
   github_actions_permissions = [
     # S3 artifact management
     {
@@ -40,7 +38,7 @@ module "github_oidc" {
         "lambda:GetFunction",
         "lambda:GetFunctionConfiguration"
       ]
-      Resource = ["${join(":", slice(split(":", module.api_handler.function_arn), 0, 6))}:${local.name_prefix}-*"]
+      Resource = ["${join(":", slice(split(":", module.api_service.function_arn), 0, 6))}:${local.name_prefix}-*"]
     }
   ]
 }
@@ -80,34 +78,11 @@ module "github_env" {
   variables = {
     AWS_REGION          = var.aws_region
     DEPLOYMENT_ROLE_ARN = module.github_oidc.ci_role_arn
-    API_HANDLER_LAMBDA  = module.api_handler.function_name
+    API_HANDLER_LAMBDA  = module.api_service.function_name
     APP_BUCKET          = module.app_storage.bucket_name
     CF_DIST_ID          = module.cloudfront.distribution_id
     WEB_ENV_VARS        = local.web_env_vars
   }
 }
 
-# ============================================================================
-# GitHub Repository Ruleset - Main Branch Protection (Prod Only)
-# ============================================================================
 
-module "github_repo_ruleset" {
-  # should be created once per repository
-  count = local.env == "prod" ? 1 : 0
-
-  source = "./modules/github-repo-ruleset"
-
-  repository = var.github_repo
-  branch     = "main"
-}
-
-# ============================================================================
-# GitHub Repository Secrets
-# ============================================================================
-
-# should be created once per repository
-resource "github_actions_secret" "release_please_secret" {
-  repository      = var.github_repo
-  secret_name     = "RELEASE_ACTION_TOKEN"
-  plaintext_value = var.github_release_token
-}
