@@ -21,7 +21,6 @@ google_client_secret     = "your-google-client-secret"
 # ============================================================================
 github_owner             = "your-github-username"
 github_repo              = "your-repo-name"
-github_release_token     = "your-release-action-token"
 
 # ============================================================================
 # Cloudflare

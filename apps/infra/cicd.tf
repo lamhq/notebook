@@ -3,7 +3,7 @@
 # ============================================================================
 
 module "github_oidc" {
-  source = "./modules/github-oidc"
+  source = "./modules/github_idp"
 
   github_owner = var.github_owner
   github_repo  = var.github_repo
@@ -87,27 +87,4 @@ module "github_env" {
   }
 }
 
-# ============================================================================
-# GitHub Repository Ruleset - Main Branch Protection (Prod Only)
-# ============================================================================
 
-module "github_repo_ruleset" {
-  # should be created once per repository
-  count = local.env == "prod" ? 1 : 0
-
-  source = "./modules/github-repo-ruleset"
-
-  repository = var.github_repo
-  branch     = "main"
-}
-
-# ============================================================================
-# GitHub Repository Secrets
-# ============================================================================
-
-# should be created once per repository
-resource "github_actions_secret" "release_please_secret" {
-  repository      = var.github_repo
-  secret_name     = "RELEASE_ACTION_TOKEN"
-  plaintext_value = var.github_release_token
-}
