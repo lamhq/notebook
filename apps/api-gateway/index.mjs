@@ -56,7 +56,6 @@ async function startServer() {
       }),
       algorithms: ['RS256'], // Keycloak typically uses RS256
       audience: clientId, // replace with your client_id if needed
-      issuer: issuer,
     });
 
     // Apply unless clause if public route is defined

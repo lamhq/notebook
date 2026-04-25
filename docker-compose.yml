@@ -25,6 +25,23 @@ services:
       - keycloak_data:/opt/keycloak/data
       - ./apps/keycloak:/opt/keycloak/data/import
 
+  api-gateway:
+    container_name: api-gateway
+    build:
+      context: ./apps/api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - '4068:4068'
+    environment:
+      OIDC_CLIENT_ID: notebook-web
+      OIDC_AUTHORITY: http://keycloak:8080/realms/notebook
+      API_URL: http://host.docker.internal:4069
+      PORT: 4068
+      PUBLIC_ROUTE: ^/health$
+    depends_on:
+      keycloak:
+        condition: service_started
+
 volumes:
   app_data:
   keycloak_data:
