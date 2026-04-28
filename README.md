@@ -12,9 +12,7 @@ cd notebook
 pnpm install
 ```
 
-## Usage
-
-### Run in development mode
+## Development
 
 Start all applications:
 
@@ -29,7 +27,7 @@ pnpm --filter api dev    # API only (http://localhost:3000)
 pnpm --filter web dev    # Web only (http://localhost:5173)
 ```
 
-### Run tests
+## Test
 
 Run all tests:
 
@@ -41,12 +39,11 @@ Run tests for a specific application:
 
 ```bash
 pnpm --filter api test         # API unit tests
-pnpm --filter api-e2e test     # API end-to-end tests
 pnpm --filter web test         # Web unit tests
-pnpm --filter web-e2e test     # Web end-to-end tests (Playwright)
+pnpm --filter web-e2e test     # Web end-to-end tests
 ```
 
-### Lint the code
+## Lint
 
 Run lint for the whole project:
 
@@ -60,7 +57,7 @@ Run lint for an application:
 pnpx eslint apps/{app-name}/src
 ```
 
-### Build the project
+## Build
 
 Build all applications:
 
@@ -75,7 +72,7 @@ pnpm --filter api build
 pnpm --filter web build
 ```
 
-### Manage dependencies
+## Managing dependencies
 
 Install dependencies:
 
@@ -95,30 +92,6 @@ Remove a dependency:
 pnpm --filter <app-name> remove <package-name>
 ```
 
-## Applications
+## Project Structure
 
-| Name      | Description                      | Tech Stack                 |
-| --------- | -------------------------------- | -------------------------- |
-| `api`     | REST API backend                 | NestJS, TypeScript         |
-| `api-e2e` | End-to-end tests for the API     | Jest, Supertest            |
-| `web`     | React frontend                   | React 19, Vite, MUI, Jotai |
-| `web-e2e` | End-to-end tests for the web app | Playwright                 |
-
-## Repository Structure
-
-```
-notebook/
-├── apps/
-│   ├── api/            # NestJS REST API
-│   ├── api-e2e/        # API end-to-end tests (Jest + Supertest)
-│   ├── web/            # React frontend (Vite)
-│   └── web-e2e/        # Web end-to-end tests (Playwright)
-├── packages/           # Shared packages (empty)
-├── commitlint.config.mjs   # Commit message linting rules
-├── eslint.config.mjs       # ESLint configuration
-├── lint-staged.config.mjs  # Pre-commit lint-staged hooks
-├── prettier.config.mjs     # Code formatting configuration
-├── turbo.json              # Turborepo task pipeline configuration
-├── pnpm-workspace.yaml     # pnpm workspace definition
-└── package.json            # Root package scripts and dev dependencies
-```
+See [Project Structure](./docs/project-structure.md) documentation for details.
