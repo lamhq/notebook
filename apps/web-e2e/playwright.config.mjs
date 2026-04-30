@@ -6,11 +6,15 @@ import { defineConfig, devices } from '@playwright/test';
  */
 // import dotenv from 'dotenv';
 // import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
+// dotenv.config({ path: path.resolve(import.meta.dirname, '.env') });
+
+import path from 'path';
 
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
+const authFile = path.join(import.meta.dirname, 'playwright/.auth/user.json');
+
 export default defineConfig({
   testDir: './tests',
   /* Run tests in files in parallel */
@@ -34,9 +38,18 @@ export default defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
+    /* Setup project runs the auth.setup.ts file first */
+    { name: 'setup', testMatch: /.*\.setup\.ts/ },
+
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        /* Use the saved storage state (cookies, local storage, etc.) */
+        storageState: authFile,
+      },
+      /* Depend on setup project */
+      dependencies: ['setup'],
     },
 
     /* Test against mobile viewports. */

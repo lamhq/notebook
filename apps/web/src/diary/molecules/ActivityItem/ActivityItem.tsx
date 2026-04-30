@@ -14,7 +14,7 @@ export default function ActivityItem({ activity }: ActivityItemProps) {
   const html = activity.content.replace(/\n/g, '<br/>');
 
   return (
-    <>
+    <div className="activity-item">
       <Grid container spacing={0} justifyContent="space-between">
         <TimeLabel time={activity.time} />
         <ActivityMenu activity={activity} />
@@ -46,6 +46,6 @@ export default function ActivityItem({ activity }: ActivityItemProps) {
           ))}
         </Box>
       </Grid>
-    </>
+    </div>
   );
 }
