@@ -1,6 +1,6 @@
 ---
-name: document-feature
-description: Use when writing feature specification document for a feature, documenting a feature.
+name: write-feature-spec
+description: For writing feature specification document, documenting a feature.
 ---
 
 Follow these steps when load this skill:

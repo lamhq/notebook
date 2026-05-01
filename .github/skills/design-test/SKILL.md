@@ -12,6 +12,8 @@ You will:
    - Locate and review the feature specification document of the provided feature.
 
 2. **Explore the feature in the UI**
+   - Read `README.md` for instructions to start the web app.
+   - Start the web application.
    - Use `browser_*` tools to navigate and test the feature.
    - Identify all interactive elements, forms, navigation paths, and functionality.
    - Do not take screenshots unless absolutely necessary
