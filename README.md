@@ -12,19 +12,42 @@ cd notebook
 pnpm install
 ```
 
-## Development
+## Project Structure
 
-Start all applications:
-
-```bash
-pnpm dev
+```
+├── apps/               # Application source code
+│   ├── api/            # Backend API
+│   └── api-gateway/    # API Gateway
+│   ├── web/            # Web application
+│   └── web-e2e/        # End-to-end tests for the web app
+├── packages/           # Shared packages
+├── docs/               # Documentation (feature, design, develop, etc.)
+├── commitlint.config.mjs   # Commit message linting rules
+├── eslint.config.mjs       # ESLint configuration
+├── lint-staged.config.mjs  # Pre-commit lint-staged hooks
+├── prettier.config.mjs     # Code formatting configuration
+├── turbo.json              # Turborepo task pipeline configuration
+├── pnpm-workspace.yaml     # pnpm workspace definition
+└── package.json            # Root package scripts and dev dependencies
 ```
 
-Start a specific application:
+Available applications:
+
+| Name          | Description                                                      | Techstack                    | Port |
+| ------------- | ---------------------------------------------------------------- | ---------------------------- | ---- |
+| `api`         | Backend API. Handle application logic and data management        | NestJS, REST, TypeScript     | 4069 |
+| `api-gateway` | API Gateway. Handle authentication and route requests to the API | Node.js, Express             | 4068 |
+| `web`         | Web application.                                                 | SPA, React, Vite, TypeScript | 5173 |
+| `web-e2e`     | End-to-end tests for the web application                         | Playwright, TypeScript       |      |
+
+## Development
+
+Start an application in development mode:
 
 ```bash
-pnpm --filter api dev    # API only (http://localhost:3000)
-pnpm --filter web dev    # Web only (http://localhost:5173)
+pnpm -F web dev    # Web, auto start the API Gateway and API as well
+pnpm -F api dev    # API
+pnpm -F api-gateway dev    # API Gateway
 ```
 
 ## Test
@@ -38,9 +61,15 @@ pnpm test
 Run tests for a specific application:
 
 ```bash
-pnpm --filter api test         # API unit tests
-pnpm --filter web test         # Web unit tests
-pnpm --filter web-e2e test     # Web end-to-end tests
+pnpm -F api test         # API unit tests
+pnpm -F web test         # Web unit tests
+pnpm -F web-e2e test     # Web end-to-end tests
+```
+
+Run Playwright in UI mode:
+
+```bash
+pnpm -F web-e2e exec playwright test --ui
 ```
 
 ## Lint
@@ -68,8 +97,8 @@ pnpm build
 Build a specific application:
 
 ```bash
-pnpm --filter api build
-pnpm --filter web build
+pnpm -F api build
+pnpm -F web build
 ```
 
 ## Managing dependencies
@@ -83,15 +112,11 @@ pnpm install
 Add a dependency to a specific application:
 
 ```bash
-pnpm --filter <app-name> add <package-name>
+pnpm -F <app-name> add <package-name>
 ```
 
 Remove a dependency:
 
 ```bash
-pnpm --filter <app-name> remove <package-name>
+pnpm -F <app-name> remove <package-name>
 ```
-
-## Project Structure
-
-See [Project Structure](./docs/project-structure.md) documentation for details.

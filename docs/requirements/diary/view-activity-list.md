@@ -11,7 +11,7 @@ Enables users to quickly review their financial activities, understand spending/
 **Dependencies:**
 
 - Authentication system (user must be logged in)
-- Activity data model in database
+- Activity data in database
 - API endpoint to retrieve activities with pagination
 
 ---
@@ -20,7 +20,7 @@ Enables users to quickly review their financial activities, understand spending/
 
 - As a user, I want to view all my activities after login so that I can track my financial transactions.
 - As a user, I want activities sorted by date (newest first) so that I can see recent transactions first.
-- As a user, I want to see income and expense amounts with color differentiation so that I can quickly identify the transaction type.
+- As a user, I want to see income and expense amounts with color differentiation (green for income, red for expense) so that I can quickly identify the transaction type.
 - As a user, I want to see associated tags with each activity so that I can categorize and organize my transactions.
 - As a user, I want to paginate through activities so that I can browse large amounts of transaction history.
 
@@ -44,7 +44,7 @@ The feature displays a paginated list of user activities with the following comp
 - Each activity item displays:
   - Time with icon (e.g., `⏱ 10:42 am`)
   - Description/content (e.g., `mua gói tưa dâu dành cho ghế 89k`)
-  - Amount (e.g., `89`)
+  - Amount with color differentiation (green for income, red for expense) (e.g., `89`)
   - Associated tags on the right (e.g., `#nec`, `#household`)
 
 **Date Grouping:**
@@ -56,7 +56,7 @@ The feature displays a paginated list of user activities with the following comp
 
 **Pagination:**
 
-- Default page size: **5 items per page**
+- Page size: **10 items per page**
 - Pagination controls include:
   - Previous button (`<`) - navigates to previous page (disabled on first page)
   - First page button (`1`) - always visible
@@ -193,19 +193,6 @@ Pagination: < 1 ... 4 5 6 ... 20 >
 - Current page shows with distinct styling (gray background)
 - Page transitions include loading state
 
-### Consistency Rules
-
-- **Design System Alignment:**
-  - Follow existing component library for buttons, dropdowns, dialogs
-  - Use consistent spacing and padding
-  - Font sizes: heading (20px), body (14px), secondary (12px)
-  - Use brand color palette for highlights and accents
-
-- **Visual Consistency:**
-  - Date header style consistent across all groups
-  - Activity item layout consistent for all items
-  - Pagination controls match other list pagination in application
-
 ### Error Messages
 
 - **Empty List:** "There's no items to display."
@@ -219,7 +206,7 @@ Pagination: < 1 ... 4 5 6 ... 20 >
 2. ✅ Activities are sorted by datetime, newest first
 3. ✅ Activities are grouped by date with date headers (e.g., "Thu, 23 Apr, 2026")
 4. ✅ Each activity displays: time (with icon), description, amount, and tags
-5. ✅ Default page size is **5 items per page**
+5. ✅ Page size is **10 items per page**
 6. ✅ Pagination controls display: `< 1 ... 4 5 6 ... 20 >`
 7. ✅ Clicking pagination button loads corresponding page
 8. ✅ Empty state displays "There's no items to display." message

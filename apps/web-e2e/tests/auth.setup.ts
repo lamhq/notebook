@@ -17,8 +17,7 @@ setup('authenticate', async ({ page }) => {
   // If already logged in, skip authentication
   const isLoggedIn = await page
     .getByRole('heading', { name: 'Activities' })
-    .isVisible({ timeout: 2000 })
-    .catch(() => false);
+    .isVisible({ timeout: 2000 });
   if (isLoggedIn) {
     return;
   }

@@ -9,7 +9,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: password
       MONGO_INITDB_DATABASE: test
     volumes:
-      - app_data:/data/db
+      - mongodb_data:/data/db
       - ./apps/mongodb:/docker-entrypoint-initdb.d
 
   keycloak:
@@ -43,5 +43,5 @@ services:
         condition: service_started
 
 volumes:
-  app_data:
+  mongodb_data:
   keycloak_data:

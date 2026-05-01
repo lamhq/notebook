@@ -1,5 +1,5 @@
 {
-  "name": "apigtw",
+  "name": "api-gateway",
   "version": "0.1.0",
   "description": "API Gateway for Notebook",
   "main": "index.mjs",
