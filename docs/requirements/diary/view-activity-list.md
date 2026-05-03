@@ -3,7 +3,7 @@
 ## Introduction
 
 **Description:**
-The View Activity List feature allows users to see a paginated list of their activities (transactions) organized by date after logging into the dashboard. Activities include income and expense transactions with detailed information.
+The View Activity List feature allows users to see a paginated list of their activities (transactions) organized by date on the homepage after logging in. Activities include income and expense transactions with detailed information.
 
 **Business Value:**
 Enables users to quickly review their financial activities, understand spending/income patterns, and manage individual transactions through a user-friendly interface.
@@ -84,7 +84,7 @@ The feature displays a paginated list of user activities with the following comp
 
 ```mermaid
 flowchart TD
-    A[User logs in] --> B[Navigate to Dashboard]
+    A[User logs in] --> B[Navigate to Homepage]
     B --> C[System fetches activities for page 1]
     C --> D[System groups activities by date]
     D --> E[Display activity list with pagination]
@@ -98,16 +98,16 @@ flowchart TD
 
 ## Use Cases
 
-### Use Case 1: View Activity List on Dashboard
+### Use Case 1: View Activity List
 
 **Preconditions:**
 
 - User is logged in
-- User has navigated to dashboard
+- User is on the homepage
 
 **Trigger:**
 
-- Page loads or user navigates to dashboard
+- Page loads or user navigates to the feature
 
 **Steps:**
 
@@ -202,7 +202,7 @@ Pagination: < 1 ... 4 5 6 ... 20 >
 
 ## Acceptance Criteria
 
-1. ✅ Activities display in a paginated list on the dashboard after user login
+1. ✅ Activities display in a paginated list on the homepage after user login
 2. ✅ Activities are sorted by datetime, newest first
 3. ✅ Activities are grouped by date with date headers (e.g., "Thu, 23 Apr, 2026")
 4. ✅ Each activity displays: time (with icon), description, amount, and tags

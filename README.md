@@ -45,9 +45,9 @@ Available applications:
 Start an application in development mode:
 
 ```bash
-pnpm -F web dev    # Web, auto start the API Gateway and API as well
-pnpm -F api dev    # API
-pnpm -F api-gateway dev    # API Gateway
+pnpm dev -F web    # Web, auto start the API Gateway and API as well
+pnpm dev -F api    # API
+pnpm dev -F api-gateway    # API Gateway
 ```
 
 ## Test
@@ -61,9 +61,9 @@ pnpm test
 Run tests for a specific application:
 
 ```bash
-pnpm -F api test         # API unit tests
-pnpm -F web test         # Web unit tests
-pnpm -F web-e2e test     # Web end-to-end tests
+pnpm test -F api         # API unit tests
+pnpm test -F web         # Web unit tests
+pnpm test -F web-e2e     # Web end-to-end tests
 ```
 
 Run Playwright in UI mode:

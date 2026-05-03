@@ -56,8 +56,8 @@ for (let i = 0; i < 20; i++) {
   });
 }
 
-// Generate 10 records going forward from current date
-for (let i = 1; i <= 10; i++) {
+// Generate 20 records going forward from current date
+for (let i = 1; i <= 20; i++) {
   const date = new Date(currentDate);
   date.setDate(date.getDate() + i);
   const template = activityTemplates[(20 + i) % activityTemplates.length];

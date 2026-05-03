@@ -8,9 +8,8 @@ This document describes the structure of the `docs/` directory, which contains a
 
 ```
 docs/
-├── project-overview.md
-├── project-structure.md
 ├── documentation-structure.md
+├── project-overview.md
 ├── requirements/
 │   └── {component}/
 │       └── {feature-name}.md
@@ -38,9 +37,10 @@ docs/
     └── monitoring-guide.md
 ```
 
-- `project-overview.md`: high-level project summary.
-- `project-structure.md`: project root's layout.
+Where:
+
 - `documentation-structure.md`: directory layout of `docs/`.
+- `project-overview.md`: high-level project summary.
 - `requirements/`: feature documentation, grouped by component.
 - `tasks/`: project tasks, grouped by component.
 - `design/`: technical design documentation.
@@ -60,8 +60,6 @@ docs/
 - `maintenance/`: operational documentation.
   - `deployment-guide.md`: deployment instructions.
   - `monitoring-guide.md`: monitoring and alerts.
-
-`{component}` can be:
-
-- `auth`: responsible for authentication, authorization, login
-- `diary`: responsible for activity management, tags, statistics
+- `{component}` can be:
+  - `auth`: responsible for authentication, authorization, login
+  - `diary`: responsible for activity management, tags, statistics
