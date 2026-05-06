@@ -58,9 +58,10 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'pnpm dev -F web',
-    cwd: path.join(import.meta.dirname, '..'),
-    url: 'http://localhost:5173',
+    command: 'pnpm dev',
+    cwd: path.join(import.meta.dirname, '..', '..'),
+    port: 5173,
     reuseExistingServer: !process.env.CI,
+    // stdout: 'pipe',
   },
 });

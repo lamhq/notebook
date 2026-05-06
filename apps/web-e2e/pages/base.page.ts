@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test';
+import { Locator, Page } from '@playwright/test';
 
 /**
  * Base Page Object Model
@@ -17,19 +17,11 @@ export abstract class BasePage {
     await this.page.goto(path, options);
   }
 
-  /**
-   * Get page title
-   */
-  public async getPageTitle(): Promise<string | null> {
-    return this.page.title();
+  public getNetworkErrorMessage(): Locator {
+    return this.page.getByText(/Please check your network connection/i);
   }
 
-  /**
-   * Get current URL path
-   */
-  public async getCurrentPath(): Promise<string> {
-    const url = this.page.url();
-    const path = new URL(url).pathname;
-    return Promise.resolve(path || '/');
+  public getTryAgainButton(): Locator {
+    return this.page.getByRole('button', { name: /Try Again|Retry/i });
   }
 }

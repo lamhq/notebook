@@ -1,7 +1,6 @@
 services:
   mongodb:
     image: mongo:8.0
-    container_name: mongodb
     ports:
       - '27017:27017'
     environment:
@@ -14,7 +13,6 @@ services:
 
   keycloak:
     image: quay.io/keycloak/keycloak:26.5.6
-    container_name: keycloak
     ports:
       - '8080:8080'
     environment:
@@ -24,23 +22,6 @@ services:
     volumes:
       - keycloak_data:/opt/keycloak/data
       - ./apps/keycloak:/opt/keycloak/data/import
-
-  api-gateway:
-    container_name: api-gateway
-    build:
-      context: ./apps/api-gateway
-      dockerfile: Dockerfile
-    ports:
-      - '4068:4068'
-    environment:
-      OIDC_CLIENT_ID: notebook-web
-      OIDC_AUTHORITY: http://keycloak:8080/realms/notebook
-      API_URL: http://host.docker.internal:4069
-      PORT: 4068
-      PUBLIC_ROUTE: ^/health$
-    depends_on:
-      keycloak:
-        condition: service_started
 
 volumes:
   mongodb_data:

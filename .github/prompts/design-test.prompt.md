@@ -14,7 +14,12 @@ You will:
 
 2. **Create test suite document**
    - Use `web/fetch` to retrieve Test Suite writing guidelines from `http://localhost:3000/se/documentation/test-suite.html`
-   - Follow the **Design Process** in the guidelines to design test cases for the feature.
+   - Design test cases for the feature based on the guidelines.
    - Save the test suite document in the appropriate location.
+
+3. **Review and Validate**
+   - Check for completeness: Are all scenarios covered?
+   - Remove duplicates or overlapping cases: Is another test case already covering this test case?
+   - Validate against requirements: Does each case trace back to a requirement?
 
 Note: all file locations are relative to the project root.

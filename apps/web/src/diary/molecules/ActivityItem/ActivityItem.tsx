@@ -14,19 +14,23 @@ export default function ActivityItem({ activity }: ActivityItemProps) {
   const html = activity.content.replace(/\n/g, '<br/>');
 
   return (
-    <div className="activity-item">
+    <article className="activity-item">
       <Grid container spacing={0} justifyContent="space-between">
-        <TimeLabel time={activity.time} />
+        <time dateTime={activity.time.toISOString()} data-testid="activity-time">
+          <TimeLabel time={activity.time} />
+        </time>
         <ActivityMenu activity={activity} />
       </Grid>
-      <Typography
-        // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
-        dangerouslySetInnerHTML={{ __html: html }}
-        variant="body1"
-        sx={{ marginBottom: 1, lineHeight: 1.8 }}
-      />
+      <div data-testid="activity-description">
+        <Typography
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+          dangerouslySetInnerHTML={{ __html: html }}
+          variant="body1"
+          sx={{ marginBottom: 1, lineHeight: 1.8 }}
+        />
+      </div>
       <Grid container spacing={0} justifyContent="space-between">
-        <Box sx={{ display: 'flex', columnGap: 1 }}>
+        <Box sx={{ display: 'flex', columnGap: 1 }} data-testid="activity-amount">
           {Boolean(activity.income && activity.income > 0) && (
             <Typography variant="body2" sx={{ color: 'success.main' }}>
               {formatNumber(activity.income)}
@@ -38,7 +42,7 @@ export default function ActivityItem({ activity }: ActivityItemProps) {
             </Typography>
           )}
         </Box>
-        <Box sx={{ display: 'flex', columnGap: 1 }}>
+        <Box sx={{ display: 'flex', columnGap: 1 }} data-testid="activity-tags">
           {activity.tags.map((tag) => (
             <Typography key={tag} variant="body2" sx={{ color: 'primary.main' }}>
               {`#${tag}`}
@@ -46,6 +50,6 @@ export default function ActivityItem({ activity }: ActivityItemProps) {
           ))}
         </Box>
       </Grid>
-    </div>
+    </article>
   );
 }

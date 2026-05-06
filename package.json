@@ -4,10 +4,10 @@
   "private": true,
   "packageManager": "pnpm@8.15.6",
   "scripts": {
-    "dev": "turbo watch dev",
+    "dev": "turbo run dev",
     "build": "turbo run build",
-    "lint": "eslint",
     "test": "turbo run test",
+    "lint": "eslint",
     "prepare": "node .husky/install.mjs"
   },
   "devDependencies": {

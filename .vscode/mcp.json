@@ -4,6 +4,15 @@
       "type": "stdio",
       "command": "pnpm",
       "args": ["-F", "web-e2e", "exec", "playwright", "run-test-mcp-server"]
+    },
+    "io.github.ChromeDevTools/chrome-devtools-mcp": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "--registry",
+        "https://registry.npmjs.org",
+        "chrome-devtools-mcp@0.23.0"
+      ]
     }
   },
   "inputs": []
