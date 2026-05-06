@@ -58,7 +58,7 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'pnpm dev',
+    command: 'npx turbo web#dev',
     cwd: path.join(import.meta.dirname, '..', '..'),
     port: 5173,
     reuseExistingServer: !process.env.CI,

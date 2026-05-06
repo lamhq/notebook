@@ -69,8 +69,8 @@ export class HomePage extends BasePage {
     return this.page.locator('button[aria-current="page"]');
   }
 
-  public async scrollToPagination(): Promise<void> {
-    await this.getPaginationContainer().scrollIntoViewIfNeeded();
+  public scrollToPagination(): Promise<void> {
+    return this.getPaginationContainer().scrollIntoViewIfNeeded();
   }
 
   public getEllipsis(): Locator {
