@@ -40,8 +40,8 @@ export default defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
-    /* Setup project runs the auth.setup.ts file first */
-    { name: 'setup', testMatch: /.*\.setup\.ts/ },
+    /* Setup project runs the global.setup.ts file first */
+    { name: 'setup', testMatch: /.*-setup\.ts/ },
 
     {
       name: 'chromium',

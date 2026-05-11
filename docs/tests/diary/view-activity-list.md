@@ -8,11 +8,11 @@
 
 ---
 
-## TC_VAL_01 - View activity list on first page
+## TC_VAL_01 - View activity list on homepage
 
 ### Description
 
-Verify that the activity list displays correctly on the first page after user login.
+Verify that the activity list displays correctly on the homepage after user login.
 
 ### Pre-conditions
 
@@ -31,10 +31,10 @@ Verify that the activity list displays correctly on the first page after user lo
 
 ### Expected Result
 
-- The activity list displays successfully without errors
+- The page displays 10 activities
+- Pagination controls are visible at the bottom
 - Activities are grouped by date with date headers (e.g., "Thu, 23 Apr, 2026")
 - At least one date group with activities is visible
-- Pagination controls are visible at the bottom
 
 ### Postconditions
 
@@ -81,7 +81,7 @@ No cleanup required.
 
 ---
 
-## TC_VAL_03 - Activities are sorted by date (newest first)
+## TC_VAL_03 - Activity groups are sorted by date (newest first)
 
 ### Description
 
@@ -100,15 +100,49 @@ Verify that date groups appear in descending order with newest activities first.
 ### Test Steps
 
 1. Navigate to the homepage
-2. Identify the first date group header displayed
-3. Identify the second date group header displayed
-4. Compare the dates to verify their order
+2. Get all activity group headers
+3. Compare the dates to verify their order
 
 ### Expected Result
 
-- The first date group shows a more recent date than subsequent date groups
-- Date groups follow descending chronological order
-- Within each date group, activities are ordered by time (newest first)
+- The first activity group shows a more recent date than subsequent activity groups
+- Activity groups follow descending chronological order
+
+### Postconditions
+
+No cleanup required.
+
+---
+
+## TC_VAL_13 - Activities within date group are sorted by time (newest first)
+
+### Description
+
+Verify that activities within the same date group are sorted by time with the newest first.
+
+### Pre-conditions
+
+- User is authenticated and logged in
+- User has multiple activities on the same date
+- Activity list is displayed
+
+### Test Data
+
+- Multiple activities on the same date with different times
+
+### Test Steps
+
+1. Navigate to the homepage
+2. Locate a date group that contains multiple activities
+3. Observe the time values for activities in that group
+4. Compare times to verify ordering
+
+### Expected Result
+
+- Activities within the date group are ordered by time in descending order (newest first)
+- The first activity in the group has the latest time
+- Each subsequent activity has an earlier time
+- Time display format is consistent (e.g., "10:42 am", "8:00 am")
 
 ### Postconditions
 
@@ -439,42 +473,6 @@ Verify that the activity list renders correctly and is usable on mobile viewport
 - Pagination controls are touch-friendly and clickable
 - All components remain accessible and usable
 - Scrolling is smooth and doesn't cause layout issues
-
-### Postconditions
-
-No cleanup required.
-
----
-
-## TC_VAL_13 - Activities within date group are sorted by time (newest first)
-
-### Description
-
-Verify that activities within the same date group are sorted by time with the newest first.
-
-### Pre-conditions
-
-- User is authenticated and logged in
-- User has multiple activities on the same date
-- Activity list is displayed
-
-### Test Data
-
-- Multiple activities on the same date with different times
-
-### Test Steps
-
-1. Navigate to the homepage
-2. Locate a date group that contains multiple activities
-3. Observe the time values for activities in that group
-4. Compare times to verify ordering
-
-### Expected Result
-
-- Activities within the date group are ordered by time in descending order (newest first)
-- The first activity in the group has the latest time
-- Each subsequent activity has an earlier time
-- Time display format is consistent (e.g., "10:42 am", "8:00 am")
 
 ### Postconditions
 
