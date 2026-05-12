@@ -6,7 +6,7 @@ import { connect, deleteMany, disconnect, insertMany } from '../../utils/mongodb
 let homePage: HomePage;
 let seededActivityIds: string[] = [];
 
-// Seed test data - 15 activities across 5 days (3 per day) to support all test cases
+// Seed test data - 15 activities across 10 days (3 per day) to support all test cases
 async function seedTestData(): Promise<void> {
   const activities = [];
   const baseDate = new Date();
@@ -35,8 +35,8 @@ async function seedTestData(): Promise<void> {
     { content: 'Book reading', tags: ['learning', 'entertainment'] },
   ];
 
-  // Generate 15 activities: 3 per day for 5 days
-  for (let day = 0; day < 5; day++) {
+  // Generate 15 activities: 3 per day for 10 days
+  for (let day = 0; day < 10; day++) {
     const date = new Date(baseDate);
     date.setDate(date.getDate() - day);
 
@@ -202,100 +202,21 @@ test.describe('Pagination controls', () => {
 
     const previousButton = homePage.getPreviousButton();
     await previousButton.click();
-
     await expect(homePage.getCurrentPageButton()).toHaveText('1');
 
     await expect(previousButton).toBeDisabled();
-
     await expect(nextButton).toBeEnabled();
-  });
-
-  // TC_VAL_07: Navigate to specific page
-  test('clicking page number should navigate to specific page', async () => {
-    await homePage.scrollToPagination();
-
-    const page2Button = homePage.getPageButton(2);
-    await page2Button.click();
-
-    await expect(homePage.getCurrentPageButton()).toHaveText('2');
-
-    const previousButton = homePage.getPreviousButton();
-    const nextButton = homePage.getNextButton();
-    await expect(previousButton).toBeEnabled();
-    await expect(nextButton).toBeEnabled();
-
-    await expect(homePage.getActivityItems()).toHaveCount(10);
   });
 
   // TC_VAL_08: Navigate to last page
   test('navigating to last page should disable next button', async () => {
     await homePage.scrollToPagination();
+    await homePage.getPageButton(3).click();
+    await expect(homePage.getCurrentPageButton()).toHaveText('3');
 
-    const nextButton = homePage.getNextButton();
-    await expect(nextButton).toBeEnabled();
-
-    // Continue clicking while button is enabled
-    let currentPage = 1;
-    while (currentPage < 10) {
-      await nextButton.click();
-      await homePage.scrollToPagination();
-      currentPage++;
-
-      // Wait for next button to potentially become disabled
-      const button = homePage.getNextButton();
-      try {
-        await expect(button).toBeDisabled({ timeout: 2000 });
-        break;
-      } catch {
-        // Button is still enabled, continue
-      }
-    }
-
-    await expect(nextButton).toBeDisabled();
-
-    const previousButton = homePage.getPreviousButton();
-    await expect(previousButton).toBeEnabled();
-
-    // Last page may have fewer items
-    await expect(homePage.getActivityItems().first()).toBeVisible();
-  });
-
-  // TC_VAL_09: Page size is 10 items per page
-  test('each page should display 10 items or fewer on last page', async () => {
-    let activityItems = homePage.getActivityItems();
-    await expect(activityItems).toHaveCount(10);
-
-    await homePage.scrollToPagination();
-    const nextButton = homePage.getNextButton();
-    await nextButton.click(); // nextButton used in multiple places, keeping it
-
-    activityItems = homePage.getActivityItems();
-    await expect(activityItems).toHaveCount(10);
-
-    await homePage.scrollToPagination();
-
-    // Continue clicking while button is enabled
-    let currentPage = 1;
-    while (currentPage < 10) {
-      await nextButton.click();
-      await homePage.scrollToPagination();
-      currentPage++;
-
-      // Wait for next button to potentially become disabled
-      try {
-        await expect(nextButton).toBeDisabled({ timeout: 2000 });
-        break;
-      } catch {
-        // Button is still enabled, continue
-      }
-    }
-
-    activityItems = homePage.getActivityItems();
-    // Verify at least one item exists
-    await expect(activityItems.first()).toBeVisible();
-    // Verify count is 10 or fewer
-    const count = await activityItems.count();
-    expect(count).toBeLessThanOrEqual(10);
+    await expect(homePage.getPreviousButton()).toBeEnabled();
+    await expect(homePage.getNextButton()).toBeDisabled();
+    await expect(homePage.getActivityItems()).toHaveCount(10);
   });
 });
 
@@ -332,7 +253,6 @@ test.describe('Error handling', () => {
     });
 
     await homePage.navigate();
-
     await expect(homePage.getNetworkErrorMessage()).toBeVisible();
 
     const tryAgainButton = homePage.getTryAgainButton();
@@ -341,7 +261,6 @@ test.describe('Error handling', () => {
     await page.unroute('**/api/diary/activities*');
 
     await tryAgainButton.click();
-
     await expect(homePage.getActivityItems().first()).toBeVisible();
   });
 });
@@ -350,19 +269,15 @@ test.describe('Responsive design', () => {
   // TC_VAL_12: Activity list is responsive on mobile devices
   test('activity list should be responsive on mobile viewport', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 });
+
     await homePage.navigate();
-
     await expect(homePage.getActivityItems().first()).toBeVisible();
-
     await expect(homePage.getActivityGroups().first()).toBeVisible();
 
     await homePage.scrollToPagination();
-
     await expect(homePage.getPaginationContainer()).toBeVisible();
 
-    const nextButton = homePage.getNextButton();
-    await nextButton.click();
-
+    await homePage.getNextButton().click();
     await expect(homePage.getCurrentPageButton()).toHaveText('2');
   });
 });

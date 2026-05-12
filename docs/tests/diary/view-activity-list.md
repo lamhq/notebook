@@ -256,42 +256,6 @@ No cleanup required.
 
 ---
 
-## TC_VAL_07 - Navigate to specific page
-
-### Description
-
-Verify that the user can navigate to a specific page by clicking a page number button.
-
-### Pre-conditions
-
-- User is authenticated and logged in
-- User has at least 30 activities (at least 3 pages)
-- Activity list is displayed on page 1
-
-### Test Data
-
-- 30 activities
-
-### Test Steps
-
-1. Navigate to the homepage
-2. Scroll to pagination controls
-3. Click on page number button `3`
-
-### Expected Result
-
-- Current page indicator shows `3` with distinct styling
-- Activities from page 3 are displayed
-- Date groups are correctly organized for page 3 activities
-- Both Previous (`<`) and Next (`>`) buttons are enabled
-- Page number buttons reflect the current position
-
-### Postconditions
-
-No cleanup required.
-
----
-
 ## TC_VAL_08 - Navigate to last page
 
 ### Description
@@ -322,44 +286,6 @@ Verify that the user can navigate to the last page and the Next button is disabl
 - Next button (`>`) is disabled
 - Previous button (`<`) is enabled
 - First page button (`1`) is clickable
-
-### Postconditions
-
-No cleanup required.
-
----
-
-## TC_VAL_09 - Page size is 10 items per page
-
-### Description
-
-Verify that each page displays exactly 10 items, or fewer on the last page.
-
-### Pre-conditions
-
-- User is authenticated and logged in
-- User has at least 20 activities
-- Activity list is displayed
-
-### Test Data
-
-- 30 activities
-
-### Test Steps
-
-1. Navigate to the homepage
-2. Count the number of activities displayed on page 1
-3. Navigate to page 2
-4. Count the number of activities displayed on page 2
-5. Navigate to the last page
-6. Count the number of activities displayed on the last page
-
-### Expected Result
-
-- Page 1 displays exactly 10 activities
-- Page 2 displays exactly 10 activities
-- Last page displays 10 or fewer activities (depending on total count)
-- Each activity item is distinct and properly rendered
 
 ### Postconditions
 

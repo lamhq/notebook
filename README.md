@@ -23,8 +23,8 @@ lsof -ti tcp:5173 -i tcp:4068 -i tcp:4069 | xargs -n 1 kill -9
 Start an application locally:
 
 ```bash
-npx turbo web#dev   # Web
-npx turbo api#dev   # API
+npx turbo web#dev
+npx turbo api#dev
 ```
 
 ## Test
