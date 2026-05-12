@@ -11,7 +11,7 @@ export class HomePage extends BasePage {
   }
 
   public getActivityGroups(): Locator {
-    return this.page.getByTestId('date-header');
+    return this.page.getByTestId('activity-group');
   }
 
   public getActivityTime(activityItem: Locator): Locator {

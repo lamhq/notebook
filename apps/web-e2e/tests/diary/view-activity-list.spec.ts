@@ -1,7 +1,84 @@
 import { expect, test } from '@playwright/test';
 import { HomePage } from '../../pages/diary.page';
+import { parseTimeString } from '../../utils/datetime';
+import { connect, deleteMany, disconnect, insertMany } from '../../utils/mongodb';
 
 let homePage: HomePage;
+let seededActivityIds: string[] = [];
+
+// Seed test data - 15 activities across 5 days (3 per day) to support all test cases
+async function seedTestData(): Promise<void> {
+  const activities = [];
+  const baseDate = new Date();
+  baseDate.setUTCHours(0, 0, 0, 0);
+
+  const activityTemplates = [
+    { content: 'Morning jog', tags: ['exercise', 'health'], outcome: 100 },
+    { content: 'Freelance project', tags: ['work', 'income'], income: 500 },
+    {
+      content: 'Lunch with client',
+      tags: ['work', 'food'],
+      income: 100,
+      outcome: 30,
+    },
+    { content: 'Evening coding', tags: ['work', 'learning'] },
+    { content: 'Gym session', tags: ['exercise', 'health'], outcome: 40 },
+    { content: 'Consulting call', tags: ['work', 'income'], income: 300 },
+    { content: 'Movie night', tags: ['entertainment'], outcome: 20 },
+    { content: 'Yoga class', tags: ['exercise', 'health'], outcome: 35 },
+    { content: 'Team meeting', tags: ['work', 'learning'] },
+    { content: 'Dinner out', tags: ['food', 'social'], outcome: 45 },
+    { content: 'Grocery shopping', tags: ['household'], outcome: 75 },
+    { content: 'Project delivery', tags: ['work', 'income'], income: 1200 },
+    { content: 'Coffee meeting', tags: ['work', 'social'], outcome: 12 },
+    { content: 'Weekend hike', tags: ['exercise', 'health'], outcome: 0 },
+    { content: 'Book reading', tags: ['learning', 'entertainment'] },
+  ];
+
+  // Generate 15 activities: 3 per day for 5 days
+  for (let day = 0; day < 5; day++) {
+    const date = new Date(baseDate);
+    date.setDate(date.getDate() - day);
+
+    for (let i = 0; i < 3; i++) {
+      const time = new Date(date);
+      // Set times from 20:00 down to 08:00 (3 activities per day, newest first)
+      time.setHours(20 - i * 6, Math.floor(Math.random() * 60), 0, 0);
+
+      const template = activityTemplates[i % activityTemplates.length];
+
+      activities.push({
+        content: template.content,
+        time,
+        tags: template.tags,
+        income: template.income,
+        outcome: template.outcome,
+      });
+    }
+  }
+
+  seededActivityIds = await insertMany(activities);
+  console.log(`Seeded ${activities.length.toString()} test activities`);
+}
+
+// Cleanup test data - only remove records that were inserted during test
+async function cleanupTestData(): Promise<void> {
+  if (seededActivityIds.length === 0) return;
+
+  const deletedCount = await deleteMany(seededActivityIds);
+  console.log(`Cleaned up ${deletedCount.toString()} test activities`);
+  seededActivityIds = [];
+}
+
+test.beforeAll(async () => {
+  await connect();
+  await seedTestData();
+});
+
+test.afterAll(async () => {
+  await cleanupTestData();
+  await disconnect();
+});
 
 test.beforeEach(async ({ page }) => {
   homePage = new HomePage(page);
@@ -38,18 +115,19 @@ test.describe('Activity list display', () => {
     await expect(homePage.getActivityItems()).toHaveCount(10);
 
     // Verify we have at least 2 date groups to compare
-    const dateHeaders = homePage.getActivityGroups();
-    const count = await dateHeaders.count();
+    const activityGroups = homePage.getActivityGroups();
+    const count = await activityGroups.count();
     expect(count).toBeGreaterThanOrEqual(2);
 
     // Get all date header texts and extract dates
     const dates: Date[] = [];
     for (let i = 0; i < count; i++) {
-      await expect(dateHeaders.nth(i)).toContainText(
+      const dateHeader = activityGroups.nth(i).getByRole('heading');
+      await expect(dateHeader).toContainText(
         /[A-Z][a-z]{2},\s+\d{1,2}\s+[A-Z][a-z]{2},\s+\d{4}/,
       );
       // Parse date format: "Thu, 23 Apr, 2026"
-      const dateText = await dateHeaders.nth(i).innerText();
+      const dateText = await dateHeader.innerText();
       const date = new Date(dateText);
       dates.push(date);
     }
@@ -62,13 +140,30 @@ test.describe('Activity list display', () => {
 
   // TC_VAL_13: Activities within date group are sorted by time (newest first)
   test('activities within date group should be sorted by time (newest first)', async () => {
-    await expect(homePage.getActivityItems().first()).toBeVisible();
+    // Wait for activity items to load first
+    await expect(homePage.getActivityItems()).toHaveCount(10);
 
-    const firstActivity = homePage.getActivityItems().first();
-    // Time format: "10:42 am" or "8:00 pm"
-    await expect(homePage.getActivityTime(firstActivity)).toContainText(
-      /\d{1,2}:\d{2}\s+(am|pm)/i,
-    );
+    // Get all activity items within the first group
+    const firstActivityGroup = homePage.getActivityGroups().first();
+    const activityItems = firstActivityGroup.locator('.activity-item');
+    const count = await activityItems.count();
+    expect(count).toBeGreaterThanOrEqual(2);
+
+    // Get times from activities within the same date group
+    const times: Date[] = [];
+    for (let i = 0; i < count; i++) {
+      const timeText = await homePage
+        .getActivityTime(activityItems.nth(i))
+        .innerText();
+      expect(timeText).toMatch(/\d{1,2}:\d{2}\s+(am|pm)/i);
+      const timeInMinutes = parseTimeString(timeText);
+      times.push(timeInMinutes);
+    }
+
+    // Verify times are in descending order (newest first)
+    for (let i = 0; i < times.length - 1; i++) {
+      expect(times[i].getTime()).toBeGreaterThanOrEqual(times[i + 1].getTime());
+    }
   });
 });
 

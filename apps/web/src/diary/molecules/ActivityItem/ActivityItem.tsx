@@ -23,7 +23,6 @@ export default function ActivityItem({ activity }: ActivityItemProps) {
       </Grid>
       <div data-testid="activity-description">
         <Typography
-          // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
           dangerouslySetInnerHTML={{ __html: html }}
           variant="body1"
           sx={{ marginBottom: 1, lineHeight: 1.8 }}

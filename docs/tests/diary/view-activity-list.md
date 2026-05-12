@@ -22,8 +22,7 @@ Verify that the activity list displays correctly on the homepage after user logi
 
 ### Test Data
 
-- Default page: 1
-- Default page size: 10 activities per page
+- 15 activities
 
 ### Test Steps
 
@@ -56,7 +55,7 @@ Verify that each activity item displays all required information with correct st
 
 ### Test Data
 
-- Expected activity components: time (with ⏱ icon), description, amount (with color), tags
+- An activity with time (with ⏱ icon), description, income and expense (with color), tags
 
 ### Test Steps
 
@@ -100,8 +99,9 @@ Verify that date groups appear in descending order with newest activities first.
 ### Test Steps
 
 1. Navigate to the homepage
-2. Get all activity group headers
-3. Compare the dates to verify their order
+2. Wait for activity items to load first
+3. Get all activity group headers
+4. Compare the dates to verify their order
 
 ### Expected Result
 
@@ -133,16 +133,13 @@ Verify that activities within the same date group are sorted by time with the ne
 ### Test Steps
 
 1. Navigate to the homepage
-2. Locate a date group that contains multiple activities
-3. Observe the time values for activities in that group
-4. Compare times to verify ordering
+2. Wait for activity items to load first
+3. Get the first activity group and its associated activities
+4. Compare times for activities in that group
 
 ### Expected Result
 
 - Activities within the date group are ordered by time in descending order (newest first)
-- The first activity in the group has the latest time
-- Each subsequent activity has an earlier time
-- Time display format is consistent (e.g., "10:42 am", "8:00 am")
 
 ### Postconditions
 
@@ -164,7 +161,7 @@ Verify that pagination controls are correctly displayed and in the proper state 
 
 ### Test Data
 
-- Expected pagination format: `< 1 ... 4 5 6 ... 20 >`
+- 30 activities
 
 ### Test Steps
 
@@ -201,8 +198,7 @@ Verify that the user can navigate to the next page by clicking the Next button.
 
 ### Test Data
 
-- Current page: 1
-- Expected next page: 2
+- 30 activities
 
 ### Test Steps
 
@@ -237,13 +233,14 @@ Verify that the user can navigate back to the previous page by clicking the Prev
 
 ### Test Data
 
-- Current page: 2
-- Expected previous page: 1
+- 30 activities
 
 ### Test Steps
 
-1. Navigate to page 2 by clicking Next button
-2. Click the Previous button (`<`)
+1. Navigate to the homepage
+2. Scroll to pagination controls
+3. Navigate to page 2 by clicking Next button
+4. Click the Previous button (`<`)
 
 ### Expected Result
 
@@ -273,7 +270,7 @@ Verify that the user can navigate to a specific page by clicking a page number b
 
 ### Test Data
 
-- Target page: 3
+- 30 activities
 
 ### Test Steps
 
@@ -309,7 +306,7 @@ Verify that the user can navigate to the last page and the Next button is disabl
 
 ### Test Data
 
-- Last page: depends on total activities (e.g., 20)
+- 30 activities
 
 ### Test Steps
 
@@ -319,7 +316,7 @@ Verify that the user can navigate to the last page and the Next button is disabl
 
 ### Expected Result
 
-- Current page indicator shows the last page number (e.g., `20`)
+- Current page indicator shows the last page number (e.g., `3`)
 - Activities from the last page are displayed
 - Last page may have fewer items than page size (10)
 - Next button (`>`) is disabled
@@ -346,7 +343,7 @@ Verify that each page displays exactly 10 items, or fewer on the last page.
 
 ### Test Data
 
-- Expected page size: 10 items per page
+- 30 activities
 
 ### Test Steps
 
@@ -419,7 +416,7 @@ Verify that an appropriate error message is displayed when a network error occur
 
 ### Test Data
 
-- Network error scenario
+- 30 activities
 
 ### Test Steps
 
@@ -450,11 +447,10 @@ Verify that the activity list renders correctly and is usable on mobile viewport
 
 - User is authenticated and logged in
 - User has at least 5 activities
-- Browser viewport is set to mobile size (375x667)
 
 ### Test Data
 
-- Mobile viewport: 375x667 pixels
+- 30 activities
 
 ### Test Steps
 

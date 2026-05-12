@@ -36,13 +36,9 @@ export function ActivityListView({ activities }: ActivityListViewProps) {
             marginBottom: 2,
             backgroundColor: 'background.paper',
           }}
+          data-testid="activity-group"
         >
-          <Typography
-            component="h3"
-            variant="h4"
-            gutterBottom
-            data-testid="date-header"
-          >
+          <Typography component="h3" variant="h4" gutterBottom>
             {date}
           </Typography>
           {items.map((item, index) => (
