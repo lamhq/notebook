@@ -1,5 +1,5 @@
 import { expect, test as setup } from '@playwright/test';
-import fs from 'fs/promises';
+import fs from 'fs';
 import path from 'path';
 import { DockerComposeEnvironment, Wait } from 'testcontainers';
 
@@ -8,22 +8,16 @@ const authFile = path.join(__dirname, '..', 'playwright/.auth/user.json');
 const VALID_USERNAME = 'test';
 const VALID_PASSWORD = '123';
 
+// Start Docker services
 setup.beforeAll(async () => {
-  // Start Docker Compose environment
   const composeFilePath = path.join(__dirname, '../../..');
   const composeFile = 'docker-compose.yml';
   await new DockerComposeEnvironment(composeFilePath, composeFile)
     .withWaitStrategy('mongodb-1', Wait.forLogMessage('Waiting for connections'))
+    .withWaitStrategy('api-gateway-1', Wait.forLogMessage('Proxy server running'))
     .withNoRecreate()
     .withAutoCleanup(false)
     .up();
-
-  // Clear stale authentication state to ensure fresh login
-  try {
-    await fs.rm(authFile);
-  } catch {
-    // ignore if file doesn't exist
-  }
 });
 
 /**
@@ -32,6 +26,9 @@ setup.beforeAll(async () => {
  * This eliminates the need to authenticate in every test and speeds up test execution
  */
 setup('authenticate', async ({ page }) => {
+  // Skip sign in if already authenticated
+  setup.skip(fs.existsSync(authFile), 'Already signed in');
+
   await page.goto('/');
 
   // Wait for login page to appear
