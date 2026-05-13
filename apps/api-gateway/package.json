@@ -4,7 +4,7 @@
   "description": "API Gateway for Notebook",
   "main": "index.mjs",
   "scripts": {
-    "dev": "node --watch index.mjs"
+    "start": "node --watch index.mjs"
   },
   "dependencies": {
     "dotenv": "^16.0.3",

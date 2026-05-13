@@ -16,11 +16,6 @@
       "cache": false
     },
     "web#dev": {
-      "with": ["api-gateway#dev"],
-      "persistent": true,
-      "cache": false
-    },
-    "api-gateway#dev": {
       "with": ["api#dev"],
       "persistent": true,
       "cache": false

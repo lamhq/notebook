@@ -17,7 +17,7 @@ pnpm install
 Terminate running applications:
 
 ```bash
-lsof -ti tcp:5173 -i tcp:4068 -i tcp:4069 | xargs -n 1 kill -9
+lsof -ti tcp:5173 -i tcp:4069 | xargs -n 1 kill -9
 ```
 
 Start an application locally:

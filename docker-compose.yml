@@ -21,6 +21,28 @@ services:
     volumes:
       - keycloak_data:/opt/keycloak/data
       - ./apps/keycloak:/opt/keycloak/data/import
+    healthcheck:
+      test: ['CMD', 'bash', '-c', 'exec 3<>/dev/tcp/localhost/8080']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  api-gateway:
+    build:
+      context: ./apps/api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - '4068:4068'
+    environment:
+      OIDC_CLIENT_ID: notebook-web
+      OIDC_AUTHORITY: http://keycloak:8080/realms/notebook
+      API_URL: http://host.docker.internal:4069
+      PORT: 4068
+      PUBLIC_ROUTE: ^/health$
+    depends_on:
+      keycloak:
+        condition: service_healthy
 
 volumes:
   mongodb_data:
