@@ -1,13 +1,9 @@
 {
   "servers": {
-    "io.github.ChromeDevTools/chrome-devtools-mcp": {
+    "playwright-test": {
       "type": "stdio",
-      "command": "npx",
-      "args": [
-        "--registry",
-        "https://registry.npmjs.org",
-        "chrome-devtools-mcp@0.23.0"
-      ]
+      "command": "pnpm",
+      "args": ["-F", "web-e2e", "exec", "playwright", "run-test-mcp-server"]
     }
   },
   "inputs": []

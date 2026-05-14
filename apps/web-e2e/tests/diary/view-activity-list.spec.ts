@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { HomePage } from '../../pages/diary.page';
+import { HomePage } from '../../pages/home.page';
 import { parseTimeString } from '../../utils/datetime';
 import { connect, deleteMany, disconnect, insertMany } from '../../utils/mongodb';
 
