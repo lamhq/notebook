@@ -1,21 +1,19 @@
-import { Collection, MongoClient, ObjectId } from 'mongodb';
+import { Db, MongoClient, ObjectId } from 'mongodb';
 
 type MongoObject = Record<string, unknown>;
 
 const uri = 'mongodb://root:password@localhost:27017/test?authSource=admin';
 const dbName = 'test';
-const collectionName = 'activities';
 
 let client: MongoClient | undefined;
-let collection: Collection | undefined;
+let db: Db | undefined;
 
 // CONNECT
 async function connect(): Promise<void> {
   if (!client) {
     client = new MongoClient(uri);
     await client.connect();
-    const db = client.db(dbName);
-    collection = db.collection(collectionName);
+    db = client.db(dbName);
     console.log('MongoDB connected');
   }
 }
@@ -25,43 +23,95 @@ async function disconnect(): Promise<void> {
   if (client) {
     await client.close();
     client = undefined;
-    collection = undefined;
+    db = undefined;
     console.log('MongoDB disconnected');
   }
 }
 
 // INSERT
-async function insert(data: MongoObject): Promise<MongoObject> {
-  if (!collection) throw new Error('Not connected to database');
+async function insert(
+  collectionName: string,
+  data: MongoObject,
+): Promise<MongoObject> {
+  if (!db) throw new Error('Not connected to database');
+  const collection = db.collection(collectionName);
   const result = await collection.insertOne(data);
   return { _id: result.insertedId, ...data };
 }
 
 // INSERT MANY
-async function insertMany(data: MongoObject[]): Promise<string[]> {
-  if (!collection) throw new Error('Not connected to database');
+async function insertMany(
+  collectionName: string,
+  data: MongoObject[],
+): Promise<string[]> {
+  if (!db) throw new Error('Not connected to database');
+  const collection = db.collection(collectionName);
   const result = await collection.insertMany(data);
   return Object.values(result.insertedIds).map((id) => id.toString());
 }
 
 // FIND ONE
-async function findById(id: string): Promise<MongoObject | null> {
-  if (!collection) throw new Error('Not connected to database');
+async function findById(
+  collectionName: string,
+  id: string,
+): Promise<MongoObject | null> {
+  if (!db) throw new Error('Not connected to database');
+  const collection = db.collection(collectionName);
   return await collection.findOne({ _id: new ObjectId(id) });
 }
 
+// FIND ONE
+async function findOne(
+  collectionName: string,
+  query: MongoObject = {},
+): Promise<MongoObject | null> {
+  if (!db) throw new Error('Not connected to database');
+  const collection = db.collection(collectionName);
+  return await collection.findOne(query);
+}
+
+// FIND ONE OR FAIL
+async function findOneOrFail(
+  collectionName: string,
+  query: MongoObject = {},
+  options?: { timeout?: number },
+): Promise<MongoObject> {
+  if (!db) throw new Error('Not connected to database');
+
+  const timeout = options?.timeout ?? 0;
+  const collection = db.collection(collectionName);
+
+  const start = Date.now();
+  do {
+    // Poll the database until record is found or timeout
+    const result = await collection.findOne(query);
+    if (result) return result;
+
+    // Pause 10ms
+    await new Promise((res) => setTimeout(res, 10));
+  } while (Date.now() - start < timeout);
+
+  throw new Error(`No record found in ${collectionName}`);
+}
+
 // FIND MANY
-async function findAll(query: MongoObject = {}): Promise<MongoObject[]> {
-  if (!collection) throw new Error('Not connected to database');
+async function findAll(
+  collectionName: string,
+  query: MongoObject = {},
+): Promise<MongoObject[]> {
+  if (!db) throw new Error('Not connected to database');
+  const collection = db.collection(collectionName);
   return await collection.find(query).toArray();
 }
 
 // UPDATE
 async function updateOne(
+  collectionName: string,
   id: string,
   updates: MongoObject,
 ): Promise<MongoObject | null> {
-  if (!collection) throw new Error('Not connected to database');
+  if (!db) throw new Error('Not connected to database');
+  const collection = db.collection(collectionName);
   const result = await collection.updateOne(
     { _id: new ObjectId(id) },
     { $set: updates },
@@ -70,22 +120,23 @@ async function updateOne(
 }
 
 // DELETE ONE
-async function deleteOne(id: string): Promise<boolean> {
-  if (!collection) throw new Error('Not connected to database');
+async function deleteOne(collectionName: string, id: string): Promise<boolean> {
+  if (!db) throw new Error('Not connected to database');
+  const collection = db.collection(collectionName);
 
   const result = await collection.deleteOne({ _id: new ObjectId(id) });
   return result.deletedCount > 0;
 }
 
 // DELETE MANY
-async function deleteMany(ids: string[]): Promise<number> {
-  if (!collection) throw new Error('Not connected to database');
+async function deleteMany(
+  collectionName: string,
+  query: MongoObject,
+): Promise<number> {
+  if (!db) throw new Error('Not connected to database');
+  const collection = db.collection(collectionName);
 
-  const result = await collection.deleteMany({
-    _id: {
-      $in: ids.map((id) => new ObjectId(id)),
-    },
-  });
+  const result = await collection.deleteMany(query);
   return result.deletedCount;
 }
 
@@ -96,6 +147,8 @@ export {
   disconnect,
   findAll,
   findById,
+  findOne,
+  findOneOrFail,
   insert,
   insertMany,
   updateOne,

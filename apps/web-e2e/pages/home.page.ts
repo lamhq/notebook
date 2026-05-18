@@ -2,8 +2,8 @@ import { Locator } from '@playwright/test';
 import { BasePage } from './base.page';
 
 export class HomePage extends BasePage {
-  public async navigate(): Promise<void> {
-    await this.goto('/');
+  public getUrl(): string {
+    return '/';
   }
 
   public getActivityItems(): Locator {

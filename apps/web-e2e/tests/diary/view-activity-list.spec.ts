@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { ObjectId } from 'mongodb';
 import { HomePage } from '../../pages/home.page';
 import { parseTimeString } from '../../utils/datetime';
 import { connect, deleteMany, disconnect, insertMany } from '../../utils/mongodb';
@@ -57,7 +58,7 @@ async function seedTestData(): Promise<void> {
     }
   }
 
-  seededActivityIds = await insertMany(activities);
+  seededActivityIds = await insertMany('activities', activities);
   console.log(`Seeded ${activities.length.toString()} test activities`);
 }
 
@@ -65,7 +66,11 @@ async function seedTestData(): Promise<void> {
 async function cleanupTestData(): Promise<void> {
   if (seededActivityIds.length === 0) return;
 
-  const deletedCount = await deleteMany(seededActivityIds);
+  const deletedCount = await deleteMany('activities', {
+    _id: {
+      $in: seededActivityIds.map((id) => new ObjectId(id)),
+    },
+  });
   console.log(`Cleaned up ${deletedCount.toString()} test activities`);
   seededActivityIds = [];
 }

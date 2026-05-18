@@ -12,7 +12,7 @@ cd notebook
 pnpm install
 ```
 
-## Start
+## Starting applications
 
 Terminate running applications:
 
@@ -27,26 +27,21 @@ npx turbo web#dev
 npx turbo api#dev
 ```
 
-## Test
+## End-to-End Tests
 
-Run test for all projects:
+End-to-end tests require Docker running. They use Playwright to automate browser interactions and test the web application in the local environment.
+
+Docker services and web application are automatically started when running end-to-end tests.
+
+To run a specific test:
 
 ```bash
-npx turbo test
+pnpm -F web-e2e exec playwright test path/to/test-file.spec.ts
 ```
 
-Run test for a specific project:
+To run Playwright in UI mode:
 
 ```bash
-npx turbo web#test       # Web unit tests
-npx turbo api#test       # API unit tests
-npx turbo web-e2e#test   # Web end-to-end tests
-```
-
-Run Playwright in UI mode:
-
-```bash
-# execute the installed Playwright binary in the `web-e2e` package
 pnpm -F web-e2e exec playwright test --ui
 ```
 
