@@ -50,8 +50,7 @@ async function startServer() {
       // Dynamically provide signing key based on kid in the header and JWKs from Keycloak
       secret: jwksRsa.expressJwtSecret({
         cache: true,
-        rateLimit: true,
-        jwksRequestsPerMinute: 5,
+        rateLimit: false,
         jwksUri: jwksUri,
       }),
       algorithms: ['RS256'], // Keycloak typically uses RS256
