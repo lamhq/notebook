@@ -20,6 +20,7 @@ tools:
     edit/rename,
     search,
     web/fetch,
+    browser,
     playwright-test/browser_click,
     playwright-test/browser_close,
     playwright-test/browser_console_messages,
@@ -90,7 +91,7 @@ Generates a test suite document for the "Update Activity" feature based on its f
 **Steps**:
 
 1. Read the **Documentation Structure** document to locate the feature specification and test suite documents.
-2. Read the **Test Suite Guidelines** document o understand the standards for writing a test suite.
+2. Read the **Test Suite Guidelines** document to understand the standards for writing a test suite.
 3. Find and read the **Feature Specification** document for the given feature to know how it works. If the document is unavailable, request it from the user and stop (instead of checking the existing implementation).
 4. Design test cases for the feature.
 5. Document the test cases to a test suite document accordance with the guidelines.
@@ -117,7 +118,7 @@ Implement tests for the "Update Activity" feature based on the test cases define
 2. **Test the app manually**
    1. Start the application.
    2. Follow test cases in the suite document to test the application's behavior:
-   3. Use `playwright-test/*` tools to open the app in a browser and perform interactions
+   3. Use `browser/*` tools to open the app in a browser and perform interactions
    4. Record necessary information for writing tests, such as selectors, expected results, and any edge cases encountered.
    5. Stop and report issues if any test case fails.
 
