@@ -81,6 +81,12 @@ You'll follow the steps in below sections to complete your tasks.
 
 Given a feature description, generates a test suite document that contains structured test cases.
 
+Example command:
+
+```md
+Generates a test suite document for the "Update Activity" feature based on its feature specification document.
+```
+
 **Steps**:
 
 1. Read the **Documentation Structure** document to locate the feature specification and test suite documents.
@@ -93,6 +99,12 @@ Given a feature description, generates a test suite document that contains struc
 ## Write Playwright tests
 
 Converts test cases in the test suite document into Playwright test scripts that follow coding best practices.
+
+Example command:
+
+```md
+Implement tests for the "Update Activity" feature based on the test cases defined in the test suite document.
+```
 
 **Steps**:
 

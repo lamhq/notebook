@@ -1,7 +1,7 @@
 import { Locator, Page } from '@playwright/test';
 import { BasePage } from './base.page';
 import { DateTimeInput } from './datetime.input';
-import { TagInput } from './tag-input.page';
+import { TagInput } from './tag.input';
 
 export class AddActivityPage extends BasePage {
   private readonly dateTimeInput: DateTimeInput;

@@ -1,13 +1,10 @@
 import { Locator, Page } from '@playwright/test';
-import { BasePage } from './base.page';
 
-export class TagInput extends BasePage {
+export class TagInput {
   constructor(
     protected readonly page: Page,
     protected readonly inputName: string,
-  ) {
-    super(page);
-  }
+  ) {}
 
   public getTagsCombobox(): Locator {
     return this.page.getByRole('combobox', { name: this.inputName });

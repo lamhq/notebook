@@ -1,6 +1,11 @@
 import { Db, MongoClient, ObjectId } from 'mongodb';
 
-type MongoObject = Record<string, unknown>;
+type PlainObject = Record<string, unknown>;
+
+type MongoDocument = {
+  _id: ObjectId;
+  [key: string]: unknown;
+};
 
 const uri = 'mongodb://root:password@localhost:27017/test?authSource=admin';
 const dbName = 'test';
@@ -31,8 +36,8 @@ async function disconnect(): Promise<void> {
 // INSERT
 async function insert(
   collectionName: string,
-  data: MongoObject,
-): Promise<MongoObject> {
+  data: PlainObject,
+): Promise<MongoDocument> {
   if (!db) throw new Error('Not connected to database');
   const collection = db.collection(collectionName);
   const result = await collection.insertOne(data);
@@ -42,7 +47,7 @@ async function insert(
 // INSERT MANY
 async function insertMany(
   collectionName: string,
-  data: MongoObject[],
+  data: PlainObject[],
 ): Promise<string[]> {
   if (!db) throw new Error('Not connected to database');
   const collection = db.collection(collectionName);
@@ -54,7 +59,7 @@ async function insertMany(
 async function findById(
   collectionName: string,
   id: string,
-): Promise<MongoObject | null> {
+): Promise<MongoDocument | null> {
   if (!db) throw new Error('Not connected to database');
   const collection = db.collection(collectionName);
   return await collection.findOne({ _id: new ObjectId(id) });
@@ -63,8 +68,8 @@ async function findById(
 // FIND ONE
 async function findOne(
   collectionName: string,
-  query: MongoObject = {},
-): Promise<MongoObject | null> {
+  query: PlainObject = {},
+): Promise<MongoDocument | null> {
   if (!db) throw new Error('Not connected to database');
   const collection = db.collection(collectionName);
   return await collection.findOne(query);
@@ -73,9 +78,9 @@ async function findOne(
 // FIND ONE OR FAIL
 async function findOneOrFail(
   collectionName: string,
-  query: MongoObject = {},
+  query: PlainObject = {},
   options?: { timeout?: number },
-): Promise<MongoObject> {
+): Promise<MongoDocument> {
   if (!db) throw new Error('Not connected to database');
 
   const timeout = options?.timeout ?? 0;
@@ -97,8 +102,8 @@ async function findOneOrFail(
 // FIND MANY
 async function findAll(
   collectionName: string,
-  query: MongoObject = {},
-): Promise<MongoObject[]> {
+  query: PlainObject = {},
+): Promise<MongoDocument[]> {
   if (!db) throw new Error('Not connected to database');
   const collection = db.collection(collectionName);
   return await collection.find(query).toArray();
@@ -108,8 +113,8 @@ async function findAll(
 async function updateOne(
   collectionName: string,
   id: string,
-  updates: MongoObject,
-): Promise<MongoObject | null> {
+  updates: PlainObject,
+): Promise<MongoDocument | null> {
   if (!db) throw new Error('Not connected to database');
   const collection = db.collection(collectionName);
   const result = await collection.updateOne(
@@ -131,7 +136,7 @@ async function deleteOne(collectionName: string, id: string): Promise<boolean> {
 // DELETE MANY
 async function deleteMany(
   collectionName: string,
-  query: MongoObject,
+  query: PlainObject,
 ): Promise<number> {
   if (!db) throw new Error('Not connected to database');
   const collection = db.collection(collectionName);

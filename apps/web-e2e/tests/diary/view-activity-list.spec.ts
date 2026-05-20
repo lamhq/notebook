@@ -258,7 +258,10 @@ test.describe('Error handling', () => {
     });
 
     await homePage.navigate();
-    await expect(homePage.getNetworkErrorMessage()).toBeVisible();
+
+    await expect(homePage.getErrorMessage()).toHaveText(
+      /Please check your network connection/i,
+    );
 
     const tryAgainButton = homePage.getTryAgainButton();
     await expect(tryAgainButton).toBeVisible();

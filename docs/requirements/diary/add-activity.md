@@ -79,19 +79,7 @@ The Add Activity feature consists of:
 
 **Auto-calculation Logic:**
 
-The system analyzes the activity content and calculates income and outcome amounts:
-
-- Each line in the content is treated as a separate transaction
-- Amount Detection:
-  - Pattern: Numbers followed by 'k' or 'K' (e.g., "100k", "50K")
-  - Multiple amounts per line are summed
-  - Income Detection: Lines containing the word "nhận" (Vietnamese for "receive") are classified as income
-  - Expense Detection: All other amounts are classified as outcome
-- Examples:
-  - "nhận 500k từ dự án" → income: 500
-  - "chi 100k cho cà phê" → outcome: 100
-  - "mua đồ 50k, trà 20k" → outcome: 70
-  - "nhận hoa hồng 200k\nchi xăng 80k" → income: 200, outcome: 80
+Refer to [Income/Outcome Auto-Calculation Logic](./auto-calc-amounts.md).
 
 **Form Validation:**
 
@@ -180,19 +168,7 @@ flowchart TD
 
 ### Workflow: Content Analysis for Financial Detection
 
-```mermaid
-flowchart TD
-    A[User types/changes content] --> B[Split content by newline]
-    B --> C{Process each line}
-    C --> D[Extract amounts with pattern /#\d+[kK]/g]
-    D --> E[Check if line contains 'nhận']
-    E -->|Contains nhận| F[Sum amounts as Income]
-    E -->|No nhận| G[Sum amounts as Outcome]
-    F --> H[Set Income field]
-    G --> I[Set Outcome field]
-    H --> J[Update form]
-    I --> J
-```
+Refer to [Income/Outcome Auto-Calculation Logic](./auto-calc-amounts.md).
 
 ---
 

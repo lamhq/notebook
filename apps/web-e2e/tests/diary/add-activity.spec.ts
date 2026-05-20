@@ -5,7 +5,7 @@ import { connect, deleteMany, disconnect, insertMany } from '../../utils/mongodb
 
 let addActivityPage: AddActivityPage;
 let homePage: HomePage;
-let deleteMarker: string;
+const deleteMarker = 'TestAddActivity';
 const seedTags = ['income', 'project', 'bonus', 'work', 'learning'];
 
 // Seed test tags - insert tag documents into the tags collection
@@ -23,20 +23,22 @@ async function cleanupTestData(): Promise<void> {
 }
 
 test.beforeAll(async () => {
-  deleteMarker = `test${Date.now().toString()}`;
   await connect();
-  await seedTestData();
 });
 
 test.afterAll(async () => {
-  await cleanupTestData();
   await disconnect();
 });
 
 test.beforeEach(async ({ page }) => {
+  await seedTestData();
   addActivityPage = new AddActivityPage(page);
   homePage = new HomePage(page);
   await addActivityPage.navigate();
+});
+
+test.afterEach(async () => {
+  await cleanupTestData();
 });
 
 test.describe('Add Activity - Auto-calculation', () => {
