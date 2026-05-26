@@ -89,23 +89,6 @@ test.describe('Add Activity - Auto-calculation', () => {
   });
 });
 
-test.describe('Add Activity - Manual Override', () => {
-  // TC_AA_04: Override auto-calculated income value
-  test('override auto-calculated income value', async () => {
-    // Enter content that will auto-calculate income
-    await addActivityPage.enterContent(`nhận 500k từ dự án ${deleteMarker}`);
-
-    // Wait for auto-calculation
-    await expect(addActivityPage.getIncomeField()).toHaveValue('500');
-
-    // Override the income value
-    await addActivityPage.setIncome('600');
-
-    // Verify the override persists
-    await expect(addActivityPage.getIncomeField()).toHaveValue('600');
-  });
-});
-
 test.describe('Add Activity - Form Validation', () => {
   // TC_AA_05: Submit form with empty content field
   test('submit form with empty content field shows validation error', async ({

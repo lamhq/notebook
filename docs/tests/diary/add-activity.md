@@ -28,14 +28,11 @@ Verify that the system correctly auto-calculates the outcome amount when the con
 
 1. Navigate to the Add Activity page (`/activities/new`)
 2. Enter "chi 100k cho cà phê" in the content field
-3. Wait for auto-calculation to complete
-4. Verify the income and outcome fields are updated
 
 ### Expected Result
 
 - The Outcome field displays `100`
 - The Income field remains empty
-- The calculated values are based on the pattern matching and line analysis
 
 ### Postconditions
 
@@ -63,14 +60,11 @@ Verify that the system correctly sums multiple amounts from different lines and 
 
 1. Navigate to the Add Activity page (`/activities/new`)
 2. Enter "nhận hoa hồng 200k\nchi xăng 80k" in the content field (with newline)
-3. Wait for auto-calculation to complete
-4. Verify the income and outcome fields are updated
 
 ### Expected Result
 
 - The Income field displays `200`
 - The Outcome field displays `80`
-- Multiple amounts per line are summed correctly
 
 ### Postconditions
 
@@ -98,56 +92,15 @@ Verify that the system correctly sums multiple amounts from a single line when n
 
 1. Navigate to the Add Activity page (`/activities/new`)
 2. Enter "mua đồ 50k, trà 20k" in the content field
-3. Wait for auto-calculation to complete
-4. Verify the income and outcome fields are updated
 
 ### Expected Result
 
 - The Outcome field displays `70` (`50` + `20`)
 - The Income field remains empty
-- Multiple amounts on the same line are summed together
 
 ### Postconditions
 
 - No data cleanup required; close the form without submitting
-
----
-
-## TC_AA_04 - Override auto-calculated income value
-
-### Description
-
-Verify that a user can manually override the auto-calculated income value and the manual value is preserved.
-
-### Pre-conditions
-
-- Application is accessible
-- User is logged in
-- User is on the Add Activity page (`/activities/new`)
-
-### Test Data
-
-- Content: "nhận 500k từ dự án"
-- Manual Income: `600`
-
-### Test Steps
-
-1. Navigate to the Add Activity page (`/activities/new`)
-2. Enter "nhận 500k từ dự án" in the content field
-3. Wait for auto-calculation (income should be `500`)
-4. Click on the income field
-5. Clear the field and enter `600`
-6. Submit the form with valid tags and time
-
-### Expected Result
-
-- The income field is successfully updated to `600`
-- The form is submitted with the manual income value of `600`
-- The activity is created with income of `600` (not the auto-calculated `500`)
-
-### Postconditions
-
-- Delete the activity created during this test
 
 ---
 

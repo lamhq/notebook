@@ -9,8 +9,8 @@ export abstract class BasePage {
 
   public abstract getUrl(): string;
 
-  public async navigate(): Promise<void> {
-    await this.page.goto(this.getUrl());
+  public navigate() {
+    return this.page.goto(this.getUrl());
   }
 
   public getErrorMessage(): Locator {
