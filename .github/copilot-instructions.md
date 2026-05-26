@@ -19,23 +19,35 @@ Describes how a software feature works from the end‑user’s perspective.
 
 Location: `docs/use-cases/{module}/{feature-name}.md`
 
-## Use Case Document Guidelines
+## Use Case Document Guide
 
-Guidelines for writing a Use Case document.
+Guide for writing Use Case documents.
 
 Location: http://localhost:4173/se/documentation/ucd.md
 
+## Test Suite Document
+
+Contains test cases for a software feature.
+
+Location: `docs/tests/{module}/{feature-name}.md`
+
 ## Repository Guide
 
-Overview of the repository/project, how to install, and usage (lint, test, build)
+Overview of the repository/project, how to install, and usage (lint, test, build).
 
 Location:
 
 - `README.md` (root)
 - `apps/{project}/README.md` (project-specific)
 
-## Feature Specification Document
+## Playwright Project Structure
 
-Defines a software feature in detail: purpose, scope, functionality, expected behavior.
+How files/folders are organized in Playwright projects.
 
-Location: `docs/feature-spec/{module}/{feature-name}.md`
+Location: http://localhost:4173/web/playwright/project-structure.md
+
+## Playwright Coding Guide
+
+Code snippets and best practices for writing Playwright tests.
+
+Location: http://localhost:4173/web/playwright/write-tests.md

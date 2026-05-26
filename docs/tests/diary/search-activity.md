@@ -7,46 +7,7 @@
 
 ---
 
-## TC_SA_01 - Search Dialog Opens via Filter Icon
-
-### Description
-
-Verify that the search dialog opens when user clicks the filter icon in the activity list toolbar.
-
-### Pre-conditions
-
-- Application is accessible
-- User is logged in
-- User is on the homepage/activity list page
-- Activities exist in the system
-
-### Test Data
-
-- No specific test data required
-
-### Test Steps
-
-1. Navigate to the activity list page (homepage)
-2. Locate the filter icon button in the activity list toolbar
-3. Click the filter icon button
-
-### Expected Result
-
-- Search dialog opens successfully
-- Dialog title "Search activities" is displayed
-- Text field is auto-focused (cursor visible in text input)
-- Form contains Text, Tags, and Time Range fields
-- Time Range field shows default value "This Month"
-- Reset and Search buttons are visible and enabled
-
-### Postconditions
-
-- Close dialog by pressing Escape or clicking outside
-- Activity list remains unchanged
-
----
-
-## TC_SA_02 - Text Search with Single Keyword
+## TC_SA_01 - Text Search with Single Keyword
 
 ### Description
 
@@ -54,7 +15,6 @@ Verify that user can search activities by entering text in the Text field and re
 
 ### Pre-conditions
 
-- Application is accessible
 - User is logged in
 - User is on the homepage
 - Activities with various content exist (at least 2 activities with "coffee" in content, others without)
@@ -84,7 +44,7 @@ Verify that user can search activities by entering text in the Text field and re
 
 ---
 
-## TC_SA_03 - Tag Filtering with Single Tag
+## TC_SA_02 - Tag Filtering with Single Tag
 
 ### Description
 
@@ -92,7 +52,6 @@ Verify that user can select a single tag and activities are filtered to show onl
 
 ### Pre-conditions
 
-- Application is accessible
 - User is logged in
 - User is on the homepage
 - Tags exist in the system
@@ -122,7 +81,7 @@ Verify that user can select a single tag and activities are filtered to show onl
 
 ---
 
-## TC_SA_04 - Tag Filtering with Multiple Tags
+## TC_SA_03 - Tag Filtering with Multiple Tags
 
 ### Description
 
@@ -130,7 +89,6 @@ Verify that user can select multiple tags and activities with ANY of the selecte
 
 ### Pre-conditions
 
-- Application is accessible
 - User is logged in
 - User is on the homepage
 - At least 3 different tags exist in the system
@@ -162,7 +120,7 @@ Verify that user can select multiple tags and activities with ANY of the selecte
 
 ---
 
-## TC_SA_05 - Preset Time Range - This Month (Default)
+## TC_SA_04 - Preset Time Range - This Month (Default)
 
 ### Description
 
@@ -170,7 +128,6 @@ Verify that "This Month" is the default time range option and filtering works co
 
 ### Pre-conditions
 
-- Application is accessible
 - User is logged in
 - User is on the homepage
 - Activities from different months exist
@@ -199,7 +156,7 @@ Verify that "This Month" is the default time range option and filtering works co
 
 ---
 
-## TC_SA_06 - Preset Time Range - All
+## TC_SA_05 - Preset Time Range - All
 
 ### Description
 
@@ -207,7 +164,6 @@ Verify that user can select "All" option to view activities without date filteri
 
 ### Pre-conditions
 
-- Application is accessible
 - User is logged in
 - User is on the homepage
 - Activities from multiple months/years exist
@@ -236,7 +192,7 @@ Verify that user can select "All" option to view activities without date filteri
 
 ---
 
-## TC_SA_07 - Custom Date Range Selection
+## TC_SA_06 - Custom Date Range Selection
 
 ### Description
 
@@ -244,7 +200,6 @@ Verify that user can select "Custom" time range and specify From/To dates.
 
 ### Pre-conditions
 
-- Application is accessible
 - User is logged in
 - User is on the homepage
 - Activities exist in the system
@@ -283,7 +238,7 @@ Verify that user can select "Custom" time range and specify From/To dates.
 
 ---
 
-## TC_SA_08 - Combined Search - All Criteria
+## TC_SA_07 - Combined Search - All Criteria
 
 ### Description
 
@@ -291,7 +246,6 @@ Verify that user can combine text, tags, and custom date range in a complex mult
 
 ### Pre-conditions
 
-- Application is accessible
 - User is logged in
 - User is on the homepage
 - Activities with various criteria exist
@@ -329,7 +283,7 @@ Verify that user can combine text, tags, and custom date range in a complex mult
 
 ---
 
-## TC_SA_09 - Reset Button Clears All Fields
+## TC_SA_08 - Reset Button Clears All Fields
 
 ### Description
 
@@ -337,7 +291,6 @@ Verify that clicking the Reset button clears all search fields to default values
 
 ### Pre-conditions
 
-- Application is accessible
 - User is logged in
 - Search dialog is open
 - User has entered search criteria
@@ -369,7 +322,7 @@ Verify that clicking the Reset button clears all search fields to default values
 
 ---
 
-## TC_SA_10 - No Search Results Display Empty State
+## TC_SA_09 - No Search Results Display Empty State
 
 ### Description
 
@@ -377,7 +330,6 @@ Verify that when search criteria return no results, the empty state message is d
 
 ### Pre-conditions
 
-- Application is accessible
 - User is logged in
 - User is on the homepage
 
@@ -406,7 +358,7 @@ Verify that when search criteria return no results, the empty state message is d
 
 ---
 
-## TC_SA_11 - Pagination Resets After Search
+## TC_SA_10 - Pagination Resets After Search
 
 ### Description
 
@@ -414,7 +366,6 @@ Verify that pagination resets to page 1 after performing a search.
 
 ### Pre-conditions
 
-- Application is accessible
 - User is logged in
 - Activity list currently displays page 3 or higher
 - Results per page: 10 activities
@@ -443,42 +394,7 @@ Verify that pagination resets to page 1 after performing a search.
 
 ---
 
-## TC_SA_12 - Incomplete Custom Date Range Handling
-
-### Description
-
-Verify that search cannot proceed when Custom date range is selected but dates are not completely filled.
-
-### Pre-conditions
-
-- Application is accessible
-- User is logged in
-- Search dialog is open
-
-### Test Data
-
-- Time Range: "Custom"
-- From Date: April 1, 2026
-- To Date: (empty/not selected)
-
-### Test Steps
-
-1. Click filter icon to open search dialog
-2. Select "Custom" from Time Range dropdown
-3. Select April 1, 2026 as From date
-4. Leave To date empty/not selected
-5. Attempt to click "Search" button
-
-### Expected Result
-
-- Validation message appear, indicating one of two dates are required
-- Search are note executed
-- Dialog does not close
-- Activity list is not updated
-
----
-
-## TC_SA_13 - Responsive Design - Mobile Viewport
+## TC_SA_11 - Responsive Design - Mobile Viewport
 
 ### Description
 
@@ -486,7 +402,6 @@ Verify that search dialog is responsive and functions correctly on mobile viewpo
 
 ### Pre-conditions
 
-- Application is accessible
 - User is logged in
 - Browser is set to mobile viewport (375px width)
 

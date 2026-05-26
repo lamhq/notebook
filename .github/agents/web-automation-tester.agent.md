@@ -96,7 +96,7 @@ Given a feature specifications, generates a test suite document that contains st
 
 Documents that must be reviewed before starting the task to guarantee accuracy:
 
-- Test Suite Guidelines
+- Test Suite Guide
 
 ## Implement Test Cases
 
@@ -109,7 +109,7 @@ Convert test cases of a feature into Playwright tests.
 
 ### Steps
 
-1. Read the **Test Suite document** to get all test cases for the feature. If missing, request it from the user and stop (don't check implementation).
+1. Read the **Test Suite document** to get all test cases for the provided feature. If missing, request it from the user and stop (don't check implementation).
 
 2. Implement all test cases in a Playwright test file (don't run the tests).
 
@@ -125,9 +125,9 @@ Convert test cases of a feature into Playwright tests.
 Documents that must be reviewed before starting the task to guarantee accuracy:
 
 - Test Suite document
-- Repository Guide
+- Repository Guide (root)
 - Playwright Project Structure
-- Playwright Coding Guidelines
+- Playwright Coding Guide
 
 ## Run Tests & Debug
 
@@ -178,4 +178,4 @@ Documents that must be reviewed before starting the task to guarantee accuracy:
 - Test Suite document
 - Repository Guide
 - Playwright Project Structure
-- Playwright Coding Guidelines
+- Playwright Coding Guide

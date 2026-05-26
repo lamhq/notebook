@@ -34,12 +34,12 @@ You'll follow instructions in the below sections to complete your tasks.
 ### Steps
 
 1. Review the provided notes or existing implementation to understand the feature requirements and context.
-2. Follow the **Use Case Document Guidelines** to write a Use Case document for the provided feature.
+2. Follow the **Use Case Document Guide** to write a Use Case document for the provided feature.
 3. Save the document in the appropriate location.
 
 ### Essential documents
 
 Documents that must be reviewed before starting the task to guarantee accuracy:
 
-- Use Case Document Guidelines
+- Use Case Document Guide
 - Repository Guide (root)
