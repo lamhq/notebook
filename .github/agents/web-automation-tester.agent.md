@@ -20,6 +20,7 @@ tools:
     edit/rename,
     search,
     web/fetch,
+    browser,
     todo,
   ]
 ---

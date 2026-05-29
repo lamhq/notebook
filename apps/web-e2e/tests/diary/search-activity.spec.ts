@@ -122,13 +122,22 @@ test.describe('Text and Tag Filtering', () => {
 
     await test.step('Verify filtered results', async () => {
       await expect(activityListPage.getDialog()).toBeHidden();
-      await expect(
-        activityListPage.activityList.getActivityItems().first(),
-      ).toBeVisible();
+    });
+
+    await test.step('Verify first activity on page 1 contains "coffee"', async () => {
       await expect(
         activityListPage.activityList
-          .getActivityItems()
-          .first()
+          .getFirstActivity()
+          .getByTestId('activity-description'),
+      ).toContainText(/coffee/i);
+    });
+
+    await test.step('Navigate to last page and verify last activity contains "coffee"', async () => {
+      await activityListPage.pagination.scrollIntoView();
+      await activityListPage.pagination.goToLastPage();
+      await expect(
+        activityListPage.activityList
+          .getLastActivity()
           .getByTestId('activity-description'),
       ).toContainText(/coffee/i);
     });

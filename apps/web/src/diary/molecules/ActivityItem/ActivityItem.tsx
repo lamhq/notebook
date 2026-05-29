@@ -14,14 +14,20 @@ export default function ActivityItem({ activity }: ActivityItemProps) {
   const html = activity.content.replace(/\n/g, '<br/>');
 
   return (
-    <article className="activity-item">
+    <article aria-labelledby={`activity-${activity.id}`}>
       <Grid container spacing={0} justifyContent="space-between">
-        <time dateTime={activity.time.toISOString()} data-testid="activity-time">
-          <TimeLabel time={activity.time} />
-        </time>
+        <Box
+          component="h4"
+          id={`activity-${activity.id}`}
+          sx={{ margin: 0, padding: 0, fontWeight: 'inherit', fontSize: 'inherit' }}
+        >
+          <time dateTime={activity.time.toISOString()}>
+            <TimeLabel time={activity.time} />
+          </time>
+        </Box>
         <ActivityMenu activity={activity} />
       </Grid>
-      <div data-testid="activity-description">
+      <div>
         <Typography
           dangerouslySetInnerHTML={{ __html: html }}
           variant="body1"
@@ -29,7 +35,7 @@ export default function ActivityItem({ activity }: ActivityItemProps) {
         />
       </div>
       <Grid container spacing={0} justifyContent="space-between">
-        <Box sx={{ display: 'flex', columnGap: 1 }} data-testid="activity-amount">
+        <Box sx={{ display: 'flex', columnGap: 1 }}>
           {Boolean(activity.income && activity.income > 0) && (
             <Typography variant="body2" sx={{ color: 'success.main' }}>
               {formatNumber(activity.income)}
@@ -41,7 +47,7 @@ export default function ActivityItem({ activity }: ActivityItemProps) {
             </Typography>
           )}
         </Box>
-        <Box sx={{ display: 'flex', columnGap: 1 }} data-testid="activity-tags">
+        <Box sx={{ display: 'flex', columnGap: 1 }}>
           {activity.tags.map((tag) => (
             <Typography key={tag} variant="body2" sx={{ color: 'primary.main' }}>
               {`#${tag}`}
