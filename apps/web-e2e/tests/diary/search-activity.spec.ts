@@ -286,14 +286,9 @@ test.describe('Time Range Filtering', () => {
       const groups = activityListPage.activityList.getActivityGroups();
       const count = await groups.count();
       for (let i = 0; i < count; i++) {
-        const dateString = await groups
-          .nth(i)
-          .getByRole('heading', { level: 3 })
-          .first()
-          .textContent();
-        expect(dateString).not.toBeNull();
-        // eslint-disable-next-line playwright/no-conditional-in-test
-        const groupDate = new Date(dateString ? dateString.trim() : '');
+        const groupDate = await activityListPage.activityList.getActivityGroupDate(
+          groups.nth(i),
+        );
         expect(groupDate.getTime()).toBeGreaterThanOrEqual(fromDate.getTime());
         expect(groupDate.getTime()).toBeLessThanOrEqual(toDate.getTime());
       }

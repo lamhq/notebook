@@ -8,78 +8,6 @@
 
 ---
 
-## TC_VAL_01 - View activity list on homepage
-
-### Description
-
-Verify that the activity list displays correctly on the homepage after user login.
-
-### Pre-conditions
-
-- User is authenticated and logged in
-- User has at least 5 activities in the database
-- User is on the homepage
-
-### Test Data
-
-- 15 activities
-
-### Test Steps
-
-1. Navigate to the homepage (`/`) after login
-
-### Expected Result
-
-- The page displays 10 activities
-- Pagination controls are visible at the bottom
-- Activities are grouped by date with date headers (e.g., "Thu, 23 Apr, 2026")
-- At least one date group with activities is visible
-
-### Postconditions
-
-- Activity list is displayed with correct pagination state (page 1 of multiple pages)
-
----
-
-## TC_VAL_02 - Activity item displays all required information
-
-### Description
-
-Verify that each activity item displays all required information with correct styling.
-
-### Pre-conditions
-
-- User is authenticated and logged in
-- User has at least one activity in the database
-- Activity list is displayed on the homepage
-
-### Test Data
-
-- An activity with time (with ⏱ icon), description, income and expense (with color), tags
-
-### Test Steps
-
-1. Navigate to the homepage
-2. Locate the first activity item in the list
-3. Examine the activity item to verify all components are present
-
-### Expected Result
-
-- Time component is visible with icon (⏱)
-- Description/content of the activity is displayed
-- Amount is visible and properly colored:
-  - Green for income transactions
-  - Red for expense transactions
-- Associated tags are displayed (e.g., #nec, #household)
-- All components are properly aligned and don't overlap
-- All text is readable with adequate contrast
-
-### Postconditions
-
-- Activity item data is displayed correctly on the page
-
----
-
 ## TC_VAL_03 - Activity groups are sorted by date (newest first)
 
 ### Description
@@ -105,12 +33,7 @@ Verify that date groups appear in descending order with newest activities first.
 
 ### Expected Result
 
-- The first activity group shows a more recent date than subsequent activity groups
-- Activity groups follow descending chronological order
-
-### Postconditions
-
-- Activity groups are displayed in descending chronological order (newest first)
+- Activity group headers (date strings) are displayed in descending chronological order (newest first)
 
 ---
 
@@ -141,10 +64,6 @@ Verify that activities within the same date group are sorted by time with the ne
 
 - Activities within the date group are ordered by time in descending order (newest first)
 
-### Postconditions
-
-- Activities within each date group are displayed in descending time order (newest first)
-
 ---
 
 ## TC_VAL_04 - Pagination controls are displayed
@@ -171,12 +90,11 @@ Verify that pagination controls are correctly displayed and in the proper state 
 
 ### Expected Result
 
-- First page button (`1`) is visible
-- Current page indicator shows page `1` with distinct styling (gray background)
+- First page button (`|<`) disabled (grayed out or not clickable)
 - Previous button (`<`) is disabled (grayed out or not clickable)
 - Next button (`>`) is enabled
-- Last page button is visible showing total page count
-- If there are skipped pages, ellipsis (`...`) is displayed
+- Last page button (`>|`) is visible
+- Current page indicator shows page `1` with distinct styling (gray background)
 
 ### Postconditions
 
@@ -280,7 +198,7 @@ Verify that the user can navigate to the last page and the Next button is disabl
 
 1. Navigate to the homepage
 2. Scroll to pagination controls
-3. Click on the last page number button
+3. Click on the last page button (`>|`)
 
 ### Expected Result
 
@@ -289,7 +207,7 @@ Verify that the user can navigate to the last page and the Next button is disabl
 - Last page may have fewer items than page size (10)
 - Next button (`>`) is disabled
 - Previous button (`<`) is enabled
-- First page button (`1`) is clickable
+- First page button (`|<`) is clickable
 
 ### Postconditions
 
@@ -323,7 +241,7 @@ Verify that the empty state message is displayed when the user has no activities
 ### Expected Result
 
 - Empty state message "There's no items to display." is displayed
-- Pagination controls are hidden or not visible
+- Pagination controls are hidden
 - Activity list area is not displayed
 - User interface is clean and user-friendly
 

@@ -22,7 +22,15 @@ export class PaginationComponent {
   }
 
   public getFirstPageButton(): Locator {
-    return this.getContainer().getByRole('button').filter({ hasText: '1' }).first();
+    return this.getContainer().getByRole('button', {
+      name: /first page/i,
+    });
+  }
+
+  public getLastPageButton(): Locator {
+    return this.getContainer().getByRole('button', {
+      name: /last page/i,
+    });
   }
 
   public getPageButton(pageNumber: number): Locator {
@@ -37,57 +45,7 @@ export class PaginationComponent {
     return this.page.locator('button[aria-current="page"]');
   }
 
-  public getEllipsis(): Locator {
-    return this.getContainer().getByRole('button', { name: '...' });
-  }
-
-  public async goToNextPage(): Promise<void> {
-    await this.getNextButton().click();
-  }
-
-  public async goToPreviousPage(): Promise<void> {
-    await this.getPreviousButton().click();
-  }
-
-  public async goToPage(pageNumber: number): Promise<void> {
-    await this.getPageButton(pageNumber).click();
-  }
-
-  public async goToFirstPage(): Promise<void> {
-    await this.page
-      .getByRole('navigation', { name: 'pagination navigation' })
-      .getByRole('button')
-      .filter({ hasText: '1' })
-      .first()
-      .click();
-  }
-
-  public async goToLastPage(): Promise<void> {
-    const nav = this.page.getByRole('navigation', { name: 'pagination navigation' });
-    const buttons = nav.getByRole('button');
-    const count = await buttons.count();
-    await buttons.nth(count - 2).click();
-  }
-
   public scrollIntoView(): Promise<void> {
     return this.getContainer().scrollIntoViewIfNeeded();
-  }
-
-  public async getCurrentPage(): Promise<number> {
-    const text = await this.getCurrentPageButton().innerText();
-    return parseInt(text, 10);
-  }
-
-  public async getLastVisiblePageNumber(): Promise<number> {
-    const buttons = this.getContainer().getByRole('button');
-    const count = await buttons.count();
-
-    if (count === 0) return 1;
-
-    const lastButton = buttons.nth(count - 2);
-    const text = await lastButton.innerText();
-    const pageNum = parseInt(text, 10);
-
-    return isNaN(pageNum) ? 1 : pageNum;
   }
 }
