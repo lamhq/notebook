@@ -49,8 +49,7 @@ Verify that the Update Activity page loads successfully with pre-filled form dat
 
 ### Postconditions
 
-- No data changes have been made
-- Navigate back to home page using Cancel button
+- Form is ready for next test or user action
 
 ---
 
@@ -94,7 +93,7 @@ Verify that a user can successfully update an activity with valid form data and 
 
 ### Postconditions
 
-- Verify the activity has been updated by checking the activity list on homepage
+- Activity is updated in the database
 
 ---
 
@@ -132,8 +131,7 @@ Verify that the auto-calculation engine correctly updates income/outcome amounts
 
 ### Postconditions
 
-- Cancel the update to discard changes
-- Verify original activity data remains unchanged
+- Original activity data remains unchanged in database
 
 ---
 
@@ -173,7 +171,7 @@ Verify that users can manually override auto-calculated income/outcome values an
 
 ### Postconditions
 
-- Verify the activity has been saved with the manual override value
+- Activity is updated with manual override value in database
 
 ---
 
@@ -215,7 +213,7 @@ Verify that tags can be properly selected, removed, and updated for an activity.
 
 ### Postconditions
 
-- Updated tags are reflected in the activity list
+- Activity is updated with new tags in database
 
 ---
 
@@ -256,7 +254,7 @@ Verify that the date and time of an activity can be successfully updated using t
 
 ### Postconditions
 
-- Updated activity timestamp is reflected in the activity list
+- Activity is updated with new timestamp in database
 
 ---
 
@@ -295,8 +293,7 @@ Verify that clicking the Cancel button discards all unsaved changes and navigate
 
 ### Postconditions
 
-- User is back on the homepage
-- Original activity data is intact
+- No changes are made to activity in database
 
 ---
 
@@ -333,7 +330,8 @@ For each validation scenario:
 
 ### Postconditions
 
-- Form returns to valid state after corrections
+- Validation error is displayed
+- Original activity data is not modified
 
 ---
 
@@ -367,11 +365,8 @@ Verify that an appropriate error message is displayed when the activity ID is in
 
 ### Postconditions
 
-- Click back button or navigate to homepage
-
----
-
-## TC_UA_10 - API error during activity fetch
+- Page is in error state
+- Form loading not attempted
 
 ### Description
 
@@ -403,12 +398,8 @@ Verify that an appropriate error message is displayed when the API fails to fetc
 
 ### Postconditions
 
-- Navigate back to homepage
-- Retry operation once API is restored
-
----
-
-## TC_UA_11 - API error during form submission
+- Page is in error state
+- Form loading not attempted
 
 ### Description
 
@@ -444,5 +435,4 @@ Verify that an appropriate error message is displayed when the API fails during 
 
 ### Postconditions
 
-- Check that activity data in database is unchanged
-- Fix API issue and retry submission or navigate away
+- No changes are made to activity in database

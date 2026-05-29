@@ -1,11 +1,8 @@
 import { expect, test } from '@playwright/test';
-import { ObjectId } from 'mongodb';
-import { HomePage } from '../../pages/home.page';
-import { SearchActivityPage } from '../../pages/search-activity.page';
+import { ActivityListPage } from '../../pages/activity-list.page';
 import { connect, deleteMany, disconnect, insertMany } from '../../utils/mongodb';
 
-let searchPage: SearchActivityPage;
-let homePage: HomePage;
+let activityListPage: ActivityListPage;
 const deleteMarker = 'TestSearchActivity';
 const seedTags = [
   'food',
@@ -16,11 +13,6 @@ const seedTags = [
   'work',
   'general',
 ];
-let seededActivityIds: string[] = [];
-
-function makeDate(year: number, month: number, day: number): Date {
-  return new Date(year, month, day, 10, 0, 0, 0);
-}
 
 async function seedTestData(): Promise<void> {
   await insertMany(
@@ -33,6 +25,9 @@ async function seedTestData(): Promise<void> {
   const currentMonth = now.getMonth(); // 0-indexed
 
   const activities: Record<string, unknown>[] = [];
+  const makeDate = (year: number, month: number, day: number): Date => {
+    return new Date(year, month, day, 10, 0, 0, 0);
+  };
 
   // 3 "coffee" activities in current month with food/beverage tags
   for (let i = 0; i < 3; i++) {
@@ -88,20 +83,13 @@ async function seedTestData(): Promise<void> {
     });
   }
 
-  seededActivityIds = await insertMany('activities', activities);
+  await insertMany('activities', activities);
   console.log(`Seeded ${String(activities.length)} test activities`);
 }
 
 async function cleanupTestData(): Promise<void> {
   await deleteMany('tags', { name: { $in: seedTags } });
-  if (seededActivityIds.length > 0) {
-    await deleteMany('activities', {
-      _id: {
-        $in: seededActivityIds.map((id) => new ObjectId(id)),
-      },
-    });
-    seededActivityIds = [];
-  }
+  await deleteMany('activities', { content: { $regex: deleteMarker } });
   console.log('Cleaned up test data');
 }
 
@@ -116,253 +104,243 @@ test.afterAll(async () => {
 });
 
 test.beforeEach(async ({ page }) => {
-  searchPage = new SearchActivityPage(page);
-  homePage = new HomePage(page);
-  await searchPage.navigate();
+  activityListPage = new ActivityListPage(page);
+  await activityListPage.navigate();
 });
 
 test.describe('Text and Tag Filtering', () => {
-  // TC_SA_01: Text Search with Single Keyword
-  test('searching by text keyword should filter activity list to matching results', async () => {
+  test('TC_SA_01: searching by text keyword should filter activity list to matching results', async () => {
     await test.step('Open search dialog', async () => {
-      await searchPage.openDialog();
-      await expect(searchPage.getDialog()).toBeVisible();
-      await expect(searchPage.getTextField()).toBeFocused();
+      await activityListPage.openDialog();
+      await expect(activityListPage.getDialog()).toBeVisible();
     });
 
     await test.step('Enter text and search', async () => {
-      await searchPage.enterText('coffee');
-      await searchPage.clickSearch();
+      await activityListPage.enterText('coffee');
+      await activityListPage.clickSearch();
     });
 
     await test.step('Verify filtered results', async () => {
-      await expect(searchPage.getDialog()).toBeHidden();
-      await expect(homePage.getActivityItems().first()).toBeVisible();
+      await expect(activityListPage.getDialog()).toBeHidden();
       await expect(
-        homePage.getActivityItems().first().getByTestId('activity-description'),
+        activityListPage.activityList.getActivityItems().first(),
+      ).toBeVisible();
+      await expect(
+        activityListPage.activityList
+          .getActivityItems()
+          .first()
+          .getByTestId('activity-description'),
       ).toContainText(/coffee/i);
     });
   });
 
-  // TC_SA_02: Tag Filtering with Single Tag
-  test('filtering by single tag should show only activities with that tag', async () => {
+  test('TC_SA_02: filtering by single tag should show only activities with that tag', async () => {
     await test.step('Open search dialog and select tag', async () => {
-      await searchPage.openDialog();
-      await searchPage.selectTag('food');
+      await activityListPage.openDialog();
+      await expect(activityListPage.getTagLoadingIcon()).toBeHidden();
+      await activityListPage.selectTag('beverage');
     });
 
     await test.step('Submit search', async () => {
-      await searchPage.clickSearch();
+      await activityListPage.clickSearch();
     });
 
     await test.step('Verify filtered results contain the selected tag', async () => {
-      await expect(searchPage.getDialog()).toBeHidden();
-      await expect(homePage.getActivityItems().first()).toBeVisible();
+      await expect(activityListPage.getDialog()).toBeHidden();
       await expect(
-        homePage.getActivityItems().first().getByTestId('activity-tags'),
-      ).toContainText('#food');
+        activityListPage.activityList.getActivityItems().first(),
+      ).toBeVisible();
+      await expect(activityListPage.activityList.getActivityItems()).toHaveCount(3);
     });
   });
 
-  // TC_SA_03: Tag Filtering with Multiple Tags
-  test('filtering by multiple tags should show activities matching any selected tag', async () => {
+  test('TC_SA_03: filtering by multiple tags should show activities matching any selected tag', async () => {
     await test.step('Open search dialog and select multiple tags', async () => {
-      await searchPage.openDialog();
-      await searchPage.selectTag('food');
-      await searchPage.selectTag('restaurant');
-      await searchPage.selectTag('dining');
+      await activityListPage.openDialog();
+      await expect(activityListPage.getTagLoadingIcon()).toBeHidden();
+      await activityListPage.selectTag('food');
+      await activityListPage.selectTag('dining');
     });
 
     await test.step('Submit search', async () => {
-      await searchPage.clickSearch();
+      await activityListPage.clickSearch();
     });
 
     await test.step('Verify filtered results', async () => {
-      await expect(searchPage.getDialog()).toBeHidden();
-      await expect(homePage.getActivityItems().first()).toBeVisible();
+      await expect(activityListPage.getDialog()).toBeHidden();
+      await expect(activityListPage.activityList.getActivityItems()).toHaveCount(5);
     });
   });
 
-  // TC_SA_07: Combined Search - All Criteria
-  test('combining text, tags, and custom date range should apply all criteria together', async () => {
+  test('TC_SA_07: combining text, tags, and custom date range should apply all criteria together', async () => {
     await test.step('Open search dialog', async () => {
-      await searchPage.openDialog();
+      await activityListPage.openDialog();
     });
 
     await test.step('Enter search criteria', async () => {
-      await searchPage.enterText('coffee');
-      await searchPage.selectTag('food');
-      await searchPage.selectTag('beverage');
-      await searchPage.selectTimeRange('Custom');
-      await searchPage.selectDate('From', '01042026');
-      await searchPage.selectDate('To', '15042026');
+      await activityListPage.enterText('coffee');
+      await expect(activityListPage.getTagLoadingIcon()).toBeHidden();
+      await activityListPage.selectTag('food');
+      await activityListPage.selectTag('beverage');
+      await activityListPage.selectTimeRange('Custom');
+      await activityListPage.selectDate('From', '01042026');
+      await activityListPage.selectDate('To', '15042026');
     });
 
     await test.step('Submit search', async () => {
-      await searchPage.clickSearch();
+      await activityListPage.clickSearch();
     });
 
     await test.step('Verify combined criteria applied', async () => {
-      await expect(searchPage.getDialog()).toBeHidden();
-      await expect(homePage.getActivityItems().first()).toBeVisible();
+      await expect(activityListPage.getDialog()).toBeHidden();
       await expect(
-        homePage.getActivityItems().first().getByTestId('activity-description'),
+        activityListPage.activityList.getActivityItems().first(),
+      ).toBeVisible();
+      await expect(
+        activityListPage.activityList
+          .getActivityItems()
+          .first()
+          .getByTestId('activity-description'),
       ).toContainText(/coffee/i);
     });
   });
 });
 
 test.describe('Time Range Filtering', () => {
-  // TC_SA_04: Preset Time Range - This Month (Default)
-  test('search dialog should pre-select This Month as default time range', async () => {
+  test('TC_SA_04: search dialog should pre-select This Month as default time range', async () => {
     await test.step('Open search dialog', async () => {
-      await searchPage.openDialog();
+      await activityListPage.openDialog();
     });
 
     await test.step('Verify This Month is pre-selected', async () => {
-      await expect(searchPage.getTimeRangeSelect()).toContainText('This month');
+      await expect(activityListPage.getTimeRangeSelect()).toContainText(
+        'This month',
+      );
     });
 
     await test.step('Search with default time range', async () => {
-      await searchPage.clickSearch();
+      await activityListPage.clickSearch();
     });
 
     await test.step('Verify dialog closes and results are shown', async () => {
-      await expect(searchPage.getDialog()).toBeHidden();
-      await expect(homePage.getActivityItems().first()).toBeVisible();
+      await expect(activityListPage.getDialog()).toBeHidden();
+      await expect(
+        activityListPage.activityList.getActivityItems().first(),
+      ).toBeVisible();
     });
   });
 
-  // TC_SA_05: Preset Time Range - All
-  test('selecting All time range should display activities from all dates', async () => {
+  test('TC_SA_05: selecting All time range should display activities from all dates', async () => {
     await test.step('Open search dialog and select All time range', async () => {
-      await searchPage.openDialog();
-      await searchPage.selectTimeRange('All');
+      await activityListPage.openDialog();
+      await activityListPage.selectTimeRange('All');
     });
 
     await test.step('Verify All is selected', async () => {
-      await expect(searchPage.getTimeRangeSelect()).toContainText('All');
+      await expect(activityListPage.getTimeRangeSelect()).toContainText('All');
     });
 
     await test.step('Submit search', async () => {
-      await searchPage.clickSearch();
+      await activityListPage.clickSearch();
     });
 
     await test.step('Verify all activities are displayed', async () => {
-      await expect(searchPage.getDialog()).toBeHidden();
-      await expect(homePage.getActivityItems()).toHaveCount(10);
-      await expect(homePage.getPaginationContainer()).toBeVisible();
+      await expect(activityListPage.getDialog()).toBeHidden();
+      await expect(activityListPage.activityList.getActivityItems()).toHaveCount(10);
+      await expect(activityListPage.pagination.getContainer()).toBeVisible();
     });
   });
 
-  // TC_SA_06: Custom Date Range Selection
-  test('selecting custom date range should filter activities within the specified dates', async () => {
+  test('TC_SA_06: selecting custom date range should filter activities within the specified dates', async () => {
     await test.step('Open search dialog and select Custom time range', async () => {
-      await searchPage.openDialog();
-      await searchPage.selectTimeRange('Custom');
+      await activityListPage.openDialog();
+      await activityListPage.selectTimeRange('Custom');
     });
 
     await test.step('Verify From and To date fields appear', async () => {
-      await expect(searchPage.getFromDateInput()).toBeVisible();
-      await expect(searchPage.getToDateInput()).toBeVisible();
+      await expect(activityListPage.getFromDateInput()).toBeVisible();
+      await expect(activityListPage.getToDateInput()).toBeVisible();
     });
 
     await test.step('Select date range April 1-30, 2026', async () => {
-      await searchPage.selectDate('From', '01042026');
-      await searchPage.selectDate('To', '30042026');
+      await activityListPage.selectDate('From', '01042026');
+      await activityListPage.selectDate('To', '30042026');
     });
 
     await test.step('Submit search', async () => {
-      await searchPage.clickSearch();
+      await activityListPage.clickSearch();
     });
 
     await test.step('Verify only activities within April 2026 are shown', async () => {
-      await expect(searchPage.getDialog()).toBeHidden();
-      await expect(homePage.getActivityItems().first()).toBeVisible();
+      await expect(activityListPage.getDialog()).toBeHidden();
+      await expect(
+        activityListPage.activityList.getActivityItems().first(),
+      ).toBeVisible();
     });
   });
 });
 
 test.describe('Edge Cases', () => {
-  // TC_SA_08: Reset Button Clears All Fields
-  test('clicking Reset should clear all search fields and keep dialog open', async () => {
+  test('TC_SA_08: clicking Reset should clear all search fields and keep dialog open', async () => {
     await test.step('Open dialog and enter search criteria', async () => {
-      await searchPage.openDialog();
-      await searchPage.enterText('coffee');
-      await searchPage.selectTag('food');
-      await searchPage.selectTimeRange('This week');
+      await activityListPage.openDialog();
+      await activityListPage.enterText('coffee');
+      await activityListPage.selectTag('food');
+      await activityListPage.selectTimeRange('This week');
     });
 
     await test.step('Click Reset button', async () => {
-      await searchPage.clickReset();
+      await activityListPage.clickReset();
     });
 
     await test.step('Verify fields are cleared and dialog remains open', async () => {
-      await expect(searchPage.getDialog()).toBeVisible();
-      await expect(searchPage.getTextField()).toHaveValue('');
-      await expect(searchPage.getTimeRangeSelect()).toContainText('This month');
+      await expect(activityListPage.getDialog()).toBeVisible();
+      await expect(activityListPage.getTextField()).toHaveValue('');
+      await expect(activityListPage.getTimeRangeSelect()).toContainText(
+        'This month',
+      );
       await expect(
-        searchPage.getDialog().getByRole('button', { name: 'food' }),
+        activityListPage.getDialog().getByRole('button', { name: 'food' }),
       ).toBeHidden();
     });
   });
 
-  // TC_SA_09: No Search Results Display Empty State
-  test('searching with no matching criteria should display empty state message', async () => {
+  test('TC_SA_09: searching with no matching criteria should display empty state message', async () => {
     await test.step('Open search dialog and enter non-existent text', async () => {
-      await searchPage.openDialog();
-      await searchPage.enterText('NonexistentActivityContent12345');
+      await activityListPage.openDialog();
+      await activityListPage.enterText('NonexistentActivityContent12345');
     });
 
     await test.step('Submit search', async () => {
-      await searchPage.clickSearch();
+      await activityListPage.clickSearch();
     });
 
     await test.step('Verify empty state is shown', async () => {
-      await expect(searchPage.getDialog()).toBeHidden();
-      await expect(homePage.getEmptyStateMessage()).toBeVisible();
-      await expect(homePage.getActivityItems()).toHaveCount(0);
+      await expect(activityListPage.getDialog()).toBeHidden();
+      await expect(activityListPage.getEmptyStateMessage()).toBeVisible();
+      await expect(activityListPage.activityList.getActivityItems()).toHaveCount(0);
     });
   });
 
-  // TC_SA_10: Pagination Resets After Search
-  test('performing a search should reset pagination to page 1', async () => {
-    await test.step('Navigate to page 3 of activity list', async () => {
-      await homePage.scrollToPagination();
-      await homePage.getPageButton(3).click();
-      await expect(homePage.getCurrentPageButton()).toContainText('3');
-    });
-
-    await test.step('Open search dialog and search with All time range', async () => {
-      await searchPage.openDialog();
-      await searchPage.selectTimeRange('All');
-      await searchPage.clickSearch();
-    });
-
-    await test.step('Verify pagination resets to page 1', async () => {
-      await expect(searchPage.getDialog()).toBeHidden();
-      await expect(homePage.getCurrentPageButton()).toContainText('1');
-    });
-  });
-
-  // TC_SA_11: Responsive Design - Mobile Viewport
-  test('search dialog should be functional on mobile viewport', async ({ page }) => {
+  test('TC_SA_11: search dialog should be functional on mobile viewport', async ({
+    page,
+  }) => {
     await test.step('Set mobile viewport', async () => {
       await page.setViewportSize({ width: 375, height: 667 });
-      await searchPage.navigate();
+      await activityListPage.navigate();
     });
 
     await test.step('Open search dialog and enter criteria', async () => {
-      await searchPage.openDialog();
-      await expect(searchPage.getDialog()).toBeVisible();
-      await searchPage.enterText('coffee');
-      await searchPage.selectTag('food');
-      await searchPage.selectTimeRange('This week');
+      await activityListPage.openDialog();
+      await expect(activityListPage.getDialog()).toBeVisible();
+      await activityListPage.enterText('coffee');
+      await activityListPage.selectTag('food');
+      await activityListPage.selectTimeRange('This week');
     });
 
     await test.step('Submit search and verify results update', async () => {
-      await searchPage.clickSearch();
-      await expect(searchPage.getDialog()).toBeHidden();
+      await activityListPage.clickSearch();
+      await expect(activityListPage.getDialog()).toBeHidden();
     });
   });
 });

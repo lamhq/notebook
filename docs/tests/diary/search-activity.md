@@ -32,15 +32,14 @@ Verify that user can search activities by entering text in the Text field and re
 
 ### Expected Result
 
-- Dialog closes after clicking Search
-- Activity list updates to show only activities containing "coffee" in content
-- Pagination controls show appropriate count
-- Results are sorted with most recent activities first
+- Activity list updates to show only activities containing "coffee" in content:
+  - The first activity on page one contains 'coffee'.
+  - The last activity on the last page contains 'coffee'.
 
 ### Postconditions
 
-- All search results are displayed with correct filtering applied
-- User can click filter icon again to modify search
+- Dialog closes after clicking Search
+- Current page is reset to page 1
 
 ---
 
@@ -70,14 +69,15 @@ Verify that user can select a single tag and activities are filtered to show onl
 
 ### Expected Result
 
-- Tags dropdown shows selected tag "food"
-- Dialog closes after clicking Search
-- Activity list updates to show only activities with the "food" tag (containing "#food" text)
-- Pagination reflects correct number of results
+- Activity list updates to show only activities with the "food" tag:
+  - Tag section of the first activity on page one contains "#food"
+  - Tag section of the last activity on the last page contains "#food"
 
 ### Postconditions
 
-- All filtered results show the selected tag
+- Tags dropdown shows selected tag "food"
+- Dialog closes after clicking Search
+- Current page is reset to page 1
 
 ---
 
@@ -109,14 +109,15 @@ Verify that user can select multiple tags and activities with ANY of the selecte
 
 ### Expected Result
 
-- All selected tags are displayed in the Tags field
-- Dialog closes
-- Activity list shows activities containing at least one of the selected tags (OR logic)
-- Activities without any of these tags are not displayed
+- Activity list shows activities containing at least one of the selected tags (OR logic):
+  - Tag section of the first activity on page one contains at least one of "#food", "#restaurant", or "#dining"
+  - Tag section of the last activity on the last page contains at least one of "#food", "#restaurant", or "#dining"
 
 ### Postconditions
 
-- Multiple tag filtering works correctly
+- All selected tags are displayed in the Tags field
+- Dialog closes
+- Current page is reset to page 1
 
 ---
 
@@ -139,20 +140,20 @@ Verify that "This Month" is the default time range option and filtering works co
 ### Test Steps
 
 1. Click the filter icon to open search dialog
-2. Verify "This Month" is pre-selected in the Time Range dropdown
-3. Do not change the time range selection
-4. Click "Search" button
+2. Do not change the time range selection
+3. Click "Search" button
 
 ### Expected Result
 
-- Time Range field shows "This Month" selected
-- Dialog closes
-- Activity list displays activities from the first to last day of current month only
-- Activities from other months are not displayed
+- Activity list displays activities from the first to last day of current month only:
+  - The first activity group header on page one shows the current month and year (e.g., May 2026)
+  - The last activity group header on the last page shows the current month and year (e.g., May 2026)
 
 ### Postconditions
 
-- Default time range filtering applied correctly
+- Time Range field shows "This Month" selected by default
+- Dialog closes
+- Current page is reset to page 1
 
 ---
 
@@ -181,14 +182,14 @@ Verify that user can select "All" option to view activities without date filteri
 
 ### Expected Result
 
-- Time Range shows "All" as selected
-- Dialog closes
-- Activity list displays all activities regardless of date
-- All activities are shown with pagination
+- All activities are returned without filtering (paginated):
+  - Total pages equal total activities divided by results per page (e.g., 100 activities / 10 per page = 10 pages)
 
 ### Postconditions
 
-- All activities are displayed without date filtering
+- Time Range shows "All" as selected
+- Dialog closes
+- Current page is reset to page 1
 
 ---
 
@@ -224,17 +225,17 @@ Verify that user can select "Custom" time range and specify From/To dates.
 
 ### Expected Result
 
+- Activity list displays only activities within the specified date range (April 1 to April 30, 2026):
+  - The first activity group header on page one shows a date on or before April 30, 2026
+  - The last activity group header on the last page shows a date on or after April 1, 2026
+
+### Postconditions
+
+- Current page is reset to page 1
 - Time Range shows "Custom" as selected
 - "From" and "To" date picker fields are visible and functional
 - Selected dates are displayed in the date fields
 - Dialog closes after clicking Search
-- Activity list displays only activities within the specified date range (April 1 to April 30, 2026)
-- From date is at start of day (00:00:00)
-- To date is at end of day (23:59:59)
-
-### Postconditions
-
-- Custom date range filtering applied correctly
 
 ---
 
@@ -270,16 +271,15 @@ Verify that user can combine text, tags, and custom date range in a complex mult
 
 ### Expected Result
 
-- Dialog closes
-- Activity list shows activities matching ALL criteria:
+- Activity list only shows activities matching ALL criteria:
   - Content contains "coffee" AND
   - Tag is "food" OR "beverage" AND
   - Date is between April 1 and April 15, 2026
-- Only activities satisfying all conditions are displayed
 
 ### Postconditions
 
-- Complex multi-criteria search executed successfully
+- Dialog closes
+- Current page is reset to page 1
 
 ---
 
@@ -317,8 +317,7 @@ Verify that clicking the Reset button clears all search fields to default values
 
 ### Postconditions
 
-- User can enter new search criteria or close dialog
-- Dialog can be closed by clicking outside or pressing Escape
+- Search dialog can be reopened to perform new search or further refine criteria
 
 ---
 
@@ -346,51 +345,13 @@ Verify that when search criteria return no results, the empty state message is d
 
 ### Expected Result
 
-- Dialog closes
-- Activity list displays empty state
-- Message "There's no items to display." is shown
+- Activity list displays empty message "There's no items to display."
 - No activities are listed
-- Pagination controls are hidden or show 0 items
 
 ### Postconditions
-
-- User can click filter icon again to perform new search
-
----
-
-## TC_SA_10 - Pagination Resets After Search
-
-### Description
-
-Verify that pagination resets to page 1 after performing a search.
-
-### Pre-conditions
-
-- User is logged in
-- Activity list currently displays page 3 or higher
-- Results per page: 10 activities
-
-### Test Data
-
-- Search text: "activity"
-
-### Test Steps
-
-1. Navigate to page 3 of the activity list
-2. Click filter icon to open search dialog
-3. Enter "activity" in Text field
-4. Click "Search" button
-
-### Expected Result
 
 - Dialog closes
-- Activity list updates with search results
-- Pagination controls show page 1 as current page
-- Results display items from page 1 of filtered results
-
-### Postconditions
-
-- Pagination is at page 1 after search
+- Pagination controls are hidden
 
 ---
 
@@ -430,4 +391,5 @@ Verify that search dialog is responsive and functions correctly on mobile viewpo
 
 ### Postconditions
 
-- Mobile functionality works as expected
+- Search filter (text: "coffee", tags: "food", time range: "This Week") is applied to the activity list
+- Current page is reset to page 1

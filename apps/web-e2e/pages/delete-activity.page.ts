@@ -1,7 +1,7 @@
 import { Locator } from '@playwright/test';
-import { HomePage } from './home.page';
+import { ActivityListPage } from './activity-list.page';
 
-export class DeleteActivityPage extends HomePage {
+export class DeleteActivityPage extends ActivityListPage {
   public getActivities(text: string): Locator {
     return this.page.locator('.activity-item').filter({ hasText: text });
   }

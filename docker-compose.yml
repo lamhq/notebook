@@ -9,6 +9,7 @@ services:
       MONGO_INITDB_DATABASE: test
     volumes:
       - mongodb_data:/data/db
+      - ./apps/mongodb:/docker-entrypoint-initdb.d
 
   keycloak:
     image: quay.io/keycloak/keycloak:26.5.6

@@ -44,8 +44,8 @@ Verify that clicking the "Cancel" button in the confirmation dialog closes the d
 
 ### Postconditions
 
-- User is back to viewing the activity list
-- Activity count remains the same
+- Confirmation dialog is closed
+- Activity remains in the activity list
 
 ---
 
@@ -83,8 +83,8 @@ Verify that clicking outside the dialog (on the background/overlay) closes the d
 
 ### Postconditions
 
-- Activity data is unchanged
-- User is ready to perform other actions
+- Confirmation dialog is closed
+- Activity remains in the activity list
 
 ---
 
@@ -131,8 +131,8 @@ Verify that clicking the "Delete" button in the confirmation dialog successfully
 
 ### Postconditions
 
-- Verify the activity no longer appears in the activity list
-- Verify the activity count has decreased by 1
+- Activity is removed from the activity list
+- Activity count is decreased by 1
 
 ---
 
@@ -172,9 +172,8 @@ Verify that a 404 error is handled gracefully when the activity no longer exists
 
 ### Postconditions
 
-- Error message is visible
-- User can click Cancel to close the dialog
-- Activity remains in the list (if it still exists locally)
+- Error message is displayed in confirmation dialog
+- Delete button is enabled to retry
 
 ---
 
@@ -216,5 +215,5 @@ Verify that network errors during the deletion API request are handled gracefull
 
 ### Postconditions
 
-- Network connectivity is restored
-- User can retry the deletion operation
+- Error message is displayed in confirmation dialog
+- Delete button is enabled to retry

@@ -1,10 +1,10 @@
 import { expect, test } from '@playwright/test';
+import { ActivityListPage } from '../../pages/activity-list.page';
 import { AddActivityPage } from '../../pages/add-activity.page';
-import { HomePage } from '../../pages/home.page';
 import { connect, deleteMany, disconnect, insertMany } from '../../utils/mongodb';
 
 let addActivityPage: AddActivityPage;
-let homePage: HomePage;
+let activityListPage: ActivityListPage;
 const deleteMarker = 'TestAddActivity';
 const seedTags = ['income', 'project', 'bonus', 'work', 'learning'];
 
@@ -33,7 +33,7 @@ test.afterAll(async () => {
 test.beforeEach(async ({ page }) => {
   await seedTestData();
   addActivityPage = new AddActivityPage(page);
-  homePage = new HomePage(page);
+  activityListPage = new ActivityListPage(page);
   await addActivityPage.navigate();
 });
 
@@ -155,12 +155,20 @@ test.describe('Add Activity - Tag Management', () => {
     await addActivityPage.submitForm();
 
     // Verify navigation to homepage
-    await expect(page).toHaveURL(homePage.getUrl());
+    await expect(page).toHaveURL(activityListPage.getUrl());
     // Verify the new activity appears on the homepage with all tags
-    await expect(homePage.getActivityItems().first()).toContainText(content);
-    await expect(homePage.getActivityItems().first()).toContainText('#income');
-    await expect(homePage.getActivityItems().first()).toContainText('#project');
-    await expect(homePage.getActivityItems().first()).toContainText('#bonus');
+    await expect(
+      activityListPage.activityList.getActivityItems().first(),
+    ).toContainText(content);
+    await expect(
+      activityListPage.activityList.getActivityItems().first(),
+    ).toContainText('#income');
+    await expect(
+      activityListPage.activityList.getActivityItems().first(),
+    ).toContainText('#project');
+    await expect(
+      activityListPage.activityList.getActivityItems().first(),
+    ).toContainText('#bonus');
   });
 
   // TC_AA_07: Create and add a new custom tag
@@ -178,12 +186,14 @@ test.describe('Add Activity - Tag Management', () => {
     await addActivityPage.submitForm();
 
     // Verify navigation to homepage
-    await expect(page).toHaveURL(homePage.getUrl());
+    await expect(page).toHaveURL(activityListPage.getUrl());
     // Verify the new activity appears on the homepage with the custom tag
-    await expect(homePage.getActivityItems().first()).toContainText(content);
-    await expect(homePage.getActivityItems().first()).toContainText(
-      '#custom-tag-new',
-    );
+    await expect(
+      activityListPage.activityList.getActivityItems().first(),
+    ).toContainText(content);
+    await expect(
+      activityListPage.activityList.getActivityItems().first(),
+    ).toContainText('#custom-tag-new');
   });
 
   // TC_AA_08: Tag normalization - trimmed whitespace
@@ -201,10 +211,14 @@ test.describe('Add Activity - Tag Management', () => {
     await addActivityPage.submitForm();
 
     // Verify navigation to homepage
-    await expect(page).toHaveURL(homePage.getUrl());
+    await expect(page).toHaveURL(activityListPage.getUrl());
     // Verify the tag was normalized to lowercase
-    await expect(homePage.getActivityItems().first()).toContainText(content);
-    await expect(homePage.getActivityItems().first()).toContainText('#expense');
+    await expect(
+      activityListPage.activityList.getActivityItems().first(),
+    ).toContainText(content);
+    await expect(
+      activityListPage.activityList.getActivityItems().first(),
+    ).toContainText('#expense');
   });
 
   // TC_AA_09: Remove added tag before submission
@@ -226,10 +240,14 @@ test.describe('Add Activity - Tag Management', () => {
     await addActivityPage.submitForm();
 
     // Verify navigation to homepage
-    await expect(page).toHaveURL(homePage.getUrl());
+    await expect(page).toHaveURL(activityListPage.getUrl());
     // Verify only the remaining tag appears on the homepage
-    await expect(homePage.getActivityItems().first()).toContainText(content);
-    await expect(homePage.getActivityItems().first()).toContainText('#project');
+    await expect(
+      activityListPage.activityList.getActivityItems().first(),
+    ).toContainText(content);
+    await expect(
+      activityListPage.activityList.getActivityItems().first(),
+    ).toContainText('#project');
   });
 });
 
@@ -254,10 +272,14 @@ test.describe('Add Activity - Form Submission', () => {
     await expect(submitButton).toBeDisabled();
 
     // Verify navigation to homepage
-    await expect(page).toHaveURL(homePage.getUrl());
+    await expect(page).toHaveURL(activityListPage.getUrl());
     // Verify the activity was created
-    await expect(homePage.getActivityItems().first()).toContainText(content);
-    await expect(homePage.getActivityItems().first()).toContainText('#test');
+    await expect(
+      activityListPage.activityList.getActivityItems().first(),
+    ).toContainText(content);
+    await expect(
+      activityListPage.activityList.getActivityItems().first(),
+    ).toContainText('#test');
   });
 
   // TC_AA_16: Successful submission redirects to homepage with new activity visible
@@ -271,9 +293,13 @@ test.describe('Add Activity - Form Submission', () => {
     await addActivityPage.submitForm();
 
     // Verify navigation to homepage
-    await expect(page).toHaveURL(homePage.getUrl());
+    await expect(page).toHaveURL(activityListPage.getUrl());
     // Verify the new activity appears on the homepage
-    await expect(homePage.getActivityItems().first()).toContainText(content);
-    await expect(homePage.getActivityItems().first()).toContainText('#success');
+    await expect(
+      activityListPage.activityList.getActivityItems().first(),
+    ).toContainText(content);
+    await expect(
+      activityListPage.activityList.getActivityItems().first(),
+    ).toContainText('#success');
   });
 });

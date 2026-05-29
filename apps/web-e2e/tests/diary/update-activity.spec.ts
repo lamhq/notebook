@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { HomePage } from '../../pages/home.page';
+import { ActivityListPage } from '../../pages/activity-list.page';
 import { UpdateActivityPage } from '../../pages/update-activity.page';
 import {
   connect,
@@ -10,7 +10,7 @@ import {
 } from '../../utils/mongodb';
 
 let updateActivityPage: UpdateActivityPage;
-let homePage: HomePage;
+let activityListPage: ActivityListPage;
 const deleteMarker = 'TestUpdateActivity';
 let createdActivityId: string;
 const seedTags = ['food', 'expense', 'income', 'restaurant', 'cafe', 'lunch'];
@@ -49,7 +49,7 @@ test.afterAll(async () => {
 
 test.beforeEach(async ({ page }) => {
   createdActivityId = await seedTestData();
-  homePage = new HomePage(page);
+  activityListPage = new ActivityListPage(page);
   updateActivityPage = new UpdateActivityPage(page, createdActivityId);
   await updateActivityPage.navigate();
 });
@@ -103,15 +103,17 @@ test.describe('Form Submission', () => {
     await updateActivityPage.submitForm();
 
     // Verify navigation to homepage
-    await expect(page).toHaveURL(homePage.getUrl());
+    await expect(page).toHaveURL(activityListPage.getUrl());
 
     // Wait for the activity items to load
-    await expect(homePage.getActivityItems().first()).toBeVisible();
+    await expect(
+      activityListPage.activityList.getActivityItems().first(),
+    ).toBeVisible();
 
     // Verify the activity list shows the updated activity
-    await expect(homePage.getActivityItems().first()).toContainText(
-      `Lunch at coffee shop - 12k`,
-    );
+    await expect(
+      activityListPage.activityList.getActivityItems().first(),
+    ).toContainText(`Lunch at coffee shop - 12k`);
   });
 
   // TC_UA_07: Cancel update and discard changes
@@ -125,13 +127,13 @@ test.describe('Form Submission', () => {
     await updateActivityPage.cancel();
 
     // Verify navigation to homepage
-    await expect(page).toHaveURL(homePage.getUrl());
+    await expect(page).toHaveURL(activityListPage.getUrl());
 
     // Verify the activity was not updated by navigating back
     // The original activity should still be there with original content
-    await expect(homePage.getActivityItems().first()).toContainText(
-      'Lunch at restaurant',
-    );
+    await expect(
+      activityListPage.activityList.getActivityItems().first(),
+    ).toContainText('Lunch at restaurant');
   });
 
   // TC_UA_05: Update activity with tag selection
@@ -153,10 +155,12 @@ test.describe('Form Submission', () => {
     await updateActivityPage.submitForm();
 
     // Verify navigation
-    await expect(page).toHaveURL(homePage.getUrl());
+    await expect(page).toHaveURL(activityListPage.getUrl());
 
     // Verify the activity appears with updated content
-    await expect(homePage.getActivityItems().first()).toContainText(newContent);
+    await expect(
+      activityListPage.activityList.getActivityItems().first(),
+    ).toContainText(newContent);
   });
 
   // TC_UA_06: Update activity date/time
@@ -167,12 +171,14 @@ test.describe('Form Submission', () => {
     await updateActivityPage.submitForm();
 
     // Verify navigation to homepage
-    await expect(page).toHaveURL(homePage.getUrl());
+    await expect(page).toHaveURL(activityListPage.getUrl());
 
-    await expect(homePage.getActivityGroups().first()).toContainText(
-      'Wed, 20 May, 2026',
-    );
-    await expect(homePage.getActivityItems().first()).toContainText('2:30 pm');
+    await expect(
+      activityListPage.activityList.getActivityGroups().first(),
+    ).toContainText('Wed, 20 May, 2026');
+    await expect(
+      activityListPage.activityList.getActivityItems().first(),
+    ).toContainText('2:30 pm');
   });
 });
 
@@ -218,10 +224,12 @@ test.describe('Amounts auto-calculation', () => {
     await updateActivityPage.submitForm();
 
     // Verify navigation
-    await expect(page).toHaveURL(homePage.getUrl());
+    await expect(page).toHaveURL(activityListPage.getUrl());
 
     // Verify the activity was saved with the manual override value
-    await expect(homePage.getActivityItems().first()).toContainText('Expense - 25k');
+    await expect(
+      activityListPage.activityList.getActivityItems().first(),
+    ).toContainText('Expense - 25k');
   });
 });
 

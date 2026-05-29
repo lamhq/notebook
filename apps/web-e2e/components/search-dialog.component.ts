@@ -1,21 +1,11 @@
 import { Locator, Page } from '@playwright/test';
-import { TagInputComponent } from '../components/tag-input.component';
-import { BasePage } from './base.page';
+import { TagInputComponent } from './tag-input.component';
 
-export class SearchActivityPage extends BasePage {
+export class SearchDialogComponent {
   private readonly tagInput: TagInputComponent;
 
-  constructor(page: Page) {
-    super(page);
+  constructor(private readonly page: Page) {
     this.tagInput = new TagInputComponent(page, 'Tags');
-  }
-
-  public getUrl(): string {
-    return '/';
-  }
-
-  public getFilterButton(): Locator {
-    return this.page.getByTestId('FilterListIcon');
   }
 
   public getDialog(): Locator {
@@ -50,10 +40,6 @@ export class SearchActivityPage extends BasePage {
     return this.page.getByRole('button', { name: 'Reset' });
   }
 
-  public openDialog(): Promise<void> {
-    return this.getFilterButton().click();
-  }
-
   public enterText(text: string): Promise<void> {
     return this.getTextField().fill(text);
   }
@@ -67,11 +53,6 @@ export class SearchActivityPage extends BasePage {
     await this.page.getByRole('option', { name: option, exact: true }).click();
   }
 
-  /**
-   * Select a date in a DesktopDatePicker field.
-   * @param label - The label of the date picker ("From" or "To")
-   * @param dateStr - Date digits in DDMMYYYY format (e.g., "01042026" for April 1, 2026)
-   */
   public async selectDate(label: 'From' | 'To', dateStr: string): Promise<void> {
     const input = label === 'From' ? this.getFromDateInput() : this.getToDateInput();
     await input.click();

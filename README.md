@@ -32,7 +32,7 @@ Open your browser and go to http://localhost:5173
 
 ### Running tests
 
-Run end-to-end tests:
+Run end-to-end tests (web):
 
 ```bash
 pnpm -F web-e2e exec playwright test path/to/test-file.spec.ts

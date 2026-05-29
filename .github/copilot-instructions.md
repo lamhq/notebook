@@ -31,14 +31,21 @@ Contains test cases for a software feature.
 
 Location: `docs/tests/{module}/{feature-name}.md`
 
-## Repository Guide
+## Repository Guide (root)
 
 Overview of the repository/project, how to install, and usage (lint, test, build).
 
-Location:
+When to use:
 
-- `README.md` (root)
-- `apps/{project}/README.md` (project-specific)
+- Install and set up the repository
+- Start the web application
+- Run end-to-end tests
+- Run lint checks
+- Install/add/remove dependencies
+- Understand the monorepo structure
+- Learn about available projects and tech stacks
+
+Location: `README.md`
 
 ## Playwright Project Structure
 

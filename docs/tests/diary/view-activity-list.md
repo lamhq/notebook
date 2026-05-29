@@ -37,7 +37,7 @@ Verify that the activity list displays correctly on the homepage after user logi
 
 ### Postconditions
 
-No cleanup required.
+- Activity list is displayed with correct pagination state (page 1 of multiple pages)
 
 ---
 
@@ -76,7 +76,7 @@ Verify that each activity item displays all required information with correct st
 
 ### Postconditions
 
-No cleanup required.
+- Activity item data is displayed correctly on the page
 
 ---
 
@@ -110,7 +110,7 @@ Verify that date groups appear in descending order with newest activities first.
 
 ### Postconditions
 
-No cleanup required.
+- Activity groups are displayed in descending chronological order (newest first)
 
 ---
 
@@ -143,7 +143,7 @@ Verify that activities within the same date group are sorted by time with the ne
 
 ### Postconditions
 
-No cleanup required.
+- Activities within each date group are displayed in descending time order (newest first)
 
 ---
 
@@ -180,7 +180,7 @@ Verify that pagination controls are correctly displayed and in the proper state 
 
 ### Postconditions
 
-No cleanup required.
+- Pagination controls are in the correct state for page 1
 
 ---
 
@@ -216,7 +216,9 @@ Verify that the user can navigate to the next page by clicking the Next button.
 
 ### Postconditions
 
-No cleanup required.
+- Page state is set to page 2
+- Previous button is now enabled
+- Next button remains enabled (if not on last page)
 
 ---
 
@@ -252,7 +254,9 @@ Verify that the user can navigate back to the previous page by clicking the Prev
 
 ### Postconditions
 
-No cleanup required.
+- Page state is set to page 1
+- Previous button is disabled
+- Next button is enabled
 
 ---
 
@@ -289,7 +293,9 @@ Verify that the user can navigate to the last page and the Next button is disabl
 
 ### Postconditions
 
-No cleanup required.
+- Page state is set to the last page
+- Next button is disabled
+- Previous button is enabled
 
 ---
 
@@ -323,7 +329,7 @@ Verify that the empty state message is displayed when the user has no activities
 
 ### Postconditions
 
-No cleanup required.
+- Empty state message is displayed when activity list is empty
 
 ---
 
@@ -359,7 +365,8 @@ Verify that an appropriate error message is displayed when a network error occur
 
 ### Postconditions
 
-Restore network connection or remove API error mock.
+- Network error state is displayed
+- "Try Again" button is ready to retry the failed operation
 
 ---
 
@@ -398,4 +405,4 @@ Verify that the activity list renders correctly and is usable on mobile viewport
 
 ### Postconditions
 
-No cleanup required.
+- Activity list is responsive and fully functional on mobile viewport (375x667)

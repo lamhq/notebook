@@ -1,13 +1,10 @@
 import { Locator, Page } from '@playwright/test';
-import { BasePage } from './base.page';
 
-export class DateTimeInput extends BasePage {
+export class DateTimeInputComponent {
   constructor(
     protected readonly page: Page,
     protected readonly inputName: string,
-  ) {
-    super(page);
-  }
+  ) {}
 
   private getDateContainer(): Locator {
     return this.page.locator('div.MuiDateTimePickerToolbar-dateContainer');

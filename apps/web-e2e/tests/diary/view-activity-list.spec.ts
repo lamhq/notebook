@@ -1,10 +1,10 @@
 import { expect, test } from '@playwright/test';
 import { ObjectId } from 'mongodb';
-import { HomePage } from '../../pages/home.page';
+import { ActivityListPage } from '../../pages/activity-list.page';
 import { parseTimeString } from '../../utils/datetime';
 import { connect, deleteMany, disconnect, insertMany } from '../../utils/mongodb';
 
-let homePage: HomePage;
+let activityListPage: ActivityListPage;
 let seededActivityIds: string[] = [];
 
 // Seed test data - 15 activities across 10 days (3 per day) to support all test cases
@@ -86,41 +86,51 @@ test.afterAll(async () => {
 });
 
 test.beforeEach(async ({ page }) => {
-  homePage = new HomePage(page);
-  await homePage.navigate();
+  activityListPage = new ActivityListPage(page);
+  await activityListPage.navigate();
 });
 
 test.describe('Activity list display', () => {
   // TC_VAL_01: View activity list on homepage
   test('navigating to homepage should display activity list', async () => {
-    await expect(homePage.getActivityItems()).toHaveCount(10);
+    await expect(activityListPage.activityList.getActivityItems()).toHaveCount(10);
 
-    await expect(homePage.getPaginationContainer()).toBeVisible();
+    await expect(activityListPage.pagination.getContainer()).toBeVisible();
 
-    await expect(homePage.getActivityGroups().first()).toBeVisible();
+    await expect(
+      activityListPage.activityList.getActivityGroups().first(),
+    ).toBeVisible();
   });
 
   // TC_VAL_02: Activity item displays all required information
   test('activity item should display all required information', async () => {
-    const firstActivity = homePage.getActivityItems().first();
+    const firstActivity = activityListPage.activityList.getActivityItems().first();
     await expect(firstActivity).toBeVisible();
 
-    await expect(homePage.getActivityTime(firstActivity)).toBeVisible();
+    await expect(
+      activityListPage.activityList.getActivityTime(firstActivity),
+    ).toBeVisible();
 
-    await expect(homePage.getActivityDescription(firstActivity)).toBeVisible();
+    await expect(
+      activityListPage.activityList.getActivityDescription(firstActivity),
+    ).toBeVisible();
 
-    await expect(homePage.getActivityAmount(firstActivity)).toBeVisible();
+    await expect(
+      activityListPage.activityList.getActivityAmount(firstActivity),
+    ).toBeVisible();
 
-    await expect(homePage.getActivityTags(firstActivity)).toBeVisible();
+    await expect(
+      activityListPage.activityList.getActivityTags(firstActivity),
+    ).toBeVisible();
   });
 
   // TC_VAL_03: Activity groups are sorted by date (newest first)
   test('activity groups should be sorted by date (newest first)', async () => {
     // Wait for activity items to load first
-    await expect(homePage.getActivityItems()).toHaveCount(10);
+    await expect(activityListPage.activityList.getActivityItems()).toHaveCount(10);
 
     // Verify we have at least 2 date groups to compare
-    const activityGroups = homePage.getActivityGroups();
+    const activityGroups = activityListPage.activityList.getActivityGroups();
     const count = await activityGroups.count();
     expect(count).toBeGreaterThanOrEqual(2);
 
@@ -146,10 +156,12 @@ test.describe('Activity list display', () => {
   // TC_VAL_13: Activities within date group are sorted by time (newest first)
   test('activities within date group should be sorted by time (newest first)', async () => {
     // Wait for activity items to load first
-    await expect(homePage.getActivityItems()).toHaveCount(10);
+    await expect(activityListPage.activityList.getActivityItems()).toHaveCount(10);
 
     // Get all activity items within the first group
-    const firstActivityGroup = homePage.getActivityGroups().first();
+    const firstActivityGroup = activityListPage.activityList
+      .getActivityGroups()
+      .first();
     const activityItems = firstActivityGroup.locator('.activity-item');
     const count = await activityItems.count();
     expect(count).toBeGreaterThanOrEqual(2);
@@ -157,7 +169,7 @@ test.describe('Activity list display', () => {
     // Get times from activities within the same date group
     const times: Date[] = [];
     for (let i = 0; i < count; i++) {
-      const timeText = await homePage
+      const timeText = await activityListPage.activityList
         .getActivityTime(activityItems.nth(i))
         .innerText();
       expect(timeText).toMatch(/\d{1,2}:\d{2}\s+(am|pm)/i);
@@ -175,39 +187,39 @@ test.describe('Activity list display', () => {
 test.describe('Pagination controls', () => {
   // TC_VAL_04: Pagination controls are displayed
   test('first page should display correct pagination controls', async () => {
-    await homePage.scrollToPagination();
+    await activityListPage.pagination.scrollIntoView();
 
-    await expect(homePage.getCurrentPageButton()).toHaveText('1');
+    await expect(activityListPage.pagination.getCurrentPageButton()).toHaveText('1');
 
-    await expect(homePage.getPreviousButton()).toBeDisabled();
+    await expect(activityListPage.pagination.getPreviousButton()).toBeDisabled();
 
-    await expect(homePage.getNextButton()).toBeEnabled();
+    await expect(activityListPage.pagination.getNextButton()).toBeEnabled();
   });
 
   // TC_VAL_05: Navigate to next page
   test('clicking next button should navigate to next page', async () => {
-    await homePage.scrollToPagination();
+    await activityListPage.pagination.scrollIntoView();
 
-    const nextButton = homePage.getNextButton();
+    const nextButton = activityListPage.pagination.getNextButton();
     await nextButton.click();
 
-    await expect(homePage.getCurrentPageButton()).toHaveText('2');
+    await expect(activityListPage.pagination.getCurrentPageButton()).toHaveText('2');
 
-    await expect(homePage.getPreviousButton()).toBeEnabled();
+    await expect(activityListPage.pagination.getPreviousButton()).toBeEnabled();
 
-    await expect(homePage.getActivityItems()).toHaveCount(10);
+    await expect(activityListPage.activityList.getActivityItems()).toHaveCount(10);
   });
 
   // TC_VAL_06: Navigate to previous page
   test('clicking previous button should navigate to previous page', async () => {
-    await homePage.scrollToPagination();
-    const nextButton = homePage.getNextButton();
+    await activityListPage.pagination.scrollIntoView();
+    const nextButton = activityListPage.pagination.getNextButton();
     await nextButton.click();
-    await expect(homePage.getCurrentPageButton()).toHaveText('2');
+    await expect(activityListPage.pagination.getCurrentPageButton()).toHaveText('2');
 
-    const previousButton = homePage.getPreviousButton();
+    const previousButton = activityListPage.pagination.getPreviousButton();
     await previousButton.click();
-    await expect(homePage.getCurrentPageButton()).toHaveText('1');
+    await expect(activityListPage.pagination.getCurrentPageButton()).toHaveText('1');
 
     await expect(previousButton).toBeDisabled();
     await expect(nextButton).toBeEnabled();
@@ -215,13 +227,13 @@ test.describe('Pagination controls', () => {
 
   // TC_VAL_08: Navigate to last page
   test('navigating to last page should disable next button', async () => {
-    await homePage.scrollToPagination();
-    await homePage.getPageButton(3).click();
-    await expect(homePage.getCurrentPageButton()).toHaveText('3');
+    await activityListPage.pagination.scrollIntoView();
+    await activityListPage.pagination.getPageButton(3).click();
+    await expect(activityListPage.pagination.getCurrentPageButton()).toHaveText('3');
 
-    await expect(homePage.getPreviousButton()).toBeEnabled();
-    await expect(homePage.getNextButton()).toBeDisabled();
-    await expect(homePage.getActivityItems()).toHaveCount(10);
+    await expect(activityListPage.pagination.getPreviousButton()).toBeEnabled();
+    await expect(activityListPage.pagination.getNextButton()).toBeDisabled();
+    await expect(activityListPage.activityList.getActivityItems()).toHaveCount(10);
   });
 });
 
@@ -240,11 +252,11 @@ test.describe('Empty state', () => {
       });
     });
 
-    await homePage.navigate();
+    await activityListPage.navigate();
 
-    await expect(homePage.getEmptyStateMessage()).toBeVisible();
+    await expect(activityListPage.getEmptyStateMessage()).toBeVisible();
 
-    await expect(homePage.getPaginationContainer()).toBeHidden();
+    await expect(activityListPage.pagination.getContainer()).toBeHidden();
   });
 });
 
@@ -257,19 +269,21 @@ test.describe('Error handling', () => {
       await route.abort('failed');
     });
 
-    await homePage.navigate();
+    await activityListPage.navigate();
 
-    await expect(homePage.getErrorMessage()).toHaveText(
+    await expect(activityListPage.getErrorMessage()).toHaveText(
       /Please check your network connection/i,
     );
 
-    const tryAgainButton = homePage.getTryAgainButton();
+    const tryAgainButton = activityListPage.getTryAgainButton();
     await expect(tryAgainButton).toBeVisible();
 
     await page.unroute('**/api/diary/activities*');
 
     await tryAgainButton.click();
-    await expect(homePage.getActivityItems().first()).toBeVisible();
+    await expect(
+      activityListPage.activityList.getActivityItems().first(),
+    ).toBeVisible();
   });
 });
 
@@ -278,14 +292,18 @@ test.describe('Responsive design', () => {
   test('activity list should be responsive on mobile viewport', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 });
 
-    await homePage.navigate();
-    await expect(homePage.getActivityItems().first()).toBeVisible();
-    await expect(homePage.getActivityGroups().first()).toBeVisible();
+    await activityListPage.navigate();
+    await expect(
+      activityListPage.activityList.getActivityItems().first(),
+    ).toBeVisible();
+    await expect(
+      activityListPage.activityList.getActivityGroups().first(),
+    ).toBeVisible();
 
-    await homePage.scrollToPagination();
-    await expect(homePage.getPaginationContainer()).toBeVisible();
+    await activityListPage.pagination.scrollIntoView();
+    await expect(activityListPage.pagination.getContainer()).toBeVisible();
 
-    await homePage.getNextButton().click();
-    await expect(homePage.getCurrentPageButton()).toHaveText('2');
+    await activityListPage.pagination.getNextButton().click();
+    await expect(activityListPage.pagination.getCurrentPageButton()).toHaveText('2');
   });
 });

@@ -1,18 +1,22 @@
 import { Locator, Page } from '@playwright/test';
 
-export class TagInput {
+export class TagInputComponent {
   constructor(
     protected readonly page: Page,
     protected readonly inputName: string,
   ) {}
 
-  public getTagsCombobox(): Locator {
+  public getInput(): Locator {
     return this.page.getByRole('combobox', { name: this.inputName });
+  }
+
+  public getLoadingIcon(): Locator {
+    return this.page.getByRole('progressbar');
   }
 
   public async addNewTag(tagName: string): Promise<void> {
     // Fill the combobox with the tag name
-    await this.getTagsCombobox().fill(tagName);
+    await this.getInput().fill(tagName);
 
     // Click the "Add" option
     await this.page
@@ -22,7 +26,7 @@ export class TagInput {
 
   public async selectTag(tagName: string): Promise<void> {
     // Fill the combobox to filter options
-    await this.getTagsCombobox().fill(tagName);
+    await this.getInput().fill(tagName);
 
     // Click the tag option
     await this.page.getByRole('option', { name: tagName }).click();

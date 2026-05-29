@@ -1,16 +1,16 @@
 import { Locator, Page } from '@playwright/test';
+import { DateTimeInputComponent } from '../components/datetime-input.component';
+import { TagInputComponent } from '../components/tag-input.component';
 import { BasePage } from './base.page';
-import { DateTimeInput } from './datetime.input';
-import { TagInput } from './tag.input';
 
 export class AddActivityPage extends BasePage {
-  private readonly dateTimeInput: DateTimeInput;
-  private readonly tagInput: TagInput;
+  private readonly dateTimeInput: DateTimeInputComponent;
+  private readonly tagInput: TagInputComponent;
 
   constructor(page: Page) {
     super(page);
-    this.dateTimeInput = new DateTimeInput(page, 'time');
-    this.tagInput = new TagInput(page, 'Tags');
+    this.dateTimeInput = new DateTimeInputComponent(page, 'time');
+    this.tagInput = new TagInputComponent(page, 'Tags');
   }
 
   public getUrl(): string {

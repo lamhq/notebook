@@ -36,7 +36,7 @@ Verify that the system correctly auto-calculates the outcome amount when the con
 
 ### Postconditions
 
-- No data cleanup required; close the form without submitting
+- Form is reset and ready for new input
 
 ---
 
@@ -68,7 +68,7 @@ Verify that the system correctly sums multiple amounts from different lines and 
 
 ### Postconditions
 
-- No data cleanup required; close the form without submitting
+- Form is reset and ready for new input
 
 ---
 
@@ -100,7 +100,7 @@ Verify that the system correctly sums multiple amounts from a single line when n
 
 ### Postconditions
 
-- No data cleanup required; close the form without submitting
+- Form is reset and ready for new input
 
 ---
 
@@ -139,7 +139,7 @@ Verify that the system displays a validation error when the content field is emp
 
 ### Postconditions
 
-- No data cleanup required; form remains unsaved
+- Content field is cleared and ready for new input
 
 ---
 
@@ -183,7 +183,7 @@ Verify that a user can add multiple tags to the activity form.
 
 ### Postconditions
 
-- Delete the activity created during this test
+- Activity is created with three tags in the database
 
 ---
 
@@ -226,7 +226,7 @@ Verify that a user can create and add a custom tag that does not exist in the sy
 
 ### Postconditions
 
-- Delete the activity created during this test
+- Activity is created with custom tag in the database
 
 ---
 
@@ -265,7 +265,7 @@ Verify that tags are trimmed of whitespace and converted to lowercase before bei
 
 ### Postconditions
 
-- Delete the activity created during this test
+- Activity is created with normalized tag in the database
 
 ---
 
@@ -298,16 +298,9 @@ Verify that a user can remove a tag before submitting the form.
 6. Set time to current date and time
 7. Click the "Submit" button
 
-### Expected Result
-
-- The "income" tag is successfully removed
-- Only "project" tag is displayed in the field
-- The form is submitted with only "project" tag
-- The activity is created with only "project" tag
-
 ### Postconditions
 
-- Delete the activity created during this test
+- Activity is created with single tag in the database
 
 ---
 
@@ -335,16 +328,10 @@ Verify that when the tag API fails to fetch, an error state is displayed with a 
 3. Verify an error message or state is displayed
 4. Locate and click the refresh button
 
-### Expected Result
-
-- An error state is displayed in the tags field
-- A refresh button is visible
-- Clicking the refresh button retries the API request
-- Once the API recovers, tags are loaded successfully
-
 ### Postconditions
 
-- No data cleanup required; close the form without submitting
+- Tags error state is displayed
+- Refresh button is available to retry
 
 ---
 
@@ -383,7 +370,7 @@ Verify that the submit button displays a loading state while the form is being p
 
 ### Postconditions
 
-- Delete the activity created during this test
+- Activity is created and user is redirected to homepage
 
 ---
 
@@ -420,7 +407,7 @@ Verify that the form layout is responsive and displays correctly on mobile devic
 
 ### Postconditions
 
-- Close developer tools and return to normal viewport
+- Form layout is responsive on mobile viewport
 
 ---
 
@@ -455,7 +442,7 @@ Verify that the content text area field has autofocus enabled for better user ex
 
 ### Postconditions
 
-- No action required; close the form
+- Content field has focus and is ready for input
 
 ---
 
@@ -492,7 +479,7 @@ Verify that the content field accepts and preserves multi-line input with newlin
 
 ### Postconditions
 
-- No data cleanup required; close the form without submitting
+- Form is reset and ready for new input
 
 ---
 
