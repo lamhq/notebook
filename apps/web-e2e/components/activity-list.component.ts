@@ -4,7 +4,9 @@ export class ActivityListComponent {
   private readonly activityListContainer: Locator;
 
   constructor(private readonly page: Page) {
-    this.activityListContainer = this.page.locator('[data-testid="activity-list"]');
+    this.activityListContainer = this.page.getByRole('list', {
+      name: /activity groups/i,
+    });
   }
 
   public getContainer(): Locator {
@@ -12,31 +14,9 @@ export class ActivityListComponent {
   }
 
   public getActivityItems(): Locator {
-    return this.page.locator('.activity-item');
-  }
-
-  public getActivityGroups(): Locator {
-    return this.page.getByTestId('activity-group');
-  }
-
-  public getActivityItemsInGroup(group: Locator): Locator {
-    return group.locator('.activity-item');
-  }
-
-  public getActivityTime(activityItem: Locator): Locator {
-    return activityItem.getByTestId('activity-time');
-  }
-
-  public getActivityDescription(activityItem: Locator): Locator {
-    return activityItem.getByTestId('activity-description');
-  }
-
-  public getActivityAmount(activityItem: Locator): Locator {
-    return activityItem.getByTestId('activity-amount');
-  }
-
-  public getActivityTags(activityItem: Locator): Locator {
-    return activityItem.getByTestId('activity-tags');
+    return this.getContainer()
+      .getByRole('list', { name: /activity items/i })
+      .getByRole('listitem');
   }
 
   public getFirstActivity(): Locator {
@@ -45,6 +25,30 @@ export class ActivityListComponent {
 
   public getLastActivity(): Locator {
     return this.getActivityItems().last();
+  }
+
+  public getActivityGroups(): Locator {
+    return this.getContainer().locator('> li');
+  }
+
+  public getActivityItemsInGroup(group: Locator): Locator {
+    return group.getByRole('article');
+  }
+
+  public getActivityTime(activityItem: Locator): Locator {
+    return activityItem.locator('time');
+  }
+
+  public getActivityDescription(activityItem: Locator): Locator {
+    return activityItem.locator('p').first();
+  }
+
+  public getActivityAmount(activityItem: Locator): Locator {
+    return activityItem.locator('p').filter({ hasNotText: /^#/ }).first();
+  }
+
+  public getActivityTags(activityItem: Locator): Locator {
+    return activityItem.locator('p').filter({ hasText: /^#/ }).first();
   }
 
   public getActivityByIndex(index: number): Locator {

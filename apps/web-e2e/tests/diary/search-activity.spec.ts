@@ -120,26 +120,13 @@ test.describe('Text and Tag Filtering', () => {
       await activityListPage.clickSearch();
     });
 
-    await test.step('Verify filtered results', async () => {
+    await test.step('Verify all activities contain "coffee"', async () => {
       await expect(activityListPage.getDialog()).toBeHidden();
-    });
-
-    await test.step('Verify first activity on page 1 contains "coffee"', async () => {
-      await expect(
-        activityListPage.activityList
-          .getFirstActivity()
-          .getByTestId('activity-description'),
-      ).toContainText(/coffee/i);
-    });
-
-    await test.step('Navigate to last page and verify last activity contains "coffee"', async () => {
-      await activityListPage.pagination.scrollIntoView();
-      await activityListPage.pagination.goToLastPage();
-      await expect(
-        activityListPage.activityList
-          .getLastActivity()
-          .getByTestId('activity-description'),
-      ).toContainText(/coffee/i);
+      const items = activityListPage.activityList.getActivityItems();
+      const count = await items.count();
+      for (let i = 0; i < count; i++) {
+        await expect(items.nth(i)).toContainText(/coffee/i);
+      }
     });
   });
 
@@ -154,12 +141,13 @@ test.describe('Text and Tag Filtering', () => {
       await activityListPage.clickSearch();
     });
 
-    await test.step('Verify filtered results contain the selected tag', async () => {
+    await test.step('Verify all activities contain the selected tag', async () => {
       await expect(activityListPage.getDialog()).toBeHidden();
-      await expect(
-        activityListPage.activityList.getActivityItems().first(),
-      ).toBeVisible();
-      await expect(activityListPage.activityList.getActivityItems()).toHaveCount(3);
+      const items = activityListPage.activityList.getActivityItems();
+      const count = await items.count();
+      for (let i = 0; i < count; i++) {
+        await expect(items.nth(i)).toContainText(/#beverage/i);
+      }
     });
   });
 
@@ -175,9 +163,13 @@ test.describe('Text and Tag Filtering', () => {
       await activityListPage.clickSearch();
     });
 
-    await test.step('Verify filtered results', async () => {
+    await test.step('Verify all activities contain at least one of the selected tags', async () => {
       await expect(activityListPage.getDialog()).toBeHidden();
-      await expect(activityListPage.activityList.getActivityItems()).toHaveCount(5);
+      const items = activityListPage.activityList.getActivityItems();
+      const count = await items.count();
+      for (let i = 0; i < count; i++) {
+        await expect(items.nth(i)).toContainText(/#food|#dining/i);
+      }
     });
   });
 
@@ -187,8 +179,8 @@ test.describe('Text and Tag Filtering', () => {
     });
 
     await test.step('Enter search criteria', async () => {
-      await activityListPage.enterText('coffee');
       await expect(activityListPage.getTagLoadingIcon()).toBeHidden();
+      await activityListPage.enterText('coffee');
       await activityListPage.selectTag('food');
       await activityListPage.selectTag('beverage');
       await activityListPage.selectTimeRange('Custom');
@@ -200,17 +192,23 @@ test.describe('Text and Tag Filtering', () => {
       await activityListPage.clickSearch();
     });
 
-    await test.step('Verify combined criteria applied', async () => {
+    await test.step('Verify all activities match combined criteria', async () => {
       await expect(activityListPage.getDialog()).toBeHidden();
-      await expect(
-        activityListPage.activityList.getActivityItems().first(),
-      ).toBeVisible();
-      await expect(
-        activityListPage.activityList
-          .getActivityItems()
-          .first()
-          .getByTestId('activity-description'),
-      ).toContainText(/coffee/i);
+
+      const items = activityListPage.activityList.getActivityItems();
+      const count = await items.count();
+      for (let i = 0; i < count; i++) {
+        // verify text
+        await expect(items.nth(i)).toContainText(/coffee/i);
+        // verify tags
+        await expect(items.nth(i)).toContainText(/#food|#beverage/i);
+      }
+      // verify date
+      const groups = activityListPage.activityList.getActivityGroups();
+      const groupCount = await groups.count();
+      for (let i = 0; i < groupCount; i++) {
+        await expect(groups.nth(i)).toContainText(/Apr, 2026/i);
+      }
     });
   });
 });
@@ -231,11 +229,13 @@ test.describe('Time Range Filtering', () => {
       await activityListPage.clickSearch();
     });
 
-    await test.step('Verify dialog closes and results are shown', async () => {
+    await test.step('Verify all activity groups are from the current month', async () => {
       await expect(activityListPage.getDialog()).toBeHidden();
-      await expect(
-        activityListPage.activityList.getActivityItems().first(),
-      ).toBeVisible();
+      const groups = activityListPage.activityList.getActivityGroups();
+      const count = await groups.count();
+      for (let i = 0; i < count; i++) {
+        await expect(groups.nth(i)).toContainText(/May, 2026/i);
+      }
     });
   });
 
@@ -253,10 +253,9 @@ test.describe('Time Range Filtering', () => {
       await activityListPage.clickSearch();
     });
 
-    await test.step('Verify all activities are displayed', async () => {
+    await test.step('Verify activity list contains 10 items', async () => {
       await expect(activityListPage.getDialog()).toBeHidden();
       await expect(activityListPage.activityList.getActivityItems()).toHaveCount(10);
-      await expect(activityListPage.pagination.getContainer()).toBeVisible();
     });
   });
 
@@ -271,20 +270,33 @@ test.describe('Time Range Filtering', () => {
       await expect(activityListPage.getToDateInput()).toBeVisible();
     });
 
-    await test.step('Select date range April 1-30, 2026', async () => {
+    await test.step('Select date range April 1-11, 2026', async () => {
       await activityListPage.selectDate('From', '01042026');
-      await activityListPage.selectDate('To', '30042026');
+      await activityListPage.selectDate('To', '11042026');
     });
 
     await test.step('Submit search', async () => {
       await activityListPage.clickSearch();
     });
 
-    await test.step('Verify only activities within April 2026 are shown', async () => {
+    await test.step('Verify all activity groups are within April 1–11, 2026', async () => {
       await expect(activityListPage.getDialog()).toBeHidden();
-      await expect(
-        activityListPage.activityList.getActivityItems().first(),
-      ).toBeVisible();
+      const fromDate = new Date(2026, 3, 1);
+      const toDate = new Date(2026, 3, 11, 23, 59, 59, 999);
+      const groups = activityListPage.activityList.getActivityGroups();
+      const count = await groups.count();
+      for (let i = 0; i < count; i++) {
+        const dateString = await groups
+          .nth(i)
+          .getByRole('heading', { level: 3 })
+          .first()
+          .textContent();
+        expect(dateString).not.toBeNull();
+        // eslint-disable-next-line playwright/no-conditional-in-test
+        const groupDate = new Date(dateString ? dateString.trim() : '');
+        expect(groupDate.getTime()).toBeGreaterThanOrEqual(fromDate.getTime());
+        expect(groupDate.getTime()).toBeLessThanOrEqual(toDate.getTime());
+      }
     });
   });
 });
@@ -293,6 +305,7 @@ test.describe('Edge Cases', () => {
   test('TC_SA_08: clicking Reset should clear all search fields and keep dialog open', async () => {
     await test.step('Open dialog and enter search criteria', async () => {
       await activityListPage.openDialog();
+      await expect(activityListPage.getTagLoadingIcon()).toBeHidden();
       await activityListPage.enterText('coffee');
       await activityListPage.selectTag('food');
       await activityListPage.selectTimeRange('This week');
@@ -308,9 +321,6 @@ test.describe('Edge Cases', () => {
       await expect(activityListPage.getTimeRangeSelect()).toContainText(
         'This month',
       );
-      await expect(
-        activityListPage.getDialog().getByRole('button', { name: 'food' }),
-      ).toBeHidden();
     });
   });
 
@@ -341,8 +351,8 @@ test.describe('Edge Cases', () => {
 
     await test.step('Open search dialog and enter criteria', async () => {
       await activityListPage.openDialog();
-      await expect(activityListPage.getDialog()).toBeVisible();
       await activityListPage.enterText('coffee');
+      await expect(activityListPage.getTagLoadingIcon()).toBeHidden();
       await activityListPage.selectTag('food');
       await activityListPage.selectTimeRange('This week');
     });

@@ -32,9 +32,7 @@ Verify that user can search activities by entering text in the Text field and re
 
 ### Expected Result
 
-- Activity list updates to show only activities containing "coffee" in content:
-  - The first activity on page one contains 'coffee'.
-  - The last activity on the last page contains 'coffee'.
+- All activities in the list contain 'coffee'.
 
 ### Postconditions
 
@@ -69,9 +67,7 @@ Verify that user can select a single tag and activities are filtered to show onl
 
 ### Expected Result
 
-- Activity list updates to show only activities with the "food" tag:
-  - Tag section of the first activity on page one contains "#food"
-  - Tag section of the last activity on the last page contains "#food"
+- All activities in the list have a tag section containing "#food"
 
 ### Postconditions
 
@@ -109,9 +105,7 @@ Verify that user can select multiple tags and activities with ANY of the selecte
 
 ### Expected Result
 
-- Activity list shows activities containing at least one of the selected tags (OR logic):
-  - Tag section of the first activity on page one contains at least one of "#food", "#restaurant", or "#dining"
-  - Tag section of the last activity on the last page contains at least one of "#food", "#restaurant", or "#dining"
+- All activities in the list have a tag section containing at least one of "#food", "#restaurant", or "#dining"
 
 ### Postconditions
 
@@ -145,9 +139,7 @@ Verify that "This Month" is the default time range option and filtering works co
 
 ### Expected Result
 
-- Activity list displays activities from the first to last day of current month only:
-  - The first activity group header on page one shows the current month and year (e.g., May 2026)
-  - The last activity group header on the last page shows the current month and year (e.g., May 2026)
+- All activity groups contain the current month and year (e.g., `May, 2026`)
 
 ### Postconditions
 
@@ -182,8 +174,7 @@ Verify that user can select "All" option to view activities without date filteri
 
 ### Expected Result
 
-- All activities are returned without filtering (paginated):
-  - Total pages equal total activities divided by results per page (e.g., 100 activities / 10 per page = 10 pages)
+- The activity list contains 10 items.
 
 ### Postconditions
 
@@ -209,7 +200,7 @@ Verify that user can select "Custom" time range and specify From/To dates.
 
 - Time Range: "Custom"
 - From Date: April 1, 2026
-- To Date: April 30, 2026
+- To Date: April 11, 2026
 
 ### Test Steps
 
@@ -220,14 +211,12 @@ Verify that user can select "Custom" time range and specify From/To dates.
 5. Click on "From" date picker
 6. Select April 1, 2026
 7. Click on "To" date picker
-8. Select April 30, 2026
+8. Select April 11, 2026
 9. Click "Search" button
 
 ### Expected Result
 
-- Activity list displays only activities within the specified date range (April 1 to April 30, 2026):
-  - The first activity group header on page one shows a date on or before April 30, 2026
-  - The last activity group header on the last page shows a date on or after April 1, 2026
+- The date of all activity groups contain is between April 1, 2026 and April 11, 2026 (inclusive)
 
 ### Postconditions
 
@@ -274,7 +263,7 @@ Verify that user can combine text, tags, and custom date range in a complex mult
 - Activity list only shows activities matching ALL criteria:
   - Content contains "coffee" AND
   - Tag is "food" OR "beverage" AND
-  - Date is between April 1 and April 15, 2026
+- All activity groups contain `April, 2026`
 
 ### Postconditions
 

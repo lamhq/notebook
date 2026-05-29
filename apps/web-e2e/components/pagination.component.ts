@@ -54,11 +54,23 @@ export class PaginationComponent {
   }
 
   public async goToFirstPage(): Promise<void> {
-    await this.getFirstPageButton().click();
+    await this.page
+      .getByRole('navigation', { name: 'pagination navigation' })
+      .getByRole('button')
+      .filter({ hasText: '1' })
+      .first()
+      .click();
   }
 
-  public async scrollIntoView(): Promise<void> {
-    await this.getContainer().scrollIntoViewIfNeeded();
+  public async goToLastPage(): Promise<void> {
+    const nav = this.page.getByRole('navigation', { name: 'pagination navigation' });
+    const buttons = nav.getByRole('button');
+    const count = await buttons.count();
+    await buttons.nth(count - 2).click();
+  }
+
+  public scrollIntoView(): Promise<void> {
+    return this.getContainer().scrollIntoViewIfNeeded();
   }
 
   public async getCurrentPage(): Promise<number> {
