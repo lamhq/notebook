@@ -79,22 +79,12 @@ async function findOne(
 async function findOneOrFail(
   collectionName: string,
   query: PlainObject = {},
-  options?: { timeout?: number },
 ): Promise<MongoDocument> {
   if (!db) throw new Error('Not connected to database');
 
-  const timeout = options?.timeout ?? 0;
   const collection = db.collection(collectionName);
-
-  const start = Date.now();
-  do {
-    // Poll the database until record is found or timeout
-    const result = await collection.findOne(query);
-    if (result) return result;
-
-    // Pause 10ms
-    await new Promise((res) => setTimeout(res, 10));
-  } while (Date.now() - start < timeout);
+  const result = await collection.findOne(query);
+  if (result) return result;
 
   throw new Error(`No record found in ${collectionName}`);
 }

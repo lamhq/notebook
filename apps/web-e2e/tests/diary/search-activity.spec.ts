@@ -336,7 +336,7 @@ test.describe('Edge Cases', () => {
     });
   });
 
-  test('TC_SA_11: search dialog should be functional on mobile viewport', async ({
+  test('TC_SA_10: search dialog should be functional on mobile viewport', async ({
     page,
   }) => {
     await test.step('Set mobile viewport', async () => {

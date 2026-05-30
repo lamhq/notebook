@@ -104,7 +104,7 @@ Verify that the system correctly sums multiple amounts from a single line when n
 
 ---
 
-## TC_AA_05 - Submit form with empty content field
+## TC_AA_04 - Submit form with empty content field
 
 ### Description
 
@@ -143,7 +143,7 @@ Verify that the system displays a validation error when the content field is emp
 
 ---
 
-## TC_AA_06 - Add multiple tags
+## TC_AA_05 - Add multiple tags
 
 ### Description
 
@@ -187,7 +187,7 @@ Verify that a user can add multiple tags to the activity form.
 
 ---
 
-## TC_AA_07 - Create and add a new custom tag
+## TC_AA_06 - Create and add a new custom tag
 
 ### Description
 
@@ -230,7 +230,7 @@ Verify that a user can create and add a custom tag that does not exist in the sy
 
 ---
 
-## TC_AA_08 - Tag normalization - trimmed whitespace
+## TC_AA_07 - Tag normalization - trimmed whitespace
 
 ### Description
 
@@ -269,7 +269,7 @@ Verify that tags are trimmed of whitespace and converted to lowercase before bei
 
 ---
 
-## TC_AA_09 - Remove added tag before submission
+## TC_AA_08 - Remove added tag before submission
 
 ### Description
 
@@ -304,7 +304,7 @@ Verify that a user can remove a tag before submitting the form.
 
 ---
 
-## TC_AA_10 - Tag field error handling - API fetch failure with refresh button
+## TC_AA_09 - Tag field error handling - API fetch failure with refresh button
 
 ### Description
 
@@ -335,7 +335,7 @@ Verify that when the tag API fails to fetch, an error state is displayed with a 
 
 ---
 
-## TC_AA_11 - Submit form and display loading state on button
+## TC_AA_10 - Submit form and display loading state on button
 
 ### Description
 
@@ -374,7 +374,7 @@ Verify that the submit button displays a loading state while the form is being p
 
 ---
 
-## TC_AA_12 - Form layout responsive on mobile
+## TC_AA_11 - Form layout responsive on mobile
 
 ### Description
 
@@ -409,156 +409,3 @@ Verify that the form layout is responsive and displays correctly on mobile devic
 
 - Form layout is responsive on mobile viewport
 
----
-
-## TC_AA_13 - Content field has autofocus enabled
-
-### Description
-
-Verify that the content text area field has autofocus enabled for better user experience.
-
-### Pre-conditions
-
-- Application is accessible
-- User is logged in
-- User is navigating to the Add Activity page (`/activities/new`)
-
-### Test Data
-
-- N/A (testing autofocus behavior)
-
-### Test Steps
-
-1. Navigate to the Add Activity page (`/activities/new`)
-2. Wait for the page to fully load
-3. Observe which form field has focus
-4. Verify the content field is focused
-
-### Expected Result
-
-- The content text area field is automatically focused when the page loads
-- The cursor is positioned in the content field
-- User can start typing immediately without clicking the field first
-
-### Postconditions
-
-- Content field has focus and is ready for input
-
----
-
-## TC_AA_14 - Content field supports multi-line input
-
-### Description
-
-Verify that the content field accepts and preserves multi-line input with newline characters.
-
-### Pre-conditions
-
-- Application is accessible
-- User is logged in
-- User is on the Add Activity page (`/activities/new`)
-
-### Test Data
-
-- Content: "nhận 500k từ dự án\nchi 100k cho dụng cụ\nmua sách 50k"
-
-### Test Steps
-
-1. Navigate to the Add Activity page (`/activities/new`)
-2. Click on the content field
-3. Enter the multi-line content with newlines
-4. Wait for auto-calculation
-5. Observe the content and calculated values
-
-### Expected Result
-
-- The content field accepts and displays the multi-line text
-- Each line is preserved with newline characters
-- Auto-calculation correctly processes each line separately
-- Income: `500`, Outcome: `150` (`100` + `50`)
-
-### Postconditions
-
-- Form is reset and ready for new input
-
----
-
-## TC_AA_15 - API submission error displays error message
-
-### Description
-
-Verify that when the API returns an error during form submission, an appropriate error message is displayed to the user.
-
-### Pre-conditions
-
-- Application is accessible
-- User is logged in
-- User is on the Add Activity page (`/activities/new`)
-- API is configured to return an error
-
-### Test Data
-
-- Content: "test activity"
-- Tags: ["test"]
-- Time: Current date and time
-
-### Test Steps
-
-1. Navigate to the Add Activity page (`/activities/new`)
-2. Fill in all required fields
-3. Mock or simulate an API error response
-4. Click the "Submit" button
-5. Observe the error handling
-
-### Expected Result
-
-- The form submission fails
-- A user-friendly error message is displayed (e.g., "Failed to create activity. Please try again.")
-- The form remains on the Add Activity page (`/activities/new`)
-- User can attempt to resubmit the form
-- The submit button returns to normal state (loading state is cleared)
-
-### Postconditions
-
-- No data cleanup required; form remains with entered data
-
----
-
-## TC_AA_16 - Successful submission redirects to homepage with new activity visible
-
-### Description
-
-Verify that after successful form submission, the user is redirected to the homepage and the newly created activity is visible in the activity list.
-
-### Pre-conditions
-
-- Application is accessible
-- User is logged in
-- User is on the Add Activity page (`/activities/new`)
-- API is functioning correctly
-
-### Test Data
-
-- Content: "test activity successfully added"
-- Tags: ["success"]
-- Time: Current date and time
-
-### Test Steps
-
-1. Navigate to the Add Activity page (`/activities/new`)
-2. Fill in all required fields with test data
-3. Click the "Submit" button
-4. Wait for the page redirect
-5. Verify the activity list on the homepage
-
-### Expected Result
-
-- The form is submitted successfully
-- The user is redirected to the homepage (`/`)
-- The activity list is displayed
-- The newly created activity with content "test activity successfully added" is visible in the list
-- The activity shows the correct tags, date/time, and financial amounts
-
-### Postconditions
-
-- Delete the activity created during this test

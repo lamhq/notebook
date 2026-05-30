@@ -8,7 +8,7 @@
 
 ---
 
-## TC_VAL_03 - Activity groups are sorted by date (newest first)
+## TC_VA_01 - Activity groups are sorted by date (newest first)
 
 ### Description
 
@@ -37,7 +37,7 @@ Verify that date groups appear in descending order with newest activities first.
 
 ---
 
-## TC_VAL_13 - Activities within date group are sorted by time (newest first)
+## TC_VA_02 - Activities within date group are sorted by time (newest first)
 
 ### Description
 
@@ -66,7 +66,7 @@ Verify that activities within the same date group are sorted by time with the ne
 
 ---
 
-## TC_VAL_04 - Pagination controls are displayed
+## TC_VA_03 - Pagination controls are displayed
 
 ### Description
 
@@ -102,7 +102,7 @@ Verify that pagination controls are correctly displayed and in the proper state 
 
 ---
 
-## TC_VAL_05 - Navigate to next page
+## TC_VA_04 - Navigate to next page
 
 ### Description
 
@@ -140,7 +140,7 @@ Verify that the user can navigate to the next page by clicking the Next button.
 
 ---
 
-## TC_VAL_06 - Navigate to previous page
+## TC_VA_05 - Navigate to previous page
 
 ### Description
 
@@ -178,7 +178,7 @@ Verify that the user can navigate back to the previous page by clicking the Prev
 
 ---
 
-## TC_VAL_08 - Navigate to last page
+## TC_VA_06 - Navigate to last page
 
 ### Description
 
@@ -217,7 +217,7 @@ Verify that the user can navigate to the last page and the Next button is disabl
 
 ---
 
-## TC_VAL_10 - Empty state message is displayed
+## TC_VA_07 - Empty state message is displayed
 
 ### Description
 
@@ -251,7 +251,7 @@ Verify that the empty state message is displayed when the user has no activities
 
 ---
 
-## TC_VAL_11 - Network error handling
+## TC_VA_08 - Network error handling
 
 ### Description
 
@@ -288,7 +288,7 @@ Verify that an appropriate error message is displayed when a network error occur
 
 ---
 
-## TC_VAL_12 - Activity list is responsive on mobile devices
+## TC_VA_09 - Activity list is responsive on mobile devices
 
 ### Description
 

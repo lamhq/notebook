@@ -42,8 +42,7 @@ test.afterEach(async () => {
 });
 
 test.describe('Add Activity - Auto-calculation', () => {
-  // TC_AA_01: Auto-calculate outcome from content
-  test('auto-calculate outcome from content (no income keyword)', async () => {
+  test('TC_AA_01: auto-calculate outcome from content (no income keyword)', async () => {
     await addActivityPage.enterContent(`chi 100k cho cà phê ${deleteMarker}`);
 
     // Wait for auto-calculation to complete
@@ -53,8 +52,7 @@ test.describe('Add Activity - Auto-calculation', () => {
     await expect(addActivityPage.getIncomeField()).toHaveValue('');
   });
 
-  // TC_AA_02: Auto-calculate multiple amounts from multi-line content
-  test('auto-calculate multiple amounts from multi-line content', async () => {
+  test('TC_AA_02: auto-calculate multiple amounts from multi-line content', async () => {
     await addActivityPage.enterContent(
       `nhận hoa hồng 200k\nchi xăng 80k ${deleteMarker}`,
     );
@@ -64,8 +62,7 @@ test.describe('Add Activity - Auto-calculation', () => {
     await expect(addActivityPage.getOutcomeField()).toHaveValue('80');
   });
 
-  // TC_AA_03: Auto-calculate outcome from single line with multiple amounts
-  test('auto-calculate outcome from single line with multiple amounts', async () => {
+  test('TC_AA_03: auto-calculate outcome from single line with multiple amounts', async () => {
     await addActivityPage.enterContent(`mua đồ 50k, trà 20k ${deleteMarker}`);
 
     // Wait for auto-calculation
@@ -75,8 +72,7 @@ test.describe('Add Activity - Auto-calculation', () => {
     await expect(addActivityPage.getIncomeField()).toHaveValue('');
   });
 
-  // TC_AA_14: Content field supports multi-line input
-  test('content field supports multi-line input', async () => {
+  test('TC_AA_09: content field supports multi-line input', async () => {
     const multilineContent = `nhận 500k từ dự án\nchi 100k cho dụng cụ\nmua sách 50k ${deleteMarker}`;
     await addActivityPage.enterContent(multilineContent);
 
@@ -90,8 +86,7 @@ test.describe('Add Activity - Auto-calculation', () => {
 });
 
 test.describe('Add Activity - Form Validation', () => {
-  // TC_AA_05: Submit form with empty content field
-  test('submit form with empty content field shows validation error', async ({
+  test('TC_AA_04: submit form with empty content field shows validation error', async ({
     page,
   }) => {
     // Leave content empty and try to submit
@@ -109,8 +104,7 @@ test.describe('Add Activity - Form Validation', () => {
     await expect(addActivityPage.getContentField()).toHaveValue('');
   });
 
-  // TC_AA_13: Content field has autofocus enabled
-  test('content field has autofocus enabled', async () => {
+  test('TC_AA_10: content field has autofocus enabled', async () => {
     const contentField = addActivityPage.getContentField();
 
     // Verify the content field is visible and can receive focus
@@ -122,7 +116,7 @@ test.describe('Add Activity - Form Validation', () => {
 });
 
 test.describe('Add Activity - Cancel Button', () => {
-  test('cancel button navigates back to homepage', async ({ page }) => {
+  test('TC_AA_11: cancel button navigates back to homepage', async ({ page }) => {
     // Fill some form data
     await addActivityPage.enterContent(
       `test activity to be cancelled ${deleteMarker}`,
@@ -137,8 +131,7 @@ test.describe('Add Activity - Cancel Button', () => {
 });
 
 test.describe('Add Activity - Tag Management', () => {
-  // TC_AA_06: Add multiple tags
-  test('add multiple tags to activity form', async ({ page }) => {
+  test('TC_AA_05: add multiple tags to activity form', async ({ page }) => {
     const content = `test activity ${deleteMarker}`;
     // Fill content
     await addActivityPage.enterContent(content);
@@ -171,8 +164,7 @@ test.describe('Add Activity - Tag Management', () => {
     ).toContainText('#bonus');
   });
 
-  // TC_AA_07: Create and add a new custom tag
-  test('create and add a new custom tag', async ({ page }) => {
+  test('TC_AA_06: create and add a new custom tag', async ({ page }) => {
     const content = `test activity ${deleteMarker}`;
     await addActivityPage.enterContent(content);
 
@@ -196,8 +188,7 @@ test.describe('Add Activity - Tag Management', () => {
     ).toContainText('#custom-tag-new');
   });
 
-  // TC_AA_08: Tag normalization - trimmed whitespace
-  test('tags are normalized - trimmed and lowercase', async ({ page }) => {
+  test('TC_AA_07: tags are normalized - trimmed and lowercase', async ({ page }) => {
     const content = `test activity ${deleteMarker}`;
     await addActivityPage.enterContent(content);
 
@@ -221,8 +212,7 @@ test.describe('Add Activity - Tag Management', () => {
     ).toContainText('#expense');
   });
 
-  // TC_AA_09: Remove added tag before submission
-  test('remove added tag before submission', async ({ page }) => {
+  test('TC_AA_08: remove added tag before submission', async ({ page }) => {
     const content = `test activity ${deleteMarker}`;
     await addActivityPage.enterContent(content);
 
@@ -252,7 +242,6 @@ test.describe('Add Activity - Tag Management', () => {
 });
 
 test.describe('Add Activity - Form Submission', () => {
-  // TC_AA_11: Submit form displays loading state on button - SKIP for now
   test.skip('submit button displays loading state during submission', async ({
     page,
   }) => {
@@ -282,8 +271,7 @@ test.describe('Add Activity - Form Submission', () => {
     ).toContainText('#test');
   });
 
-  // TC_AA_16: Successful submission redirects to homepage with new activity visible
-  test('successful submission redirects to homepage with new activity visible', async ({
+  test('TC_AA_12: successful submission redirects to homepage with new activity visible', async ({
     page,
   }) => {
     const content = `test activity ${deleteMarker}`;

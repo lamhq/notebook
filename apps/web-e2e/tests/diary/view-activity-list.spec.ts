@@ -121,8 +121,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 test.describe('Activity list display', () => {
-  // TC_VAL_03: Activity groups are sorted by date (newest first)
-  test('activity groups should be sorted by date (newest first)', async () => {
+  test('TC_VA_01: activity groups should be sorted by date (newest first)', async () => {
     // Wait for activity items to load first
     await expect(activityListPage.activityList.getActivityItems()).toHaveCount(10);
 
@@ -146,8 +145,7 @@ test.describe('Activity list display', () => {
     }
   });
 
-  // TC_VAL_13: Activities within date group are sorted by time (newest first)
-  test('activities within date group should be sorted by time (newest first)', async () => {
+  test('TC_VA_02: activities within date group should be sorted by time (newest first)', async () => {
     // Wait for activity items to load first
     await expect(activityListPage.activityList.getActivityItems()).toHaveCount(10);
 
@@ -178,8 +176,7 @@ test.describe('Activity list display', () => {
 });
 
 test.describe('Pagination controls', () => {
-  // TC_VAL_04: Pagination controls are displayed
-  test('first page should display correct pagination controls', async () => {
+  test('TC_VA_03: first page should display correct pagination controls', async () => {
     await activityListPage.pagination.scrollIntoView();
 
     await expect(activityListPage.pagination.getCurrentPageButton()).toHaveText('1');
@@ -187,8 +184,7 @@ test.describe('Pagination controls', () => {
     await expect(activityListPage.pagination.getNextButton()).toBeEnabled();
   });
 
-  // TC_VAL_05: Navigate to next page
-  test('clicking next button should navigate to next page', async () => {
+  test('TC_VA_04: clicking next button should navigate to next page', async () => {
     await activityListPage.pagination.scrollIntoView();
     await activityListPage.pagination.getNextButton().click();
 
@@ -197,8 +193,7 @@ test.describe('Pagination controls', () => {
     await expect(activityListPage.activityList.getActivityItems()).toHaveCount(10);
   });
 
-  // TC_VAL_06: Navigate to previous page
-  test('clicking previous button should navigate to previous page', async () => {
+  test('TC_VA_05: clicking previous button should navigate to previous page', async () => {
     await activityListPage.pagination.scrollIntoView();
     const nextButton = activityListPage.pagination.getNextButton();
     await nextButton.click();
@@ -212,8 +207,7 @@ test.describe('Pagination controls', () => {
     await expect(nextButton).toBeEnabled();
   });
 
-  // TC_VAL_08: Navigate to last page
-  test('navigating to last page should disable next button', async () => {
+  test('TC_VA_06: navigating to last page should disable next button', async () => {
     await activityListPage.pagination.scrollIntoView();
     await activityListPage.pagination.getPageButton(3).click();
     await expect(activityListPage.pagination.getCurrentPageButton()).toHaveText('3');
@@ -225,8 +219,7 @@ test.describe('Pagination controls', () => {
 });
 
 test.describe('Empty state', () => {
-  // TC_VAL_10: Empty state message is displayed
-  test('user with no activities should see empty state message', async ({
+  test('TC_VA_07: user with no activities should see empty state message', async ({
     page,
   }) => {
     await page.route('**/api/diary/activities*', async (route) => {
@@ -246,8 +239,7 @@ test.describe('Empty state', () => {
 });
 
 test.describe('Error handling', () => {
-  // TC_VAL_11: Network error handling
-  test('network error should display error message with retry option', async ({
+  test('TC_VA_08: network error should display error message with retry option', async ({
     page,
   }) => {
     await page.route('**/api/diary/activities*', async (route) => {
@@ -273,8 +265,9 @@ test.describe('Error handling', () => {
 });
 
 test.describe('Responsive design', () => {
-  // TC_VAL_12: Activity list is responsive on mobile devices
-  test('activity list should be responsive on mobile viewport', async ({ page }) => {
+  test('TC_VA_09: activity list should be responsive on mobile viewport', async ({
+    page,
+  }) => {
     await page.setViewportSize({ width: 375, height: 667 });
 
     await activityListPage.navigate();

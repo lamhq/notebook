@@ -53,10 +53,12 @@ test.afterEach(async () => {
 });
 
 test.describe('Cancel deletion', () => {
-  // TC_DA_01: Cancel deletion - closes dialog without making changes
-  test('cancel button should close dialog and not delete activity', async () => {
+  test('TC_DA_01: cancel button should close dialog and not delete activity', async () => {
     // Get the first test activity
-    const activity = deleteActivityPage.getActivities(deleteMarker).first();
+    const activity = deleteActivityPage.activityList
+      .getActivityItems()
+      .filter({ hasText: deleteMarker })
+      .first();
 
     // Open context menu and click Delete
     await deleteActivityPage.openItemMenu(activity);
@@ -81,12 +83,14 @@ test.describe('Cancel deletion', () => {
     await expect(activity).toBeVisible();
   });
 
-  // TC_DA_02: Close dialog by clicking outside (background click)
-  test('clicking outside dialog should close dialog without deleting', async ({
+  test('TC_DA_02: clicking outside dialog should close dialog without deleting', async ({
     page,
   }) => {
     // Get the first test activity
-    const activity = deleteActivityPage.getActivities(deleteMarker).first();
+    const activity = deleteActivityPage.activityList
+      .getActivityItems()
+      .filter({ hasText: deleteMarker })
+      .first();
 
     // Open context menu and click Delete
     await deleteActivityPage.openItemMenu(activity);
@@ -109,10 +113,12 @@ test.describe('Cancel deletion', () => {
 });
 
 test.describe('Successful deletion', () => {
-  // TC_DA_03: Delete activity successfully - API succeeds
-  test('delete button should remove activity from list and close dialog', async () => {
+  test('TC_DA_03: delete button should remove activity from list and close dialog', async () => {
     // Get the first test activity
-    const activity = deleteActivityPage.getActivities(deleteMarker).first();
+    const activity = deleteActivityPage.activityList
+      .getActivityItems()
+      .filter({ hasText: deleteMarker })
+      .first();
 
     // Open context menu and click Delete
     await deleteActivityPage.openItemMenu(activity);
@@ -132,13 +138,16 @@ test.describe('Successful deletion', () => {
     await expect(activity).toBeHidden();
 
     // Verify activity count decreased by 1
-    await expect(deleteActivityPage.getActivities(deleteMarker)).toHaveCount(0);
+    await expect(
+      deleteActivityPage.activityList
+        .getActivityItems()
+        .filter({ hasText: deleteMarker }),
+    ).toHaveCount(0);
   });
 });
 
 test.describe('Error handling', () => {
-  // TC_DA_04: Delete activity fails - API returns 404 error
-  test('404 error should keep activity in list and dialog remains open', async ({
+  test('TC_DA_04: 404 error should keep activity in list and dialog remains open', async ({
     page,
   }) => {
     // Mock the delete API to return 404 error
@@ -155,7 +164,10 @@ test.describe('Error handling', () => {
     });
 
     // Get the first test activity
-    const activity = deleteActivityPage.getActivities(deleteMarker).first();
+    const activity = deleteActivityPage.activityList
+      .getActivityItems()
+      .filter({ hasText: deleteMarker })
+      .first();
 
     // Open context menu and click Delete
     await deleteActivityPage.openItemMenu(activity);
@@ -181,8 +193,7 @@ test.describe('Error handling', () => {
     await expect(activity).toBeVisible();
   });
 
-  // TC_DA_05: Network error handling during deletion
-  test('network error should keep activity in list', async ({ page }) => {
+  test('TC_DA_05: network error should keep activity in list', async ({ page }) => {
     // Mock the delete API to simulate network error
     await page.route('**/api/diary/activities/**', async (route) => {
       if (route.request().method() === 'DELETE') {
@@ -193,7 +204,10 @@ test.describe('Error handling', () => {
     });
 
     // Get the first test activity
-    const activity = deleteActivityPage.getActivities(deleteMarker).first();
+    const activity = deleteActivityPage.activityList
+      .getActivityItems()
+      .filter({ hasText: deleteMarker })
+      .first();
 
     // Open context menu and click Delete
     await deleteActivityPage.openItemMenu(activity);

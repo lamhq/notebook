@@ -59,8 +59,7 @@ test.afterEach(async () => {
 });
 
 test.describe('Load Page', () => {
-  // TC_UA_01: Load Update Activity page with valid activity ID
-  test('load update activity page with valid activity ID should display pre-filled form', async () => {
+  test('TC_UA_01: load update activity page with valid activity ID should display pre-filled form', async () => {
     // Verify page title
     await expect(updateActivityPage.getPageTitle()).toBeVisible();
 
@@ -85,8 +84,7 @@ test.describe('Load Page', () => {
 });
 
 test.describe('Form Submission', () => {
-  // TC_UA_02: Update activity with valid form data
-  test('update activity with valid form data should redirect to homepage', async ({
+  test('TC_UA_02: update activity with valid form data should redirect to homepage', async ({
     page,
   }) => {
     // Modify the content field
@@ -116,8 +114,7 @@ test.describe('Form Submission', () => {
     ).toContainText(`Lunch at coffee shop - 12k`);
   });
 
-  // TC_UA_07: Cancel update and discard changes
-  test('cancel button navigates back to homepage without saving', async ({
+  test('TC_UA_03: cancel button navigates back to homepage without saving', async ({
     page,
   }) => {
     // Make changes
@@ -136,8 +133,7 @@ test.describe('Form Submission', () => {
     ).toContainText('Lunch at restaurant');
   });
 
-  // TC_UA_05: Update activity with tag selection
-  test('update activity with new tags should replace existing tags', async ({
+  test('TC_UA_04: update activity with new tags should replace existing tags', async ({
     page,
   }) => {
     // Verify existing tags are shown (food, expense)
@@ -163,8 +159,9 @@ test.describe('Form Submission', () => {
     ).toContainText(newContent);
   });
 
-  // TC_UA_06: Update activity date/time
-  test('update activity date/time should be reflected', async ({ page }) => {
+  test('TC_UA_05: update activity date/time should be reflected', async ({
+    page,
+  }) => {
     await updateActivityPage.setTime('2026-05-20T14:30:00');
 
     // Submit the form
@@ -183,8 +180,7 @@ test.describe('Form Submission', () => {
 });
 
 test.describe('Amounts auto-calculation', () => {
-  // TC_UA_03: Auto-calculate income/outcome when content changes
-  test('auto-calculate outcome when content changes', async () => {
+  test('TC_UA_06: auto-calculate outcome when content changes', async () => {
     // Modify content to trigger auto-calculation
     await updateActivityPage.enterContent(`Coffee - 5k ${deleteMarker}`);
 
@@ -195,8 +191,7 @@ test.describe('Amounts auto-calculation', () => {
     await expect(updateActivityPage.getIncomeField()).toHaveValue('0');
   });
 
-  // TC_UA_03: Auto-calculate multiple amounts from multi-line content
-  test('auto-calculate multiple amounts from multi-line content', async () => {
+  test('TC_UA_07: auto-calculate multiple amounts from multi-line content', async () => {
     // Modify content with multiple amounts
     await updateActivityPage.enterContent(
       `nhận hoa hồng 200k\nchi xăng 80k ${deleteMarker}`,
@@ -207,8 +202,7 @@ test.describe('Amounts auto-calculation', () => {
     await expect(updateActivityPage.getOutcomeField()).toHaveValue('80');
   });
 
-  // TC_UA_04: Manual override of auto-calculated income/outcome
-  test('manual override of auto-calculated outcome should be preserved', async ({
+  test('TC_UA_08: manual override of auto-calculated outcome should be preserved', async ({
     page,
   }) => {
     // Content has 25k, which will auto-calculate to outcome: 25
@@ -234,8 +228,9 @@ test.describe('Amounts auto-calculation', () => {
 });
 
 test.describe('Validation', () => {
-  // TC_UA_08: Form validation errors
-  test('empty content field should display validation error', async ({ page }) => {
+  test('TC_UA_09: empty content field should display validation error', async ({
+    page,
+  }) => {
     // Clear the content field
     await updateActivityPage.getContentField().fill('');
 
@@ -248,8 +243,9 @@ test.describe('Validation', () => {
 });
 
 test.describe('Error Handling', () => {
-  // TC_UA_09: Activity not found error (invalid activity ID)
-  test('invalid activity ID should display not found error', async ({ page }) => {
+  test('TC_UA_10: invalid activity ID should display not found error', async ({
+    page,
+  }) => {
     // Navigate to non-existent activity
     await page.goto('/activities/6467b9f5e8a4f9c8d2a1b3c4');
 
@@ -262,8 +258,7 @@ test.describe('Error Handling', () => {
     await expect(updateActivityPage.getContentField()).toBeHidden();
   });
 
-  // TC_UA_10: API error during activity fetch
-  test('api error during activity fetch should display error message', async ({
+  test('TC_UA_11: api error during activity fetch should display error message', async ({
     page,
   }) => {
     // Intercept and fail the activity fetch request
@@ -278,8 +273,7 @@ test.describe('Error Handling', () => {
     );
   });
 
-  // TC_UA_11: API error during form submission
-  test('api error during form submission should display error and retain form data', async ({
+  test('TC_UA_12: api error during form submission should display error and retain form data', async ({
     page,
   }) => {
     // Intercept and fail the update request

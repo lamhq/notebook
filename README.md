@@ -35,7 +35,11 @@ Open your browser and go to http://localhost:5173
 Run end-to-end tests (web):
 
 ```bash
+# Run a specific test file
 pnpm -F web-e2e exec playwright test path/to/test-file.spec.ts
+
+# Run a specific test case by ID
+pnpm -F web-e2e exec playwright test --grep "TC_AA_01"
 ```
 
 > [!NOTE]

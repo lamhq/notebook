@@ -344,7 +344,7 @@ Verify that when search criteria return no results, the empty state message is d
 
 ---
 
-## TC_SA_11 - Responsive Design - Mobile Viewport
+## TC_SA_10 - Responsive Design - Mobile Viewport
 
 ### Description
 

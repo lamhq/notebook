@@ -2,10 +2,6 @@ import { Locator } from '@playwright/test';
 import { ActivityListPage } from './activity-list.page';
 
 export class DeleteActivityPage extends ActivityListPage {
-  public getActivities(text: string): Locator {
-    return this.page.locator('.activity-item').filter({ hasText: text });
-  }
-
   public getActivityMenuButton(activityItem: Locator): Locator {
     return activityItem.getByLabel('Activity Menu');
   }
