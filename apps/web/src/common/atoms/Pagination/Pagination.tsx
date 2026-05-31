@@ -5,8 +5,10 @@ export type { PaginationProps } from '@mui/material/Pagination';
 export default function Pagination(props: PaginationProps) {
   return (
     <MuiPagination
+      showFirstButton
+      showLastButton
       siblingCount={0}
-      boundaryCount={2}
+      boundaryCount={1}
       variant="outlined"
       shape="rounded"
       size="small"
