@@ -66,8 +66,7 @@ jobs:
         uses: ./.github/actions/setup-node-env
 
       - name: Run e2e tests
-        # run: pnpm --filter web-e2e test
-        run: echo "✓ E2E tests passed"
+        run: pnpm --filter web-e2e test
 
   build:
     if: github.event_name == 'pull_request' || github.event_name == 'push'
