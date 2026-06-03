@@ -14,7 +14,7 @@ const defaultValues: ActivityFormData = {
 };
 
 export default function AddActivityPage() {
-  const { executeMutation: addActivity } = useAddActivityMutation();
+  const { mutateAsync: addActivity } = useAddActivityMutation();
   const navigate = useNavigate();
   const handleError = useErrorHandler();
   const handleSubmit: SubmitHandler<ActivityFormData> = useCallback(

@@ -1,7 +1,8 @@
 import RefreshIcon from '@mui/icons-material/Refresh';
 import IconButton from '@mui/material/IconButton';
+import { QueryErrorResetBoundary } from '@tanstack/react-query';
 import { Suspense } from 'react';
-import type { ErrorBoundaryPropsWithRender } from 'react-error-boundary';
+import type { FallbackProps } from 'react-error-boundary';
 import { ErrorBoundary } from 'react-error-boundary';
 
 import type { TagInputProps } from '../../../common/atoms/TagInput/TagInput';
@@ -21,9 +22,7 @@ function FetchActivitySelect(props: ActivityTagSelectProps) {
 
 export default function ActivityTagSelect(props: ActivityTagSelectProps) {
   const loadingFallback = LoadingSelect(props);
-  const renderErrorFallback: ErrorBoundaryPropsWithRender['fallbackRender'] = ({
-    resetErrorBoundary,
-  }) => {
+  const renderErrorFallback = ({ resetErrorBoundary }: FallbackProps) => {
     return (
       <TagInput
         {...props}
@@ -36,11 +35,16 @@ export default function ActivityTagSelect(props: ActivityTagSelectProps) {
       />
     );
   };
+
   return (
-    <ErrorBoundary fallbackRender={renderErrorFallback}>
-      <Suspense fallback={loadingFallback}>
-        <FetchActivitySelect {...props} />
-      </Suspense>
-    </ErrorBoundary>
+    <QueryErrorResetBoundary>
+      {({ reset }) => (
+        <ErrorBoundary onReset={reset} fallbackRender={renderErrorFallback}>
+          <Suspense fallback={loadingFallback}>
+            <FetchActivitySelect {...props} />
+          </Suspense>
+        </ErrorBoundary>
+      )}
+    </QueryErrorResetBoundary>
   );
 }

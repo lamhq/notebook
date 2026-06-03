@@ -2,15 +2,12 @@ import { useCallback } from 'react';
 import { formatDate } from '../../../common/utils';
 import { useDialogs } from '../../../dialog';
 import { useErrorHandler } from '../../../error';
-import { useEvent } from '../../../event';
-import { ACTIVITY_CHANGED_EVENT } from '../../constants';
 import { useDeleteActivityMutation } from '../../hooks';
 import type { Activity } from '../../types';
 
 export function useDeleteActivityItemProps(activity: Activity) {
-  const { executeMutation: deleteActivity, isLoading: isDeleting } =
+  const { mutateAsync: deleteActivity, isPending: isDeleting } =
     useDeleteActivityMutation();
-  const eventEmitter = useEvent();
   const { confirm } = useDialogs();
   const handleError = useErrorHandler();
   const handleDelete = useCallback(async () => {
@@ -21,7 +18,6 @@ export function useDeleteActivityItemProps(activity: Activity) {
       if (!isOk) return;
 
       await deleteActivity(activity.id);
-      eventEmitter.emit(ACTIVITY_CHANGED_EVENT, activity);
     } catch (error) {
       handleError(error);
     }
