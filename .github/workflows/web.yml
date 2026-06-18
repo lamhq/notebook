@@ -13,7 +13,7 @@ on:
     paths:
       - 'apps/web/**'
       - 'packages/**'
-      # TODO: remove this when deploy to dev success
+      # TODO: remove below line when you don't need to modify this workflow file anymore
       - '.github/workflows/web.yml'
   push:
     branches: [main]
@@ -64,6 +64,9 @@ jobs:
 
       - name: Setup Node environment
         uses: ./.github/actions/setup-node-env
+
+      - name: Install Playwright browsers (chromium only)
+        run: npx playwright install --with=chromium
 
       - name: Run e2e tests
         run: pnpm --filter web-e2e test
