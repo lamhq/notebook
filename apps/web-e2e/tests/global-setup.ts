@@ -30,6 +30,10 @@ setup('authenticate', async ({ page }) => {
   // Skip sign in if already authenticated
   setup.skip(fs.existsSync(authFile), 'Already signed in');
 
+  page.on('console', (msg) => {
+    console.log(msg.text());
+  });
+
   await page.goto('/');
 
   // Verify current page is the login page
