@@ -56,6 +56,7 @@ export default defineConfig({
     cwd: path.join(import.meta.dirname, '..', '..'),
     port: 5173,
     reuseExistingServer: true,
-    // stdout: 'pipe',
+    // pipe the output of the web server to terminal
+    stdout: 'pipe',
   },
 });
