@@ -55,7 +55,7 @@ export default defineConfig({
     command: 'npx turbo web#dev',
     cwd: path.join(import.meta.dirname, '..', '..'),
     port: 5173,
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: true,
     // stdout: 'pipe',
   },
 });
