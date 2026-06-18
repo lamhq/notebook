@@ -1,13 +1,4 @@
 import { defineConfig, devices } from '@playwright/test';
-
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(import.meta.dirname, '.env') });
-
 import path from 'path';
 
 /**
@@ -17,14 +8,14 @@ const authFile = path.join(import.meta.dirname, 'playwright/.auth/user.json');
 
 export default defineConfig({
   testDir: './tests',
-  /* Run tests in files in parallel */
+  /* Tests share the same database, cannot run in parallel */
   fullyParallel: false,
+  /* Ensure only one test runs at a time */
+  workers: 1,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
-  /* Opt out of parallel tests on CI. */
-  workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'line',
   /* Timeout for each assertion */
@@ -59,7 +50,7 @@ export default defineConfig({
     },
   ],
 
-  /* Run your local dev server before starting the tests */
+  /* Run local dev server before starting the tests */
   webServer: {
     command: 'npx turbo web#dev',
     cwd: path.join(import.meta.dirname, '..', '..'),

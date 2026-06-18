@@ -5,8 +5,8 @@ import { DockerComposeEnvironment, Wait } from 'testcontainers';
 
 const authFile = path.join(__dirname, '..', 'playwright/.auth/user.json');
 
-const VALID_USERNAME = 'test';
-const VALID_PASSWORD = '123';
+const LOGIN_USERNAME = 'test';
+const LOGIN_PASSWORD = '123';
 
 // Start Docker services
 setup.beforeAll(async () => {
@@ -39,8 +39,8 @@ setup('authenticate', async ({ page }) => {
   // Perform login
   await page
     .getByRole('textbox', { name: /Username or email/i })
-    .fill(VALID_USERNAME);
-  await page.getByRole('textbox', { name: /Password/i }).fill(VALID_PASSWORD);
+    .fill(LOGIN_USERNAME);
+  await page.getByRole('textbox', { name: /Password/i }).fill(LOGIN_PASSWORD);
   await page.getByRole('button', { name: /Sign In/i }).click();
 
   // Wait for navigation to complete
