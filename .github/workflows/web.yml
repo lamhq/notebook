@@ -77,6 +77,9 @@ jobs:
       - name: Install Playwright browsers (chromium only)
         run: pnpm --filter web-e2e exec playwright install --with-deps chromium
 
+      - name: Start applications
+        run: npx turbo web#dev
+
       - name: Run e2e tests
         # run: pnpm --filter web-e2e test
         run: pnpm -F web-e2e exec playwright test --grep "TC_AA_01"
