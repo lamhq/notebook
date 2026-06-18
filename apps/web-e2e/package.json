@@ -2,8 +2,6 @@
   "name": "web-e2e",
   "version": "1.0.0",
   "description": "End-to-end tests for the Web application",
-  "type": "commonjs",
-  "main": "index.js",
   "scripts": {
     "test": "playwright test"
   },
