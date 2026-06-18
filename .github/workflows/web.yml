@@ -64,6 +64,10 @@ jobs:
       VITE_API_URL: '/api'
       VITE_OIDC_AUTHORITY: http://localhost:8080/realms/notebook
       VITE_OIDC_CLIENT_ID: notebook-web
+
+      # from `apps/api/.env`
+      DB_URI: 'mongodb://root:password@localhost:27017/test?authSource=admin'
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
