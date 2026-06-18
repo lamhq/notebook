@@ -18,6 +18,7 @@ setup.beforeAll(async () => {
     .withNoRecreate()
     .withAutoCleanup(false)
     .up();
+  console.log('Docker services started');
 });
 
 /**
