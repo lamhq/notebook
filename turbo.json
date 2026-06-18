@@ -19,10 +19,6 @@
       "with": ["api#dev"],
       "persistent": true,
       "cache": false
-    },
-    "api#dev": {
-      "persistent": true,
-      "cache": false
     }
   }
 }
