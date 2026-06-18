@@ -66,7 +66,7 @@ jobs:
         uses: ./.github/actions/setup-node-env
 
       - name: Install Playwright browsers (chromium only)
-        run: npx playwright install --with=chromium
+        run: npx playwright install chromium
 
       - name: Run e2e tests
         run: pnpm --filter web-e2e test
