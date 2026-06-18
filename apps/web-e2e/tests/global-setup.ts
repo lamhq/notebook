@@ -29,7 +29,7 @@ setup('authenticate', async ({ page }) => {
   // Skip sign in if already authenticated
   setup.skip(fs.existsSync(authFile), 'Already signed in');
 
-  await page.goto('/');
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
 
   // Wait for login page to appear
   await expect(
