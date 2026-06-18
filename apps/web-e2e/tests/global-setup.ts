@@ -10,6 +10,7 @@ const LOGIN_PASSWORD = '123';
 
 // Start Docker services
 setup.beforeAll(async () => {
+  setup.setTimeout(180_000); // Increase timeout for Docker startup
   const composeFilePath = path.join(__dirname, '../../..');
   const composeFile = 'docker-compose.yml';
   await new DockerComposeEnvironment(composeFilePath, composeFile)
