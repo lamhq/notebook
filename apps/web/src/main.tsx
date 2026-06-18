@@ -25,6 +25,10 @@ const apiUrl = import.meta.env.VITE_API_URL;
 const oidcAuthority = import.meta.env.VITE_OIDC_AUTHORITY;
 const oidcClientId = import.meta.env.VITE_OIDC_CLIENT_ID;
 
+console.log('API URL:', apiUrl);
+console.log('OIDC Authority:', oidcAuthority);
+console.log('OIDC Client ID:', oidcClientId);
+
 if (!apiUrl) throw new Error('Missing required environment variable: VITE_API_URL');
 if (!oidcAuthority)
   throw new Error('Missing required environment variable: VITE_OIDC_AUTHORITY');

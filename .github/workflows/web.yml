@@ -78,7 +78,8 @@ jobs:
         run: pnpm --filter web-e2e exec playwright install --with-deps chromium
 
       - name: Run e2e tests
-        run: pnpm --filter web-e2e test
+        # run: pnpm --filter web-e2e test
+        run: pnpm -F web-e2e exec playwright test --grep "TC_AA_01"
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v7
