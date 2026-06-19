@@ -1,14 +1,12 @@
 {
   "$schema": "node_modules/turbo/schema.json",
   "ui": "stream",
-  "envMode": "loose",
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "outputs": ["output-file.txt", "dist/**"]
     },
     "lint": {},
-    "check-types": {},
     "test": {
       "dependsOn": ["^build"]
     },
@@ -19,7 +17,13 @@
     "web#dev": {
       "with": ["api#dev"],
       "persistent": true,
-      "cache": false
+      "cache": false,
+      "env": ["VITE_API_URL", "VITE_OIDC_AUTHORITY", "VITE_OIDC_CLIENT_ID"]
+    },
+    "api#dev": {
+      "persistent": true,
+      "cache": false,
+      "env": ["DB_URI"]
     }
   }
 }
