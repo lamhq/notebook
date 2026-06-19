@@ -35,6 +35,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - '4068:4068'
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
     environment:
       OIDC_CLIENT_ID: notebook-web
       OIDC_AUTHORITY: http://keycloak:8080/realms/notebook
