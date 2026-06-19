@@ -1,4 +1,4 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig } from '@playwright/test';
 import path from 'path';
 
 /**
@@ -33,22 +33,22 @@ export default defineConfig({
   },
 
   /* Configure projects for major browsers */
-  projects: [
-    /* Setup project runs the global.setup.ts file first */
-    { name: 'setup', testMatch: /.*-setup\.ts/ },
+  // projects: [
+  //   /* Setup project runs the global.setup.ts file first */
+  //   { name: 'setup', testMatch: /.*-setup\.ts/ },
 
-    {
-      name: 'chromium',
-      testMatch: /.*\.spec\.ts/,
-      use: {
-        ...devices['Desktop Chrome'],
-        /* Use the saved storage state (cookies, local storage, etc.) */
-        storageState: authFile,
-      },
-      /* Depend on setup project */
-      dependencies: ['setup'],
-    },
-  ],
+  //   {
+  //     name: 'chromium',
+  //     testMatch: /.*\.spec\.ts/,
+  //     use: {
+  //       ...devices['Desktop Chrome'],
+  //       /* Use the saved storage state (cookies, local storage, etc.) */
+  //       storageState: authFile,
+  //     },
+  //     /* Depend on setup project */
+  //     dependencies: ['setup'],
+  //   },
+  // ],
 
   /* Run local dev server before starting the tests */
   webServer: {
