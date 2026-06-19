@@ -345,6 +345,9 @@ importers:
 
   apps/web-e2e:
     dependencies:
+      date-fns:
+        specifier: ^4.1.0
+        version: 4.1.0
       mongodb:
         specifier: ^6.12.0
         version: 6.21.0

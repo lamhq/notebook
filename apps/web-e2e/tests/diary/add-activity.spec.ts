@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { ActivityListPage } from '../../pages/activity-list.page';
 import { AddActivityPage } from '../../pages/add-activity.page';
+import { createDate } from '../../utils/datetime';
 import { connect, deleteMany, disconnect, insertMany } from '../../utils/mongodb';
 
 let addActivityPage: AddActivityPage;
@@ -142,7 +143,7 @@ test.describe('Add Activity - Tag Management', () => {
     await addActivityPage.selectTag('bonus');
 
     // Fill time
-    await addActivityPage.setTime('2026-05-14T10:00:00');
+    await addActivityPage.setTime(createDate());
 
     // Submit the form
     await addActivityPage.submitForm();
@@ -172,7 +173,7 @@ test.describe('Add Activity - Tag Management', () => {
     await addActivityPage.createNewTag('custom-tag-new');
 
     // Fill time
-    await addActivityPage.setTime('2026-05-14T10:05:00');
+    await addActivityPage.setTime(createDate());
 
     // Submit the form
     await addActivityPage.submitForm();
@@ -196,7 +197,7 @@ test.describe('Add Activity - Tag Management', () => {
     await addActivityPage.createNewTag(' EXPENSE ');
 
     // Fill time
-    await addActivityPage.setTime('2026-05-14T10:05:00');
+    await addActivityPage.setTime(createDate());
 
     // Submit the form
     await addActivityPage.submitForm();
@@ -224,7 +225,7 @@ test.describe('Add Activity - Tag Management', () => {
     await addActivityPage.removeTag('income');
 
     // Fill time
-    await addActivityPage.setTime('2026-05-14T10:05:00');
+    await addActivityPage.setTime(createDate());
 
     // Submit the form
     await addActivityPage.submitForm();
@@ -250,7 +251,7 @@ test.describe('Add Activity - Form Submission', () => {
     await addActivityPage.selectTag('test');
 
     // Fill time
-    await addActivityPage.setTime('2026-05-14T10:05:00');
+    await addActivityPage.setTime(createDate());
 
     const submitButton = addActivityPage.getSubmitButton();
 
@@ -277,7 +278,7 @@ test.describe('Add Activity - Form Submission', () => {
     const content = `test activity ${deleteMarker}`;
     await addActivityPage.enterContent(content);
     await addActivityPage.selectTag('success');
-    await addActivityPage.setTime('2026-05-14T10:05:00');
+    await addActivityPage.setTime(createDate());
     await addActivityPage.submitForm();
 
     // Verify navigation to homepage

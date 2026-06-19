@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { format, set, subMonths } from 'date-fns';
 import { ActivityListPage } from '../../pages/activity-list.page';
 import { connect, deleteMany, disconnect, insertMany } from '../../utils/mongodb';
 
@@ -13,6 +14,9 @@ const seedTags = [
   'work',
   'general',
 ];
+
+// A fixed past month used for custom date range tests (always one month before today)
+const prevMonth = subMonths(new Date(), 1);
 
 async function seedTestData(): Promise<void> {
   await insertMany(
@@ -55,23 +59,41 @@ async function seedTestData(): Promise<void> {
     time: makeDate(currentYear, currentMonth, 8),
   });
 
-  // 2 "coffee" activities in April 2026 (for custom date range and combined search)
+  // 2 "coffee" activities in the previous month (for custom date range and combined search)
   activities.push({
-    content: `Coffee meeting April ${deleteMarker}`,
+    content: `Coffee meeting prev month ${deleteMarker}`,
     tags: ['food', 'beverage'],
-    time: new Date('2026-04-05T10:00:00'),
+    time: set(prevMonth, {
+      date: 5,
+      hours: 10,
+      minutes: 0,
+      seconds: 0,
+      milliseconds: 0,
+    }),
   });
   activities.push({
     content: `Coffee with client ${deleteMarker}`,
     tags: ['food', 'beverage'],
-    time: new Date('2026-04-10T14:00:00'),
+    time: set(prevMonth, {
+      date: 10,
+      hours: 14,
+      minutes: 0,
+      seconds: 0,
+      milliseconds: 0,
+    }),
   });
 
-  // 1 April activity without coffee/food/beverage tags (should not match combined search)
+  // 1 previous month activity without coffee/food/beverage tags (should not match combined search)
   activities.push({
-    content: `Gym session April ${deleteMarker}`,
+    content: `Gym session prev month ${deleteMarker}`,
     tags: ['exercise'],
-    time: new Date('2026-04-20T09:00:00'),
+    time: set(prevMonth, {
+      date: 20,
+      hours: 9,
+      minutes: 0,
+      seconds: 0,
+      milliseconds: 0,
+    }),
   });
 
   // 25 general activities in current month for pagination test (3 pages @ 10 per page)
@@ -84,13 +106,11 @@ async function seedTestData(): Promise<void> {
   }
 
   await insertMany('activities', activities);
-  console.log(`Seeded ${String(activities.length)} test activities`);
 }
 
 async function cleanupTestData(): Promise<void> {
   await deleteMany('tags', { name: { $in: seedTags } });
   await deleteMany('activities', { content: { $regex: deleteMarker } });
-  console.log('Cleaned up test data');
 }
 
 test.beforeAll(async () => {
@@ -184,8 +204,14 @@ test.describe('Text and Tag Filtering', () => {
       await activityListPage.selectTag('food');
       await activityListPage.selectTag('beverage');
       await activityListPage.selectTimeRange('Custom');
-      await activityListPage.selectDate('From', '01042026');
-      await activityListPage.selectDate('To', '15042026');
+      await activityListPage.selectDate(
+        'From',
+        format(set(prevMonth, { date: 1 }), 'ddMMyyyy'),
+      );
+      await activityListPage.selectDate(
+        'To',
+        format(set(prevMonth, { date: 15 }), 'ddMMyyyy'),
+      );
     });
 
     await test.step('Submit search', async () => {
@@ -207,7 +233,9 @@ test.describe('Text and Tag Filtering', () => {
       const groups = activityListPage.activityList.getActivityGroups();
       const groupCount = await groups.count();
       for (let i = 0; i < groupCount; i++) {
-        await expect(groups.nth(i)).toContainText(/Apr, 2026/i);
+        await expect(groups.nth(i)).toContainText(
+          new RegExp(format(prevMonth, 'MMM, yyyy'), 'i'),
+        );
       }
     });
   });
@@ -234,7 +262,7 @@ test.describe('Time Range Filtering', () => {
       const groups = activityListPage.activityList.getActivityGroups();
       const count = await groups.count();
       for (let i = 0; i < count; i++) {
-        await expect(groups.nth(i)).toContainText(/May, 2026/i);
+        await expect(groups.nth(i)).toContainText(format(new Date(), 'MMM, yyyy'));
       }
     });
   });
@@ -271,8 +299,14 @@ test.describe('Time Range Filtering', () => {
     });
 
     await test.step('Select date range April 1-11, 2026', async () => {
-      await activityListPage.selectDate('From', '01042026');
-      await activityListPage.selectDate('To', '11042026');
+      await activityListPage.selectDate(
+        'From',
+        format(set(prevMonth, { date: 1 }), 'ddMMyyyy'),
+      );
+      await activityListPage.selectDate(
+        'To',
+        format(set(prevMonth, { date: 11 }), 'ddMMyyyy'),
+      );
     });
 
     await test.step('Submit search', async () => {
@@ -281,8 +315,20 @@ test.describe('Time Range Filtering', () => {
 
     await test.step('Verify all activity groups are within April 1–11, 2026', async () => {
       await expect(activityListPage.getDialog()).toBeHidden();
-      const fromDate = new Date(2026, 3, 1);
-      const toDate = new Date(2026, 3, 11, 23, 59, 59, 999);
+      const fromDate = set(prevMonth, {
+        date: 1,
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+        milliseconds: 0,
+      });
+      const toDate = set(prevMonth, {
+        date: 11,
+        hours: 23,
+        minutes: 59,
+        seconds: 59,
+        milliseconds: 999,
+      });
       const groups = activityListPage.activityList.getActivityGroups();
       const count = await groups.count();
       for (let i = 0; i < count; i++) {

@@ -19,7 +19,6 @@ async function connect(): Promise<void> {
     client = new MongoClient(uri);
     await client.connect();
     db = client.db(dbName);
-    console.log('MongoDB connected');
   }
 }
 
@@ -29,7 +28,6 @@ async function disconnect(): Promise<void> {
     await client.close();
     client = undefined;
     db = undefined;
-    console.log('MongoDB disconnected');
   }
 }
 

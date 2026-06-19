@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { subDays } from 'date-fns';
 import { ActivityListPage } from '../../pages/activity-list.page';
 import { parseTimeString } from '../../utils/datetime';
 import { connect, deleteMany, disconnect, insertMany } from '../../utils/mongodb';
@@ -8,7 +9,7 @@ const deleteMarker = 'TestViewActivityList';
 
 // Seed test data - 15 activities across 10 days (3 per day) to support all test cases
 async function seedTestData(): Promise<void> {
-  const activities = [];
+  const activities: Record<string, unknown>[] = [];
   const baseDate = new Date();
   baseDate.setUTCHours(0, 0, 0, 0);
 
@@ -73,8 +74,7 @@ async function seedTestData(): Promise<void> {
 
   // Generate 15 activities: 3 per day for 10 days
   for (let day = 0; day < 10; day++) {
-    const date = new Date(baseDate);
-    date.setDate(date.getDate() - day);
+    const date = subDays(baseDate, day);
 
     for (let i = 0; i < 3; i++) {
       const time = new Date(date);
@@ -94,15 +94,11 @@ async function seedTestData(): Promise<void> {
   }
 
   await insertMany('activities', activities);
-  console.log(`Seeded ${activities.length.toString()} test activities`);
 }
 
 // Cleanup test data - only remove records that were inserted during test
 async function cleanupTestData(): Promise<void> {
-  const deletedCount = await deleteMany('activities', {
-    content: { $regex: deleteMarker },
-  });
-  console.log(`Cleaned up ${deletedCount.toString()} test activities`);
+  await deleteMany('activities', { content: { $regex: deleteMarker } });
 }
 
 test.beforeAll(async () => {

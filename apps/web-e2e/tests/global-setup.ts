@@ -13,21 +13,12 @@ setup.beforeAll(async () => {
   // start Docker services using docker-compose
   const composeFilePath = path.join(__dirname, '../../..');
   const composeFile = 'docker-compose.yml';
-  const environment = await new DockerComposeEnvironment(
-    composeFilePath,
-    composeFile,
-  )
+  await new DockerComposeEnvironment(composeFilePath, composeFile)
     .withWaitStrategy('mongodb-1', Wait.forLogMessage('Waiting for connections'))
     .withWaitStrategy('api-gateway-1', Wait.forLogMessage('Proxy server running'))
     .withNoRecreate()
     .withAutoCleanup(false)
     .up();
-
-  // stream API Gateway logs to console for debugging
-  const container = environment.getContainer('api-gateway-1');
-  (await container.logs()).on('data', (line) => {
-    console.log(`API Gateway: ${line as string}`);
-  });
 });
 
 /**

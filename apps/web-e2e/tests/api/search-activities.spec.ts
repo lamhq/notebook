@@ -33,14 +33,12 @@ async function seedTestData(): Promise<void> {
   ];
 
   await insertMany('activities', activities);
-  console.log(`Seeded ${activities.length.toString()} test activities`);
 }
 
 async function cleanupTestData(): Promise<void> {
-  const deletedCount = await deleteMany('activities', {
+  await deleteMany('activities', {
     content: { $regex: deleteMarker },
   });
-  console.log(`Cleaned up ${deletedCount.toString()} test activities`);
 }
 
 test.beforeAll(async () => {

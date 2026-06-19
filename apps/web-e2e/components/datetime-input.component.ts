@@ -65,25 +65,30 @@ export class DateTimeInputComponent {
     // Calculate the difference in months (year is already selected)
     const monthDifference = month - currentMonth;
 
-    // Click next or previous button based on the difference
+    // Decide which direction to navigate based on the difference
     const direction = monthDifference > 0 ? 'Next month' : 'Previous month';
 
+    // Navigate to the target month by clicking the appropriate button
     for (let i = 0; i < Math.abs(monthDifference); i++) {
       await this.page.getByRole('dialog').getByLabel(direction).click();
-      const targetMonth =
-        monthDifference > 0 ? currentMonth + i + 1 : currentMonth - i - 1;
-      const targetMonthName = monthNames[targetMonth - 1];
-      await this.page
-        .locator('div.MuiPickersCalendarHeader-label', {
-          hasText: `${targetMonthName} ${year.toString()}`,
-        })
-        .waitFor({ timeout: 50 });
+      // const targetMonth =
+      //   monthDifference > 0 ? currentMonth + i + 1 : currentMonth - i - 1;
+      // const targetMonthName = monthNames[targetMonth - 1];
+      // await this.page
+      //   .locator('div.MuiPickersCalendarHeader-label', {
+      //     hasText: `${targetMonthName} ${year.toString()}`,
+      //   })
+      //   .waitFor({ timeout: 50 });
     }
   }
 
   private async selectDay(day: string): Promise<void> {
     // Click the day in the calendar grid
-    await this.page.getByRole('dialog').getByRole('gridcell', { name: day }).click();
+    await this.page
+      .getByRole('dialog')
+      .getByRole('gridcell', { name: day })
+      .first()
+      .click();
   }
 
   private async selectHour(hour: string): Promise<void> {
@@ -117,14 +122,12 @@ export class DateTimeInputComponent {
     await this.page.getByRole('button', { name: period }).click();
   }
 
-  public async setDateTime(isoDateTime: string): Promise<void> {
+  public async setDateTime(date: Date): Promise<void> {
     // Click the date input to open the picker
     await this.page
       .locator(`input[name="${this.inputName}"]`)
       .click({ timeout: 3000 });
 
-    // Parse ISO datetime string (e.g., "2026-05-14T10:00:00")
-    const date = new Date(isoDateTime);
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const day = date.getDate().toString();

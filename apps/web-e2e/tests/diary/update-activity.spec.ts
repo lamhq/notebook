@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { ActivityListPage } from '../../pages/activity-list.page';
 import { UpdateActivityPage } from '../../pages/update-activity.page';
+import { createDate, getDateString, getTimeString } from '../../utils/datetime';
 import {
   connect,
   deleteMany,
@@ -25,7 +26,7 @@ async function seedTestData(): Promise<string> {
   // Create a test activity that we'll update
   const testActivity = await insert('activities', {
     content: `Lunch at restaurant - 15k ${deleteMarker}`,
-    time: new Date('2026-05-14T12:00:00'),
+    time: new Date(),
     tags: ['food', 'expense'],
     outcome: 15,
     income: 0,
@@ -95,7 +96,7 @@ test.describe('Form Submission', () => {
     await expect(updateActivityPage.getOutcomeField()).toHaveValue('12');
 
     // Set time
-    await updateActivityPage.setTime('2026-05-15T14:00:00');
+    await updateActivityPage.setTime(createDate());
 
     // Submit the form
     await updateActivityPage.submitForm();
@@ -147,7 +148,7 @@ test.describe('Form Submission', () => {
     await updateActivityPage.setOutcome('18');
 
     // Set time and submit without changing tags
-    await updateActivityPage.setTime('2026-05-17T12:30:00');
+    await updateActivityPage.setTime(createDate());
     await updateActivityPage.submitForm();
 
     // Verify navigation
@@ -162,7 +163,9 @@ test.describe('Form Submission', () => {
   test('TC_UA_05: update activity date/time should be reflected', async ({
     page,
   }) => {
-    await updateActivityPage.setTime('2026-05-20T14:30:00');
+    const newDate = createDate({ day: 14, hour: 10, minute: 20 });
+
+    await updateActivityPage.setTime(newDate);
 
     // Submit the form
     await updateActivityPage.submitForm();
@@ -172,10 +175,10 @@ test.describe('Form Submission', () => {
 
     await expect(
       activityListPage.activityList.getActivityGroups().first(),
-    ).toContainText('Wed, 20 May, 2026');
+    ).toContainText(getDateString(newDate));
     await expect(
       activityListPage.activityList.getActivityItems().first(),
-    ).toContainText('2:30 pm');
+    ).toContainText(getTimeString(newDate));
   });
 });
 
@@ -214,7 +217,7 @@ test.describe('Amounts auto-calculation', () => {
     await expect(updateActivityPage.getOutcomeField()).toHaveValue('30');
 
     // Set time and submit
-    await updateActivityPage.setTime('2026-05-16T15:00:00');
+    await updateActivityPage.setTime(createDate());
     await updateActivityPage.submitForm();
 
     // Verify navigation
