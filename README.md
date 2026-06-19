@@ -39,7 +39,7 @@ Run end-to-end tests (web):
 pnpm -F web-e2e exec playwright test path/to/test-file.spec.ts
 
 # Run a specific test case by ID
-pnpm -F web-e2e exec playwright test --grep "TC_AA_01"
+pnpm -F web-e2e exec playwright test --grep "TC_VA_01"
 ```
 
 > [!NOTE]

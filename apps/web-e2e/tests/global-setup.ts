@@ -13,12 +13,21 @@ setup.beforeAll(async () => {
   setup.setTimeout(180_000); // Increase timeout for Docker startup
   const composeFilePath = path.join(__dirname, '../../..');
   const composeFile = 'docker-compose.yml';
-  await new DockerComposeEnvironment(composeFilePath, composeFile)
+  const environment = await new DockerComposeEnvironment(
+    composeFilePath,
+    composeFile,
+  )
     .withWaitStrategy('mongodb-1', Wait.forLogMessage('Waiting for connections'))
     .withWaitStrategy('api-gateway-1', Wait.forLogMessage('Proxy server running'))
     .withNoRecreate()
     .withAutoCleanup(false)
     .up();
+
+  // stream API Gateway logs to console for debugging
+  const container = environment.getContainer('api-gateway-1');
+  (await container.logs()).on('data', (line) => {
+    console.log(`API Gateway: ${line as string}`);
+  });
 });
 
 /**
@@ -29,10 +38,6 @@ setup.beforeAll(async () => {
 setup('authenticate', async ({ page }) => {
   // Skip sign in if already authenticated
   setup.skip(fs.existsSync(authFile), 'Already signed in');
-
-  // page.on('console', (msg) => {
-  //   console.log(msg.text());
-  // });
 
   await page.goto('/');
 
