@@ -18,7 +18,7 @@
       "with": ["api#dev"],
       "persistent": true,
       "cache": false,
-      "env": ["VITE_OIDC_AUTHORITY", "VITE_OIDC_CLIENT_ID"]
+      "env": ["VITE_*"]
     },
     "api#dev": {
       "persistent": true,
