@@ -76,12 +76,8 @@ jobs:
       - name: Install Playwright browsers (chromium only)
         run: pnpm --filter web-e2e exec playwright install --with-deps chromium
 
-      # - name: Run API
-      #   run: docker compose up -d && npx turbo run api#dev
-
       - name: Run e2e tests
-        # run: pnpm --filter web-e2e test
-        run: pnpm -F web-e2e exec playwright test --grep "TC_VA_01"
+        run: pnpm --filter web-e2e test
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v7
@@ -92,11 +88,11 @@ jobs:
           retention-days: 30
 
   build:
-    if: github.event_name == 'pull_request' || github.event_name == 'push'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        environment: [dev]
+        environment: [dev, prod]
     environment: ${{ matrix.environment }}
     steps:
       - name: Checkout code
@@ -117,8 +113,7 @@ jobs:
           path: apps/web/dist/
 
   deploy-dev:
-    # TODO: revert to `github.event_name == 'push' && github.ref == 'refs/heads/main'` after deploy to dev success
-    if: github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: [build]
     runs-on: ubuntu-latest
     environment: dev
