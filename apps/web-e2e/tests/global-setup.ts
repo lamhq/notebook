@@ -28,7 +28,7 @@ setup.beforeAll(async () => {
  */
 setup('authenticate', async ({ page }) => {
   // Skip sign in if already authenticated
-  setup.skip(fs.existsSync(authFile), 'Already signed in');
+  setup.skip(!fs.existsSync(authFile), 'Already signed in');
 
   page.on('console', (msg) => {
     console.log(msg.text());
