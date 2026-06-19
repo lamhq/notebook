@@ -52,9 +52,9 @@ export default defineConfig({
 
   /* Run local dev server before starting the tests */
   webServer: {
-    command: 'npx turbo api#dev',
+    command: 'npx turbo web#dev',
     cwd: path.join(import.meta.dirname, '..', '..'),
-    port: 4069,
+    port: 5173,
     reuseExistingServer: true,
     // pipe the output of the web server to terminal
     stdout: 'pipe',

@@ -1,6 +1,7 @@
 {
   "$schema": "node_modules/turbo/schema.json",
   "ui": "stream",
+  "envMode": "loose",
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
