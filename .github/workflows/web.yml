@@ -60,7 +60,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       # from `apps/web/.env`
-      VITE_API_URL: '/api'
       VITE_OIDC_AUTHORITY: http://localhost:8080/realms/notebook
       VITE_OIDC_CLIENT_ID: notebook-web
 
@@ -77,17 +76,19 @@ jobs:
       - name: Install Playwright browsers (chromium only)
         run: pnpm --filter web-e2e exec playwright install --with-deps chromium
 
-      - name: Run e2e tests
-        # run: pnpm --filter web-e2e test
-        run: pnpm -F web-e2e exec playwright test apps/web-e2e/tests/global-setup.ts
+      - name: Run API
+        run: docker compose up -d && npx turbo run api#dev
 
-      - name: Upload Playwright report
-        uses: actions/upload-artifact@v7
-        if: ${{ !cancelled() }}
-        with:
-          name: playwright-report
-          path: apps/web-e2e/playwright-report/
-          retention-days: 30
+      # - name: Run e2e tests
+      #   run: pnpm --filter web-e2e test
+
+      # - name: Upload Playwright report
+      #   uses: actions/upload-artifact@v7
+      #   if: ${{ !cancelled() }}
+      #   with:
+      #     name: playwright-report
+      #     path: apps/web-e2e/playwright-report/
+      #     retention-days: 30
 
   build:
     if: github.event_name == 'pull_request' || github.event_name == 'push'

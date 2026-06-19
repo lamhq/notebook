@@ -30,13 +30,13 @@ setup('authenticate', async ({ page }) => {
   // Skip sign in if already authenticated
   setup.skip(fs.existsSync(authFile), 'Already signed in');
 
-  page.on('console', (msg) => {
-    console.log(msg.text());
-  });
+  // page.on('console', (msg) => {
+  //   console.log(msg.text());
+  // });
 
   await page.goto('/');
 
-  // Verify current page is the login page
+  // Verify current page is the Keycloak login page
   await expect(page).toHaveURL(/http:\/\/localhost:8080\//);
 
   // Wait for login page to appear
