@@ -79,7 +79,7 @@ jobs:
 
       - name: Run e2e tests
         # run: pnpm --filter web-e2e test
-        run: pnpm -F web-e2e exec playwright test --grep "TC_VA_01"
+        run: pnpm -F web-e2e exec playwright test apps/web-e2e/tests/global-setup.ts
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v7
