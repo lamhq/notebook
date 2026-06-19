@@ -17,11 +17,13 @@
     "web#dev": {
       "with": ["api#dev"],
       "persistent": true,
-      "cache": false
+      "cache": false,
+      "env": ["VITE_OIDC_AUTHORITY", "VITE_OIDC_CLIENT_ID"]
     },
     "api#dev": {
       "persistent": true,
-      "cache": false
+      "cache": false,
+      "env": ["DB_URI"]
     }
   }
 }
