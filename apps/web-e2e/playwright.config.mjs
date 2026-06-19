@@ -43,7 +43,7 @@ export default defineConfig({
       use: {
         ...devices['Desktop Chrome'],
         /* Use the saved storage state (cookies, local storage, etc.) */
-        storageState: authFile,
+        // storageState: authFile,
       },
       /* Depend on setup project */
       dependencies: ['setup'],
