@@ -17,7 +17,7 @@ export default defineConfig({
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: process.env.CI ? [['html', { open: 'never' }]] : 'line',
+  reporter: process.env.CI ? ['line', ['html', { open: 'never' }]] : 'line',
   /* Timeout for each assertion */
   expect: { timeout: 5_000 },
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */

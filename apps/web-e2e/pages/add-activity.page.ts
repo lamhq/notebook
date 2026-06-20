@@ -56,7 +56,7 @@ export class AddActivityPage extends BasePage {
     await this.tagInput.removeTag(tagName);
   }
 
-  public async setTime(date: Date): Promise<void> {
+  public async setDateTime(date: Date): Promise<void> {
     await this.dateTimeInput.setDateTime(date);
   }
 

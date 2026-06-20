@@ -90,9 +90,6 @@ test.describe('Add Activity - Form Validation', () => {
   test('TC_AA_04: submit form with empty content field shows validation error', async ({
     page,
   }) => {
-    // Leave content empty and try to submit
-    // The form should show validation errors for required fields
-
     // Try to submit empty form
     const submitButton = addActivityPage.getSubmitButton();
     await expect(submitButton).toBeEnabled();
@@ -110,8 +107,6 @@ test.describe('Add Activity - Form Validation', () => {
 
     // Verify the content field is visible and can receive focus
     await expect(contentField).toBeVisible();
-
-    // Verify it receives focus
     await expect(contentField).toBeFocused();
   });
 });
@@ -143,26 +138,20 @@ test.describe('Add Activity - Tag Management', () => {
     await addActivityPage.selectTag('bonus');
 
     // Fill time
-    await addActivityPage.setTime(createDate());
+    await addActivityPage.setDateTime(createDate());
 
     // Submit the form
     await addActivityPage.submitForm();
 
     // Verify navigation to homepage
     await expect(page).toHaveURL(activityListPage.getUrl());
+
     // Verify the new activity appears on the homepage with all tags
-    await expect(
-      activityListPage.activityList.getActivityItems().first(),
-    ).toContainText(content);
-    await expect(
-      activityListPage.activityList.getActivityItems().first(),
-    ).toContainText('#income');
-    await expect(
-      activityListPage.activityList.getActivityItems().first(),
-    ).toContainText('#project');
-    await expect(
-      activityListPage.activityList.getActivityItems().first(),
-    ).toContainText('#bonus');
+    const firstActivity = activityListPage.activityList.getActivityItems().first();
+    await expect(firstActivity).toContainText(content);
+    await expect(firstActivity).toContainText('#income');
+    await expect(firstActivity).toContainText('#project');
+    await expect(firstActivity).toContainText('#bonus');
   });
 
   test('TC_AA_06: create and add a new custom tag', async ({ page }) => {
@@ -173,20 +162,18 @@ test.describe('Add Activity - Tag Management', () => {
     await addActivityPage.createNewTag('custom-tag-new');
 
     // Fill time
-    await addActivityPage.setTime(createDate());
+    await addActivityPage.setDateTime(createDate());
 
     // Submit the form
     await addActivityPage.submitForm();
 
     // Verify navigation to homepage
     await expect(page).toHaveURL(activityListPage.getUrl());
+
     // Verify the new activity appears on the homepage with the custom tag
-    await expect(
-      activityListPage.activityList.getActivityItems().first(),
-    ).toContainText(content);
-    await expect(
-      activityListPage.activityList.getActivityItems().first(),
-    ).toContainText('#custom-tag-new');
+    const firstActivity = activityListPage.activityList.getActivityItems().first();
+    await expect(firstActivity).toContainText(content);
+    await expect(firstActivity).toContainText('#custom-tag-new');
   });
 
   test('TC_AA_07: tags are normalized - trimmed and lowercase', async ({ page }) => {
@@ -197,20 +184,18 @@ test.describe('Add Activity - Tag Management', () => {
     await addActivityPage.createNewTag(' EXPENSE ');
 
     // Fill time
-    await addActivityPage.setTime(createDate());
+    await addActivityPage.setDateTime(createDate());
 
     // Submit the form
     await addActivityPage.submitForm();
 
     // Verify navigation to homepage
     await expect(page).toHaveURL(activityListPage.getUrl());
+
     // Verify the tag was normalized to lowercase
-    await expect(
-      activityListPage.activityList.getActivityItems().first(),
-    ).toContainText(content);
-    await expect(
-      activityListPage.activityList.getActivityItems().first(),
-    ).toContainText('#expense');
+    const firstActivity = activityListPage.activityList.getActivityItems().first();
+    await expect(firstActivity).toContainText(content);
+    await expect(firstActivity).toContainText('#expense');
   });
 
   test('TC_AA_08: remove added tag before submission', async ({ page }) => {
@@ -225,20 +210,18 @@ test.describe('Add Activity - Tag Management', () => {
     await addActivityPage.removeTag('income');
 
     // Fill time
-    await addActivityPage.setTime(createDate());
+    await addActivityPage.setDateTime(createDate());
 
     // Submit the form
     await addActivityPage.submitForm();
 
     // Verify navigation to homepage
     await expect(page).toHaveURL(activityListPage.getUrl());
+
     // Verify only the remaining tag appears on the homepage
-    await expect(
-      activityListPage.activityList.getActivityItems().first(),
-    ).toContainText(content);
-    await expect(
-      activityListPage.activityList.getActivityItems().first(),
-    ).toContainText('#project');
+    const firstActivity = activityListPage.activityList.getActivityItems().first();
+    await expect(firstActivity).toContainText(content);
+    await expect(firstActivity).toContainText('#project');
   });
 });
 
@@ -251,7 +234,7 @@ test.describe('Add Activity - Form Submission', () => {
     await addActivityPage.selectTag('test');
 
     // Fill time
-    await addActivityPage.setTime(createDate());
+    await addActivityPage.setDateTime(createDate());
 
     const submitButton = addActivityPage.getSubmitButton();
 
@@ -263,13 +246,11 @@ test.describe('Add Activity - Form Submission', () => {
 
     // Verify navigation to homepage
     await expect(page).toHaveURL(activityListPage.getUrl());
+
     // Verify the activity was created
-    await expect(
-      activityListPage.activityList.getActivityItems().first(),
-    ).toContainText(content);
-    await expect(
-      activityListPage.activityList.getActivityItems().first(),
-    ).toContainText('#test');
+    const firstActivity = activityListPage.activityList.getActivityItems().first();
+    await expect(firstActivity).toContainText(content);
+    await expect(firstActivity).toContainText('#test');
   });
 
   test('TC_AA_12: successful submission redirects to homepage with new activity visible', async ({
@@ -278,17 +259,15 @@ test.describe('Add Activity - Form Submission', () => {
     const content = `test activity ${deleteMarker}`;
     await addActivityPage.enterContent(content);
     await addActivityPage.selectTag('success');
-    await addActivityPage.setTime(createDate());
+    await addActivityPage.setDateTime(createDate());
     await addActivityPage.submitForm();
 
     // Verify navigation to homepage
     await expect(page).toHaveURL(activityListPage.getUrl());
+
     // Verify the new activity appears on the homepage
-    await expect(
-      activityListPage.activityList.getActivityItems().first(),
-    ).toContainText(content);
-    await expect(
-      activityListPage.activityList.getActivityItems().first(),
-    ).toContainText('#success');
+    const firstActivity = activityListPage.activityList.getActivityItems().first();
+    await expect(firstActivity).toContainText(content);
+    await expect(firstActivity).toContainText('#success');
   });
 });

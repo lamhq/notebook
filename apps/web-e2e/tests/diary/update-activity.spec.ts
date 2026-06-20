@@ -96,7 +96,7 @@ test.describe('Form Submission', () => {
     await expect(updateActivityPage.getOutcomeField()).toHaveValue('12');
 
     // Set time
-    await updateActivityPage.setTime(createDate());
+    await updateActivityPage.setDateTime(createDate());
 
     // Submit the form
     await updateActivityPage.submitForm();
@@ -104,15 +104,13 @@ test.describe('Form Submission', () => {
     // Verify navigation to homepage
     await expect(page).toHaveURL(activityListPage.getUrl());
 
+    const firstActivity = activityListPage.activityList.getActivityItems().first();
+
     // Wait for the activity items to load
-    await expect(
-      activityListPage.activityList.getActivityItems().first(),
-    ).toBeVisible();
+    await expect(firstActivity).toBeVisible();
 
     // Verify the activity list shows the updated activity
-    await expect(
-      activityListPage.activityList.getActivityItems().first(),
-    ).toContainText(`Lunch at coffee shop - 12k`);
+    await expect(firstActivity).toContainText(`Lunch at coffee shop - 12k`);
   });
 
   test('TC_UA_03: cancel button navigates back to homepage without saving', async ({
@@ -127,11 +125,11 @@ test.describe('Form Submission', () => {
     // Verify navigation to homepage
     await expect(page).toHaveURL(activityListPage.getUrl());
 
+    const firstActivity = activityListPage.activityList.getActivityItems().first();
+
     // Verify the activity was not updated by navigating back
     // The original activity should still be there with original content
-    await expect(
-      activityListPage.activityList.getActivityItems().first(),
-    ).toContainText('Lunch at restaurant');
+    await expect(firstActivity).toContainText('Lunch at restaurant');
   });
 
   test('TC_UA_04: update activity with new tags should replace existing tags', async ({
@@ -148,16 +146,16 @@ test.describe('Form Submission', () => {
     await updateActivityPage.setOutcome('18');
 
     // Set time and submit without changing tags
-    await updateActivityPage.setTime(createDate());
+    await updateActivityPage.setDateTime(createDate());
     await updateActivityPage.submitForm();
 
     // Verify navigation
     await expect(page).toHaveURL(activityListPage.getUrl());
 
+    const firstActivity = activityListPage.activityList.getActivityItems().first();
+
     // Verify the activity appears with updated content
-    await expect(
-      activityListPage.activityList.getActivityItems().first(),
-    ).toContainText(newContent);
+    await expect(firstActivity).toContainText(newContent);
   });
 
   test('TC_UA_05: update activity date/time should be reflected', async ({
@@ -165,7 +163,7 @@ test.describe('Form Submission', () => {
   }) => {
     const newDate = createDate({ day: 14, hour: 10, minute: 20 });
 
-    await updateActivityPage.setTime(newDate);
+    await updateActivityPage.setDateTime(newDate);
 
     // Submit the form
     await updateActivityPage.submitForm();
@@ -173,12 +171,11 @@ test.describe('Form Submission', () => {
     // Verify navigation to homepage
     await expect(page).toHaveURL(activityListPage.getUrl());
 
-    await expect(
-      activityListPage.activityList.getActivityGroups().first(),
-    ).toContainText(getDateString(newDate));
-    await expect(
-      activityListPage.activityList.getActivityItems().first(),
-    ).toContainText(getTimeString(newDate));
+    const firstGroup = activityListPage.activityList.getActivityGroups().first();
+    const firstActivity = activityListPage.activityList.getActivityItems().first();
+
+    await expect(firstGroup).toContainText(getDateString(newDate));
+    await expect(firstActivity).toContainText(getTimeString(newDate));
   });
 });
 
@@ -217,16 +214,16 @@ test.describe('Amounts auto-calculation', () => {
     await expect(updateActivityPage.getOutcomeField()).toHaveValue('30');
 
     // Set time and submit
-    await updateActivityPage.setTime(createDate());
+    await updateActivityPage.setDateTime(createDate());
     await updateActivityPage.submitForm();
 
     // Verify navigation
     await expect(page).toHaveURL(activityListPage.getUrl());
 
+    const firstActivity = activityListPage.activityList.getActivityItems().first();
+
     // Verify the activity was saved with the manual override value
-    await expect(
-      activityListPage.activityList.getActivityItems().first(),
-    ).toContainText('Expense - 25k');
+    await expect(firstActivity).toContainText('Expense - 25k');
   });
 });
 

@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { DeleteActivityPage } from '../../pages/delete-activity.page';
+import { createDate } from '../../utils/datetime';
 import {
   connect,
   deleteMany,
@@ -21,7 +22,7 @@ async function seedTestData(): Promise<void> {
 
   await insert('activities', {
     content: `Test Activity - 10k ${deleteMarker}`,
-    time: new Date(),
+    time: createDate(),
     tags: ['food', 'expense'],
     outcome: 10,
     income: 0,

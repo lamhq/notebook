@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { format, set, subMonths } from 'date-fns';
 import { ActivityListPage } from '../../pages/activity-list.page';
+import { createDate } from '../../utils/datetime';
 import { connect, deleteMany, disconnect, insertMany } from '../../utils/mongodb';
 
 let activityListPage: ActivityListPage;
@@ -29,16 +30,16 @@ async function seedTestData(): Promise<void> {
   const currentMonth = now.getMonth(); // 0-indexed
 
   const activities: Record<string, unknown>[] = [];
-  const makeDate = (year: number, month: number, day: number): Date => {
-    return new Date(year, month, day, 10, 0, 0, 0);
-  };
 
   // 3 "coffee" activities in current month with food/beverage tags
   for (let i = 0; i < 3; i++) {
     activities.push({
       content: `Morning coffee ${deleteMarker}`,
       tags: ['food', 'beverage'],
-      time: makeDate(currentYear, currentMonth, i + 2),
+      time: createDate({
+        day: i + 2,
+        hour: 10,
+      }),
     });
   }
 
@@ -46,17 +47,30 @@ async function seedTestData(): Promise<void> {
   activities.push({
     content: `Restaurant dinner ${deleteMarker}`,
     tags: ['restaurant', 'food'],
-    time: makeDate(currentYear, currentMonth, 6),
+    time: createDate({
+      day: 6,
+      hour: 10,
+    }),
   });
   activities.push({
     content: `Fine dining experience ${deleteMarker}`,
     tags: ['dining', 'food'],
-    time: makeDate(currentYear, currentMonth, 7),
+    time: createDate({
+      year: currentYear,
+      month: currentMonth + 1,
+      day: 7,
+      hour: 10,
+    }),
   });
   activities.push({
     content: `Workout session ${deleteMarker}`,
     tags: ['exercise'],
-    time: makeDate(currentYear, currentMonth, 8),
+    time: createDate({
+      year: currentYear,
+      month: currentMonth + 1,
+      day: 8,
+      hour: 10,
+    }),
   });
 
   // 2 "coffee" activities in the previous month (for custom date range and combined search)
@@ -101,7 +115,10 @@ async function seedTestData(): Promise<void> {
     activities.push({
       content: `General activity ${String(i + 1)} ${deleteMarker}`,
       tags: ['general'],
-      time: makeDate(currentYear, currentMonth, Math.min(i + 1, 25)),
+      time: createDate({
+        day: Math.min(i + 1, 25),
+        hour: 10,
+      }),
     });
   }
 
