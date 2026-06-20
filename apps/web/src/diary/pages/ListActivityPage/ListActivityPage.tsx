@@ -1,6 +1,8 @@
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import CircularProgress from '@mui/material/CircularProgress';
 import IconButton from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
+import { Suspense } from 'react';
 import { Link as RouterLink } from 'react-router';
 import Actions from '../../../common/atoms/Actions';
 import { Title } from '../../../common/templates/MainLayout';
@@ -34,10 +36,14 @@ export default function ListActivityPage() {
         </Actions>
 
         {/* Monthly Spend */}
-        <Revenue />
+        <Suspense fallback={null}>
+          <Revenue />
+        </Suspense>
       </ToolBar>
 
-      <ActivityList />
+      <Suspense fallback={<CircularProgress />}>
+        <ActivityList />
+      </Suspense>
     </>
   );
 }

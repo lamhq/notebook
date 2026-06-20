@@ -1,6 +1,7 @@
 import { ThemeProvider } from '@mui/material/styles';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { Locale } from 'date-fns';
 import { enUS } from 'date-fns/locale/en-US';
 import EventEmitter from 'eventemitter3';
@@ -69,6 +70,12 @@ userManager.getUser().then(attachTokenToAPIRequest, console.error);
 const eventEmitter = new EventEmitter();
 // #endregion
 
+// #region TanStack Query
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { staleTime: 60_000, retry: false } },
+});
+// #endregion
+
 const rootEl = document.getElementById('root');
 if (rootEl) {
   const root = reactDom.createRoot(rootEl);
@@ -87,7 +94,10 @@ if (rootEl) {
             <AuthProvider {...oidcConfig}>
               {/* Event emitter */}
               <EventProvider emitter={eventEmitter}>
-                <App />
+                {/* TanStack Query */}
+                <QueryClientProvider client={queryClient}>
+                  <App />
+                </QueryClientProvider>
               </EventProvider>
             </AuthProvider>
             <Dialog />

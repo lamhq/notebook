@@ -1,13 +1,6 @@
 # Documentation Index
 
-Centralized list of all project documents and their locations.
-
-Here's how it can be used:
-
-1. Developer gets a task.
-2. They check the **Documentation Index** to identify the required documents for the task
-3. The index tells them where the required docs live.
-4. They read those documents and leverage the knowledge to complete the task correctly.
+All documentation used in the project and their locations.
 
 :::note
 All file locations are relative to the project root.
@@ -15,46 +8,36 @@ All file locations are relative to the project root.
 
 ## Use Case Document
 
-Describes how a software feature works from the end‑user’s perspective.
-
-Location: `docs/use-cases/{module}/{feature-name}.md`
-
-## Use Case Document Guide
-
-Guide for writing Use Case documents.
-
-Location: http://localhost:4173/se/documentation/ucd.md
+- **When to use**: Understand how a feature works
+- **Location**: `docs/use-cases/{module}/{feature-name}.md`
 
 ## Test Suite Document
 
-Contains test cases for a software feature.
+- **When to use**: Test a software feature
+- **Location**: `docs/tests/{module}/{feature-name}.md`
 
-Location: `docs/tests/{module}/{feature-name}.md`
+## Repository Guide
 
-## Repository Guide (root)
-
-Overview of the repository/project, how to install, and usage (lint, test, build).
-
-When to use:
-
-- Install and set up the repository
-- Start the web application
-- Run end-to-end tests
-- Run lint checks
-- Install/add/remove dependencies
-- Understand the monorepo structure
-- Learn about available projects and tech stacks
-
-Location: `README.md`
+- **When to use**:
+  - Start applications (web, api, etc.)
+  - Run end-to-end tests
+  - Run lint checks
+  - Manage project dependencies
+  - Understand overall structure of the repo
+  - Get available projects and tech stacks
+- **Location**: `README.md`
 
 ## Playwright Project Structure
 
-How files/folders are organized in Playwright projects.
-
-Location: http://localhost:4173/web/playwright/project-structure.md
+- **When to use**: Locate files in Playwright projects
+- **Location**: http://localhost:4173/web/playwright/project-structure.md
 
 ## Playwright Coding Guide
 
-Code snippets and best practices for writing Playwright tests.
+- **When to use**: Write/update Playwright tests
+- **Location**: http://localhost:4173/web/playwright/write-tests.md
 
-Location: http://localhost:4173/web/playwright/write-tests.md
+## Use Case Document Guide
+
+- **When to use**: Write Use Case documents
+- **Location**: http://localhost:4173/se/documentation/ucd.md
