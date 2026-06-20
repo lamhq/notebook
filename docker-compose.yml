@@ -1,7 +1,6 @@
 services:
   mongodb:
     image: mongo:8.0
-    container_name: mongodb
     ports:
       - '27017:27017'
     environment:
@@ -9,12 +8,11 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: password
       MONGO_INITDB_DATABASE: test
     volumes:
-      - app_data:/data/db
+      - mongodb_data:/data/db
       - ./apps/mongodb:/docker-entrypoint-initdb.d
 
   keycloak:
     image: quay.io/keycloak/keycloak:26.5.6
-    container_name: keycloak
     ports:
       - '8080:8080'
     environment:
@@ -24,7 +22,31 @@ services:
     volumes:
       - keycloak_data:/opt/keycloak/data
       - ./apps/keycloak:/opt/keycloak/data/import
+    healthcheck:
+      test: ['CMD', 'bash', '-c', 'exec 3<>/dev/tcp/localhost/8080']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  api-gateway:
+    build:
+      context: ./apps/api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - '4068:4068'
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    environment:
+      OIDC_CLIENT_ID: notebook-web
+      OIDC_AUTHORITY: http://keycloak:8080/realms/notebook
+      API_URL: http://host.docker.internal:4069
+      PORT: 4068
+      PUBLIC_ROUTE: ^/health$
+    depends_on:
+      keycloak:
+        condition: service_healthy
 
 volumes:
-  app_data:
+  mongodb_data:
   keycloak_data:

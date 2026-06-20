@@ -46,13 +46,18 @@ export default function ActivityMenu({ activity }: ActivityMenuProps) {
 
   return (
     <>
-      <IconButton size="small" onClick={handleMenuButtonClick}>
+      <IconButton
+        size="small"
+        onClick={handleMenuButtonClick}
+        aria-haspopup="true"
+        aria-label="Activity Menu"
+      >
         <MoreHorizIcon />
       </IconButton>
 
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={closeMenu}>
         {/* update activity */}
-        <MenuItem>
+        <MenuItem aria-label="Update Activity">
           <UnstyledLink to={`/activities/${activity.id}`}>
             <ItemIcon>
               <BorderColorIcon fontSize="small" />
@@ -63,6 +68,7 @@ export default function ActivityMenu({ activity }: ActivityMenuProps) {
 
         {/* delete activity */}
         <MenuItem
+          aria-label="Delete Activity"
           onClick={() => {
             void handleDeleteMenuItemClick();
           }}

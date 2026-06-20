@@ -49,7 +49,7 @@ module "github_oidc" {
 
 locals {
   # .env file content for building the web app
-  web_env_vars = "VITE_API_URL=/api\nVITE_OIDC_AUTHORITY=${module.cognito.user_pool_endpoint}\nVITE_OIDC_CLIENT_ID=${module.cognito.user_pool_client_id}"
+  web_env_vars = "VITE_OIDC_AUTHORITY=${module.cognito.user_pool_endpoint}\nVITE_OIDC_CLIENT_ID=${module.cognito.user_pool_client_id}"
 
   # Deployment patterns for environment restrictions
   deployment_policies = local.env == "prod" ? [

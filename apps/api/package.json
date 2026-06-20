@@ -6,7 +6,7 @@
   "scripts": {
     "build": "node esbuild.mjs",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "dev": "nest start --watch",
+    "dev": "nest start",
     "lint": "tsc --noEmit && eslint",
     "test": "jest",
     "seed:run": "ts-node ./node_modules/typeorm-extension/bin/cli.cjs seed:run -d ./src/database/data-source.ts --preserveFilePaths"

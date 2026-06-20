@@ -9,9 +9,13 @@ export type TimeLabelProps = {
 
 export default function TimeLabel({ time }: TimeLabelProps) {
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+    <Box
+      sx={{ display: 'flex', alignItems: 'center' }}
+      aria-label={`Time: ${formatTime(time)}`}
+    >
       <AccessTimeIcon
         sx={{ fontSize: '1.125rem', color: 'grey.500', marginRight: '4px' }}
+        aria-hidden="true"
       />
       <Typography variant="body2" sx={{ color: 'grey.500' }}>
         {formatTime(time)}
