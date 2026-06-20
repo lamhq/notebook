@@ -72,7 +72,7 @@ const eventEmitter = new EventEmitter();
 
 // #region TanStack Query
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { staleTime: 60_000 } },
+  defaultOptions: { queries: { staleTime: 60_000, retry: false } },
 });
 // #endregion
 
