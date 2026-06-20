@@ -9,4 +9,4 @@ export type AxiosRequest = <R, A = unknown>(
   arg: AxiosRequestConfig<A>,
 ) => Promise<AxiosResponse<R>>;
 
-export const axiosRequest = axios.create({ baseURL: import.meta.env.VITE_API_URL });
+export const axiosRequest = axios.create({ baseURL: '/api' });

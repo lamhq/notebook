@@ -21,6 +21,14 @@ import { AUTH_CALLBACK_ROUTE } from './routes';
 import './styles.css';
 import { theme } from './theme';
 
+const oidcAuthority = import.meta.env.VITE_OIDC_AUTHORITY;
+const oidcClientId = import.meta.env.VITE_OIDC_CLIENT_ID;
+
+if (!oidcAuthority)
+  throw new Error('Missing required environment variable: VITE_OIDC_AUTHORITY');
+if (!oidcClientId)
+  throw new Error('Missing required environment variable: VITE_OIDC_CLIENT_ID');
+
 // #region Locale
 const customEnLocale: Locale = {
   ...enUS,
@@ -38,8 +46,8 @@ function attachTokenToAPIRequest(user: User | undefined | null) {
 }
 
 const userManager = new UserManager({
-  authority: import.meta.env.VITE_OIDC_AUTHORITY ?? '',
-  client_id: import.meta.env.VITE_OIDC_CLIENT_ID ?? '',
+  authority: oidcAuthority,
+  client_id: oidcClientId,
   redirect_uri: getAbsoluteURL(AUTH_CALLBACK_ROUTE),
   response_type: 'code',
   scope: 'email openid profile',

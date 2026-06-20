@@ -14,17 +14,26 @@ export default function ActivityItem({ activity }: ActivityItemProps) {
   const html = activity.content.replace(/\n/g, '<br/>');
 
   return (
-    <>
+    <article aria-labelledby={`activity-${activity.id}`}>
       <Grid container spacing={0} justifyContent="space-between">
-        <TimeLabel time={activity.time} />
+        <Box
+          component="h4"
+          id={`activity-${activity.id}`}
+          sx={{ margin: 0, padding: 0, fontWeight: 'inherit', fontSize: 'inherit' }}
+        >
+          <time dateTime={activity.time.toISOString()}>
+            <TimeLabel time={activity.time} />
+          </time>
+        </Box>
         <ActivityMenu activity={activity} />
       </Grid>
-      <Typography
-        // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
-        dangerouslySetInnerHTML={{ __html: html }}
-        variant="body1"
-        sx={{ marginBottom: 1, lineHeight: 1.8 }}
-      />
+      <div>
+        <Typography
+          dangerouslySetInnerHTML={{ __html: html }}
+          variant="body1"
+          sx={{ marginBottom: 1, lineHeight: 1.8 }}
+        />
+      </div>
       <Grid container spacing={0} justifyContent="space-between">
         <Box sx={{ display: 'flex', columnGap: 1 }}>
           {Boolean(activity.income && activity.income > 0) && (
@@ -46,6 +55,6 @@ export default function ActivityItem({ activity }: ActivityItemProps) {
           ))}
         </Box>
       </Grid>
-    </>
+    </article>
   );
 }

@@ -1,13 +1,12 @@
 {
   "$schema": "node_modules/turbo/schema.json",
-  "ui": "tui",
+  "ui": "stream",
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "outputs": ["output-file.txt", "dist/**"]
     },
     "lint": {},
-    "check-types": {},
     "test": {
       "dependsOn": ["^build"]
     },
@@ -18,7 +17,13 @@
     "web#dev": {
       "with": ["api#dev"],
       "persistent": true,
-      "cache": false
+      "cache": false,
+      "env": ["VITE_*"]
+    },
+    "api#dev": {
+      "persistent": true,
+      "cache": false,
+      "env": ["DB_URI"]
     }
   }
 }

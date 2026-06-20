@@ -3,9 +3,10 @@ import { defineConfig } from 'vite';
 
 // https://vite.dev/config/
 export default defineConfig({
+  clearScreen: false,
   plugins: [react()],
   server: {
-    open: true,
+    open: false,
     proxy: {
       '^/api': {
         target: 'http://localhost:4068',
