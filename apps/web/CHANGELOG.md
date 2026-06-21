@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/lamhq/notebook/compare/web-v0.2.0...web-v0.2.1) (2026-06-21)
+
+
+### Bug Fixes
+
+* cannot trigger deploy to prod ([#15](https://github.com/lamhq/notebook/issues/15)) ([c97664e](https://github.com/lamhq/notebook/commit/c97664e3c6017a26c703509648dc2004deb5871e))
+
 ## [0.2.0](https://github.com/lamhq/notebook/compare/web-v0.1.0...web-v0.2.0) (2026-06-21)
 
 
