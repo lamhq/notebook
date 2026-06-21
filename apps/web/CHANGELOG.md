@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.2](https://github.com/lamhq/notebook/compare/web-v0.2.1...web-v0.2.2) (2026-06-21)
+
+
+### Bug Fixes
+
+* update deploy triggers for web and api workflows ([#17](https://github.com/lamhq/notebook/issues/17)) ([ff39a07](https://github.com/lamhq/notebook/commit/ff39a0746a3d74f4f97d72e25938a4332acdd5d9))
+
 ## [0.2.1](https://github.com/lamhq/notebook/compare/web-v0.2.0...web-v0.2.1) (2026-06-21)
 
 
