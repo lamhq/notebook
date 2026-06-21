@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.2.0](https://github.com/lamhq/notebook/compare/web-v0.1.0...web-v0.2.0) (2026-06-21)
+
+
+### Features
+
+* create multiple activities per tag ([#14](https://github.com/lamhq/notebook/issues/14)) ([c4331b1](https://github.com/lamhq/notebook/commit/c4331b10757ce3bb415b674846dd5a2efe8f8e85))
+* implement e2e tests ([#12](https://github.com/lamhq/notebook/issues/12)) ([ae9fb37](https://github.com/lamhq/notebook/commit/ae9fb376592880750be608bc8ff6696badabc8be))
+* integrate Tanstack query ([#11](https://github.com/lamhq/notebook/issues/11)) ([5014ad3](https://github.com/lamhq/notebook/commit/5014ad3d2ab746c220a21a2060d011c385165dc2))
+
 ## [0.1.0](https://github.com/lamhq/notebook/compare/web-v0.0.1...web-v0.1.0) (2026-04-17)
 
 
