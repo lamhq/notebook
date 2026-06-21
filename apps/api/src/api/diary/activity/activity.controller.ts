@@ -29,7 +29,7 @@ import { RESP_HEADER_TOTAL_COUNT } from '../../common/constants/pagination';
 import { ParseDatePipe } from '../../common/pipes/parse-date.pipe';
 import { ParseObjectIDPipe } from '../../common/pipes/parse-object-id.pipe';
 import { ErrorResponse, ValidationErrorResponse } from '../../common/types';
-import { ActivityDto } from './activity.dto';
+import { CreateActivityDto, UpdateActivityDto } from './activity.dto';
 import { Activity, ActivityQuery } from './activity.entity';
 import { ActivityService } from './activity.service';
 
@@ -117,20 +117,20 @@ export class ActivityController {
 
   @Post()
   @ApiOperation({ summary: 'Add a new activity' })
-  @ApiBody({ description: 'Activity data', type: ActivityDto })
-  @ApiOkResponse({ type: Activity })
+  @ApiBody({ description: 'Activity data', type: CreateActivityDto })
+  @ApiOkResponse({ type: Activity, isArray: true })
   @ApiBadRequestResponse({
     description: 'Invalid input data',
     type: ValidationErrorResponse,
   })
-  async create(@Body() data: ActivityDto): Promise<Activity> {
+  async create(@Body() data: CreateActivityDto): Promise<Activity[]> {
     return this.activityService.create(data);
   }
 
   @Put(':id')
   @ApiOperation({ summary: 'Update activity' })
   @ApiParam({ name: 'id', type: String })
-  @ApiBody({ description: 'Activity data', type: ActivityDto })
+  @ApiBody({ description: 'Activity data', type: UpdateActivityDto })
   @ApiOkResponse({ type: Activity })
   @ApiNotFoundResponse({ description: 'Activity not found', type: ErrorResponse })
   @ApiBadRequestResponse({
@@ -139,7 +139,7 @@ export class ActivityController {
   })
   async update(
     @Param('id', ParseObjectIDPipe) id: ObjectId,
-    @Body() data: ActivityDto,
+    @Body() data: UpdateActivityDto,
   ): Promise<Activity> {
     return this.activityService.update(id, data);
   }

@@ -409,3 +409,115 @@ Verify that the form layout is responsive and displays correctly on mobile devic
 
 - Form layout is responsive on mobile viewport
 
+---
+
+## TC_AA_12 - Checkbox hidden when only one tag is selected
+
+### Description
+
+Verify that the "Create a separate post for each tag" checkbox is not visible when the user has selected only one tag.
+
+### Pre-conditions
+
+- Application is accessible
+- User is logged in
+- User is on the Add Activity page (`/activities/new`)
+
+### Test Data
+
+- Tags: ["expense"]
+
+### Test Steps
+
+1. Navigate to the Add Activity page (`/activities/new`)
+2. Select one tag: "expense"
+3. Observe the form below the Tags field
+
+### Expected Result
+
+- The "Create a separate post for each tag" checkbox is not visible
+
+### Postconditions
+
+- None
+
+---
+
+## TC_AA_13 - Checkbox appears when more than one tag is selected
+
+### Description
+
+Verify that the "Create a separate post for each tag" checkbox appears below the Tags field when the user selects two or more tags, and disappears again if tags are reduced back to one.
+
+### Pre-conditions
+
+- Application is accessible
+- User is logged in
+- User is on the Add Activity page (`/activities/new`)
+
+### Test Data
+
+- Tags: ["expense", "food"]
+
+### Test Steps
+
+1. Navigate to the Add Activity page (`/activities/new`)
+2. Select one tag: "expense"
+3. Verify the checkbox is not visible
+4. Select a second tag: "food"
+5. Verify the checkbox is now visible and unchecked
+6. Remove the "food" tag
+7. Verify the checkbox is hidden again
+
+### Expected Result
+
+- Checkbox appears (unchecked) after the second tag is added
+- Checkbox disappears after tags are reduced to one
+
+### Postconditions
+
+- None
+
+---
+
+## TC_AA_14 - Create separate activity per tag
+
+### Description
+
+Verify that when the "Create a separate post for each tag" checkbox is checked and the form is submitted, the system creates one activity for each selected tag, each carrying only its own tag.
+
+### Pre-conditions
+
+- Application is accessible
+- User is logged in
+- User is on the Add Activity page (`/activities/new`)
+
+### Test Data
+
+- Content: "test multi-tag activity"
+- Tags: ["food", "transport"]
+- Time: Current date and time
+- Checkbox: checked
+
+### Test Steps
+
+1. Navigate to the Add Activity page (`/activities/new`)
+2. Enter "test multi-tag activity" in the content field
+3. Select tags: "food" and "transport"
+4. Verify the "Create a separate post for each tag" checkbox is visible
+5. Check the checkbox
+6. Set time to current date and time
+7. Click the "Submit" button
+
+### Expected Result
+
+- Two separate activities are created
+- The first activity has only the tag "food"
+- The second activity has only the tag "transport"
+- Both activities share the same content, amounts, and time
+- The user is redirected to the homepage
+- Both newly created activities appear in the activity list
+
+### Postconditions
+
+- Two activity records exist in the database, one per tag

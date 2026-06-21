@@ -75,4 +75,10 @@ export class AddActivityPage extends BasePage {
   public async cancel(): Promise<void> {
     await this.getCancelButton().click();
   }
+
+  public getSplitByTagCheckbox(): Locator {
+    return this.page.getByRole('checkbox', {
+      name: 'Create a separate post for each tag',
+    });
+  }
 }

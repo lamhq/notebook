@@ -4,20 +4,21 @@ import { useNavigate } from 'react-router';
 import { Title } from '../../../common/templates/MainLayout';
 import { useErrorHandler } from '../../../error';
 import { useAddActivityMutation } from '../../hooks';
-import ActivityForm from '../../organisms/ActivityForm';
-import type { ActivityFormData } from '../../types';
+import AddActivityForm from '../../organisms/AddActivityForm';
+import type { AddActivityFormData } from '../../types';
 
-const defaultValues: ActivityFormData = {
+const defaultValues: AddActivityFormData = {
   content: '',
   tags: [],
   time: new Date(),
+  splitByTag: false,
 };
 
 export default function AddActivityPage() {
   const { mutateAsync: addActivity } = useAddActivityMutation();
   const navigate = useNavigate();
   const handleError = useErrorHandler();
-  const handleSubmit: SubmitHandler<ActivityFormData> = useCallback(
+  const handleSubmit: SubmitHandler<AddActivityFormData> = useCallback(
     async (data) => {
       try {
         await addActivity(data);
@@ -32,7 +33,7 @@ export default function AddActivityPage() {
   return (
     <>
       <Title>Add Activity</Title>
-      <ActivityForm defaultValues={defaultValues} onSubmit={handleSubmit} />
+      <AddActivityForm defaultValues={defaultValues} onSubmit={handleSubmit} />
     </>
   );
 }

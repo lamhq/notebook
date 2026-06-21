@@ -11,7 +11,7 @@ import * as yup from 'yup';
 import Actions from '../../../common/atoms/Actions';
 import DateTimePicker from '../../../common/atoms/DateTimePicker';
 import ActivityTagSelect from '../../molecules/ActivityTagSelect';
-import type { ActivityFormData } from '../../types';
+import type { UpdateActivityFormData } from '../../types';
 import { getTotalAmounts as calcAmounts } from '../../utils';
 
 const activityFormSchema = yup.object().shape({
@@ -22,22 +22,22 @@ const activityFormSchema = yup.object().shape({
   outcome: yup.string(),
 });
 
-export type ActivityFormProps = {
-  defaultValues: ActivityFormData;
-  onSubmit: SubmitHandler<ActivityFormData>;
+export type UpdateActivityFormProps = {
+  defaultValues: UpdateActivityFormData;
+  onSubmit: SubmitHandler<UpdateActivityFormData>;
 };
 
-export default function ActivityForm({
+export default function UpdateActivityForm({
   defaultValues,
   onSubmit,
-}: ActivityFormProps) {
+}: UpdateActivityFormProps) {
   const {
     control,
     handleSubmit,
     formState: { isSubmitting, errors },
     watch,
     setValue,
-  } = useForm<ActivityFormData>({
+  } = useForm<UpdateActivityFormData>({
     defaultValues,
     resolver: yupResolver(activityFormSchema),
   });
@@ -80,16 +80,32 @@ export default function ActivityForm({
         </Grid>
         <Grid size={{ xs: 12, sm: 6 }}>
           <Controller
-            name="tags"
+            name="income"
             control={control}
-            render={({ field: { onChange, ...rest } }) => (
-              <ActivityTagSelect
-                label="Tags"
-                onChange={(_, v) => {
-                  onChange(v);
-                }}
-                freeSolo
-                {...rest}
+            render={({ field }) => (
+              <TextField
+                label="Income"
+                type="number"
+                error={!!errors.income}
+                helperText={errors.income?.message}
+                {...field}
+                value={field.value ?? ''}
+              />
+            )}
+          />
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6 }}>
+          <Controller
+            name="outcome"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                label="Outcome"
+                type="number"
+                error={!!errors.outcome}
+                helperText={errors.outcome?.message}
+                {...field}
+                value={field.value ?? ''}
               />
             )}
           />
@@ -108,34 +124,18 @@ export default function ActivityForm({
             )}
           />
         </Grid>
-        <Grid size={{ xs: 6 }}>
+        <Grid size={{ xs: 12, sm: 6 }}>
           <Controller
-            name="income"
+            name="tags"
             control={control}
-            render={({ field }) => (
-              <TextField
-                label="Income"
-                type="number"
-                error={!!errors.income}
-                helperText={errors.income?.message}
-                {...field}
-                value={field.value ?? ''}
-              />
-            )}
-          />
-        </Grid>
-        <Grid size={{ xs: 6 }}>
-          <Controller
-            name="outcome"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                label="Outcome"
-                type="number"
-                error={!!errors.outcome}
-                helperText={errors.outcome?.message}
-                {...field}
-                value={field.value ?? ''}
+            render={({ field: { onChange, ...rest } }) => (
+              <ActivityTagSelect
+                label="Tags"
+                onChange={(_, v) => {
+                  onChange(v);
+                }}
+                freeSolo
+                {...rest}
               />
             )}
           />

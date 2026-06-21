@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ObjectId } from 'mongodb';
 import { MongoRepository, ObjectLiteral } from 'typeorm';
 import { MongoFindManyOptions } from 'typeorm/find-options/mongodb/MongoFindManyOptions';
-import { ActivityDto } from './activity.dto';
+import { CreateActivityDto, UpdateActivityDto } from './activity.dto';
 import { Activity, ActivityQuery } from './activity.entity';
 import {
   ACTIVITY_CREATED_EVENT,
@@ -82,20 +82,66 @@ export class ActivityService {
     await this.activityRepo.delete(new ObjectId(id));
   }
 
-  async create(dto: ActivityDto): Promise<Activity> {
-    const entity = dto.toActivity();
-    const activity = await this.activityRepo.save(entity);
+  async create(dto: CreateActivityDto): Promise<Activity[]> {
+    if (!dto.splitByTag) {
+      const entity = {
+        content: dto.content,
+        time: new Date(dto.time),
+        tags: dto.tags.map((tag) => tag.toLowerCase().trim()),
+        income: dto.income ? parseInt(dto.income) : undefined,
+        outcome: dto.outcome ? parseInt(dto.outcome) : undefined,
+      };
+      const activity = await this.activityRepo.save(entity);
+      this.eventEmitter.emit(
+        ACTIVITY_CREATED_EVENT,
+        new ActivityCreatedEvent({ activity }),
+      );
+      return [activity];
+    }
 
-    this.eventEmitter.emit(
-      ACTIVITY_CREATED_EVENT,
-      new ActivityCreatedEvent({ activity: entity }),
-    );
-    return activity;
+    const baseEntity = {
+      content: dto.content,
+      time: new Date(dto.time),
+      tags: dto.tags.map((tag) => tag.toLowerCase().trim()),
+      income: dto.income ? parseInt(dto.income) : undefined,
+      outcome: dto.outcome ? parseInt(dto.outcome) : undefined,
+    };
+    const normalizedTags = baseEntity.tags;
+    const results: Activity[] = [];
+
+    for (const tag of normalizedTags) {
+      try {
+        const entity = new Activity({
+          content: baseEntity.content,
+          time: baseEntity.time,
+          income: baseEntity.income,
+          outcome: baseEntity.outcome,
+          tags: [tag],
+        });
+        const activity = await this.activityRepo.save(entity);
+        this.eventEmitter.emit(
+          ACTIVITY_CREATED_EVENT,
+          new ActivityCreatedEvent({ activity }),
+        );
+        results.push(activity);
+      } catch (error) {
+        console.error('Failed creating activity for tag "%s":', tag, error);
+      }
+    }
+
+    return results;
   }
 
-  async update(id: ObjectId, dto: ActivityDto): Promise<Activity> {
+  async update(id: ObjectId, dto: UpdateActivityDto): Promise<Activity> {
     const before = await this.findOneByIdOrFail(id);
-    const entity = { ...dto.toActivity(), id: before.id };
+    const entity = {
+      id: before.id,
+      content: dto.content,
+      time: new Date(dto.time),
+      tags: dto.tags.map((tag) => tag.toLowerCase().trim()),
+      income: dto.income ? parseInt(dto.income) : undefined,
+      outcome: dto.outcome ? parseInt(dto.outcome) : undefined,
+    };
     await this.activityRepo.replaceOne({ _id: entity.id }, entity);
 
     this.eventEmitter.emit(

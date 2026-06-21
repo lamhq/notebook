@@ -5,22 +5,22 @@ import { useNavigate, useParams } from 'react-router';
 import { Title } from '../../../common/templates/MainLayout';
 import { useErrorHandler } from '../../../error';
 import { useGetActivityQuery, useUpdateActivityMutation } from '../../hooks';
-import ActivityForm from '../../organisms/ActivityForm';
-import type { ActivityFormData } from '../../types';
+import UpdateActivityForm from '../../organisms/UpdateActivityForm';
+import type { UpdateActivityFormData } from '../../types';
 
-function UpdateActivityForm({ activityId }: { activityId: string }) {
+function UpdateActivityFormView({ activityId }: { activityId: string }) {
   const { data: activity } = useGetActivityQuery(activityId);
   const { mutateAsync: updateActivity } = useUpdateActivityMutation();
   const navigate = useNavigate();
   const handleError = useErrorHandler();
-  const defaultFormValues: ActivityFormData = {
+  const defaultFormValues: UpdateActivityFormData = {
     content: activity.content,
     tags: activity.tags,
     time: activity.time,
     income: activity.income?.toString(),
     outcome: activity.outcome?.toString(),
   };
-  const handleSubmit: SubmitHandler<ActivityFormData> = useCallback(
+  const handleSubmit: SubmitHandler<UpdateActivityFormData> = useCallback(
     async (data) => {
       try {
         await updateActivity({ id: activityId, data });
@@ -32,7 +32,9 @@ function UpdateActivityForm({ activityId }: { activityId: string }) {
     [activityId, updateActivity, navigate, handleError],
   );
 
-  return <ActivityForm defaultValues={defaultFormValues} onSubmit={handleSubmit} />;
+  return (
+    <UpdateActivityForm defaultValues={defaultFormValues} onSubmit={handleSubmit} />
+  );
 }
 
 export default function UpdateActivityPage() {
@@ -45,7 +47,7 @@ export default function UpdateActivityPage() {
     <>
       <Title>Update Activity</Title>
       <Suspense fallback={<CircularProgress />}>
-        <UpdateActivityForm activityId={activityId} />
+        <UpdateActivityFormView activityId={activityId} />
       </Suspense>
     </>
   );

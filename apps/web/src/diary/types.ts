@@ -7,7 +7,16 @@ export type Activity = {
   outcome?: number;
 };
 
-export type ActivityFormData = {
+export type AddActivityFormData = {
+  content: string;
+  time: Date;
+  tags: string[];
+  income?: string;
+  outcome?: string;
+  splitByTag?: boolean;
+};
+
+export type UpdateActivityFormData = {
   content: string;
   time: Date;
   tags: string[];
