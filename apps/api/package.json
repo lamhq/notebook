@@ -2,7 +2,7 @@
   "name": "api",
   "description": "API service for Notebook app",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.3.0",
   "scripts": {
     "build": "node esbuild.mjs",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
