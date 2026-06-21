@@ -253,7 +253,7 @@ test.describe('Add Activity - Form Submission', () => {
     await expect(firstActivity).toContainText('#test');
   });
 
-  test('TC_AA_12: successful submission redirects to homepage with new activity visible', async ({
+  test('TC_AA_15: successful submission redirects to homepage with new activity visible', async ({
     page,
   }) => {
     const content = `test activity ${deleteMarker}`;
@@ -269,5 +269,61 @@ test.describe('Add Activity - Form Submission', () => {
     const firstActivity = activityListPage.activityList.getActivityItems().first();
     await expect(firstActivity).toContainText(content);
     await expect(firstActivity).toContainText('#success');
+  });
+});
+
+test.describe('Add Activity - Split by Tag', () => {
+  test('TC_AA_12: checkbox hidden when only one tag is selected', async () => {
+    await addActivityPage.selectTag('expense');
+    await expect(addActivityPage.getSplitByTagCheckbox()).toBeHidden();
+  });
+
+  test('TC_AA_13: checkbox appears when more than one tag is selected', async () => {
+    // Select one tag - checkbox should not be visible
+    await addActivityPage.selectTag('expense');
+    await expect(addActivityPage.getSplitByTagCheckbox()).toBeHidden();
+
+    // Select a second tag - checkbox should appear unchecked
+    await addActivityPage.selectTag('income');
+    await expect(addActivityPage.getSplitByTagCheckbox()).toBeVisible();
+    await expect(addActivityPage.getSplitByTagCheckbox()).not.toBeChecked();
+
+    // Remove the second tag - checkbox should disappear again
+    await addActivityPage.removeTag('income');
+    await expect(addActivityPage.getSplitByTagCheckbox()).toBeHidden();
+  });
+
+  test('TC_AA_14: create separate activity per tag', async ({ page }) => {
+    const content = `test multi-tag activity ${deleteMarker}`;
+
+    await addActivityPage.enterContent(content);
+    await addActivityPage.selectTag('income');
+    await addActivityPage.selectTag('project');
+
+    // Verify checkbox is visible and check it
+    await expect(addActivityPage.getSplitByTagCheckbox()).toBeVisible();
+    await addActivityPage.getSplitByTagCheckbox().check();
+
+    await addActivityPage.setDateTime(createDate());
+    await addActivityPage.submitForm();
+
+    // Verify navigation to homepage
+    await expect(page).toHaveURL(activityListPage.getUrl());
+
+    // Verify two activities are created, each with only one tag
+    const items = activityListPage.activityList.getActivityItems();
+    const incomActivity = items
+      .filter({ hasText: '#income' })
+      .filter({ hasText: content });
+    const projectActivity = items
+      .filter({ hasText: '#project' })
+      .filter({ hasText: content });
+
+    await expect(incomActivity).toHaveCount(1);
+    await expect(projectActivity).toHaveCount(1);
+
+    // Verify each activity only has its own tag
+    await expect(incomActivity).not.toContainText('#project');
+    await expect(projectActivity).not.toContainText('#income');
   });
 });

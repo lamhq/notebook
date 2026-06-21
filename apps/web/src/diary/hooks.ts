@@ -5,7 +5,13 @@ import {
   useSuspenseQuery,
 } from '@tanstack/react-query';
 import { axiosRequest } from '../api/request';
-import type { Activity, ActivityFilter, ActivityFormData, Revenue } from './types';
+import type {
+  Activity,
+  ActivityFilter,
+  AddActivityFormData,
+  Revenue,
+  UpdateActivityFormData,
+} from './types';
 import { buildQueryFromFilter } from './utils';
 
 function transformActivityResponse(data: Activity): Activity {
@@ -90,8 +96,8 @@ export function useGetActivityQuery(id: string) {
 export function useAddActivityMutation() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (data: ActivityFormData) => {
-      const resp = await axiosRequest<Activity>({
+    mutationFn: async (data: AddActivityFormData) => {
+      const resp = await axiosRequest<Activity[]>({
         url: `/diary/activities`,
         method: 'POST',
         data,
@@ -108,7 +114,13 @@ export function useAddActivityMutation() {
 export function useUpdateActivityMutation() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async ({ id, data }: { id: string; data: ActivityFormData }) => {
+    mutationFn: async ({
+      id,
+      data,
+    }: {
+      id: string;
+      data: UpdateActivityFormData;
+    }) => {
       const resp = await axiosRequest<Activity>({
         url: `/diary/activities/${id}`,
         method: 'PUT',

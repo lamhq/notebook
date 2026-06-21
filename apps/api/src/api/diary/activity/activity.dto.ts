@@ -1,14 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsArray,
+  IsBoolean,
   IsDateString,
   IsNotEmpty,
   IsNumberString,
+  IsOptional,
   ValidateIf,
 } from 'class-validator';
 import { Activity } from './activity.entity';
 
-export class ActivityDto {
+export class UpdateActivityDto {
   @ApiProperty()
   @IsNotEmpty()
   content: string;
@@ -23,12 +25,12 @@ export class ActivityDto {
   tags: string[] = [];
 
   @ApiProperty()
-  @ValidateIf((o: ActivityDto) => Boolean(o.income))
+  @ValidateIf((o: UpdateActivityDto) => Boolean(o.income))
   @IsNumberString()
   income?: string;
 
   @ApiProperty()
-  @ValidateIf((o: ActivityDto) => Boolean(o.outcome))
+  @ValidateIf((o: UpdateActivityDto) => Boolean(o.outcome))
   @IsNumberString()
   outcome?: string;
 
@@ -42,4 +44,34 @@ export class ActivityDto {
     if (this.outcome) result.outcome = parseInt(this.outcome);
     return result;
   }
+}
+
+export class CreateActivityDto {
+  @ApiProperty()
+  @IsNotEmpty()
+  content: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsDateString()
+  time: string;
+
+  @ApiProperty()
+  @IsArray()
+  tags: string[] = [];
+
+  @ApiProperty()
+  @ValidateIf((o: CreateActivityDto) => Boolean(o.income))
+  @IsNumberString()
+  income?: string;
+
+  @ApiProperty()
+  @ValidateIf((o: CreateActivityDto) => Boolean(o.outcome))
+  @IsNumberString()
+  outcome?: string;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsBoolean()
+  splitByTag?: boolean;
 }
