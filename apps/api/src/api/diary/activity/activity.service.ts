@@ -125,7 +125,7 @@ export class ActivityService {
         );
         results.push(activity);
       } catch (error) {
-        console.error(`Failed to create activity for tag "${tag}":`, error);
+        console.error('Failed to create activity for tag "%s":', tag, error);
       }
     }
 
