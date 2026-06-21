@@ -13,6 +13,7 @@ on:
     paths:
       - 'apps/web/**'
       - 'packages/**'
+
   push:
     branches: [main]
     tags: ['web-v*']
@@ -86,7 +87,7 @@ jobs:
           retention-days: 30
 
   build:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'pull_request' || github.event_name == 'push'
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -130,7 +131,7 @@ jobs:
           cf_dist_id: ${{ vars.CF_DIST_ID }}
 
   deploy-prod:
-    if: startsWith(github.ref, 'refs/tags/')
+    if: startsWith(github.ref, 'refs/tags/web-v')
     needs: [build]
     runs-on: ubuntu-latest
     environment: prod
