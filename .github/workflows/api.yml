@@ -11,8 +11,6 @@ on:
     paths:
       - 'apps/api/**'
       - 'packages/**'
-      # TODO: remove this when deploy to dev success
-      - '.github/workflows/api.yml'
   push:
     branches: [main]
     tags: ['api-v*']
