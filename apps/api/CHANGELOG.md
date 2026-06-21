@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.3.0](https://github.com/lamhq/notebook/compare/api-v0.2.0...api-v0.3.0) (2026-06-21)
+
+
+### Features
+
+* create multiple activities per tag ([#14](https://github.com/lamhq/notebook/issues/14)) ([c4331b1](https://github.com/lamhq/notebook/commit/c4331b10757ce3bb415b674846dd5a2efe8f8e85))
+* implement e2e tests ([#12](https://github.com/lamhq/notebook/issues/12)) ([ae9fb37](https://github.com/lamhq/notebook/commit/ae9fb376592880750be608bc8ff6696badabc8be))
+
+
+### Bug Fixes
+
+* manage GitHub env deployment policies ([#7](https://github.com/lamhq/notebook/issues/7)) ([7d16e06](https://github.com/lamhq/notebook/commit/7d16e06ef5cf256c528680ef11cf714196477e5f))
+
 ## [0.2.0](https://github.com/lamhq/notebook/compare/api-v0.1.0...api-v0.2.0) (2026-04-17)
 
 
