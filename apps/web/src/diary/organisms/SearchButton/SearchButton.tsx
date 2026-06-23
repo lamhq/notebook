@@ -19,12 +19,12 @@ import ActivityTagSelect from '../../molecules/ActivityTagSelect';
 import type { ActivityFilter } from '../../types';
 import { TimeRange } from '../../types';
 
-export type SearchDialogViewProps = {
+export type SearchButtonViewProps = {
   values: ActivityFilter;
   onSubmit: SubmitHandler<ActivityFilter>;
 };
 
-export function SearchDialogView({ values, onSubmit }: SearchDialogViewProps) {
+export function SearchButtonView({ values, onSubmit }: SearchButtonViewProps) {
   const [open, setOpen] = useState(false);
   const { control, handleSubmit, watch, reset } = useForm<ActivityFilter>({
     defaultValues: values,
@@ -147,7 +147,7 @@ export function SearchDialogView({ values, onSubmit }: SearchDialogViewProps) {
   );
 }
 
-export default function SearchDialog() {
+export default function SearchButton() {
   const [filter, setFilter] = useAtom(activityFilterAtom);
   const handleSearch = useCallback<SubmitHandler<ActivityFilter>>(
     (data) => {
@@ -155,5 +155,5 @@ export default function SearchDialog() {
     },
     [setFilter],
   );
-  return <SearchDialogView values={filter} onSubmit={handleSearch} />;
+  return <SearchButtonView values={filter} onSubmit={handleSearch} />;
 }

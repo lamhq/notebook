@@ -6,6 +6,7 @@ import Pagination from '../../../common/atoms/Pagination';
 import Typography from '../../../common/atoms/Typography';
 import { formatDate } from '../../../common/utils';
 import { activityFilterAtom } from '../../atoms';
+import LoadingFallback from '../../atoms/LoadingFallback';
 import { useGetActivitiesQuery } from '../../hooks';
 import ActivityItem from '../../molecules/ActivityItem';
 import type { Activity } from '../../types';
@@ -95,20 +96,24 @@ export default function ActivityList() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [activities]);
 
-  return activities.length ? (
-    <>
-      <ActivityListView activities={activities} />
-      {pageCount > 1 && (
-        <Pagination
-          page={filter.page}
-          onChange={handlePageChange}
-          count={pageCount}
-        />
+  return (
+    <LoadingFallback style="circular">
+      {activities.length ? (
+        <>
+          <ActivityListView activities={activities} />
+          {pageCount > 1 && (
+            <Pagination
+              page={filter.page}
+              onChange={handlePageChange}
+              count={pageCount}
+            />
+          )}
+        </>
+      ) : (
+        <Typography align="center" variant="body1">
+          There&apos;s no items to display.
+        </Typography>
       )}
-    </>
-  ) : (
-    <Typography align="center" variant="body1">
-      There&apos;s no items to display.
-    </Typography>
+    </LoadingFallback>
   );
 }
