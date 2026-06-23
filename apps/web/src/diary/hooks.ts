@@ -4,7 +4,9 @@ import {
   useQueryClient,
   useSuspenseQuery,
 } from '@tanstack/react-query';
+import { useAtomValue } from 'jotai';
 import { axiosRequest } from '../api/request';
+import { activityFilterAtom } from './atoms';
 import type {
   Activity,
   ActivityFilter,
@@ -62,8 +64,9 @@ export function useGetActivitiesQuery(filter: ActivityFilter) {
   );
 }
 
-export function useGetRevenueQuery(filter: ActivityFilter) {
-  return useSuspenseQuery(
+export function useRevenue(): Revenue {
+  const filter = useAtomValue(activityFilterAtom);
+  const { data } = useSuspenseQuery(
     queryOptions({
       queryKey: [...REVENUE_QUERY_KEY, filter],
       queryFn: async () => {
@@ -76,6 +79,7 @@ export function useGetRevenueQuery(filter: ActivityFilter) {
       },
     }),
   );
+  return data;
 }
 
 export function useGetActivityQuery(id: string) {

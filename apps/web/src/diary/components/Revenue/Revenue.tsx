@@ -1,22 +1,41 @@
 import Box from '@mui/material/Box';
 import Popover from '@mui/material/Popover';
-import { useAtomValue } from 'jotai';
+import type { MouseEventHandler } from 'react';
+import { useCallback, useState } from 'react';
 import AmountBadge from '../../../common/atoms/AmountBadge';
 import Typography from '../../../common/atoms/Typography';
 import { formatNumber } from '../../../common/utils';
-import { activityFilterAtom } from '../../atoms';
-import { useGetRevenueQuery } from '../../hooks';
-import LoadingFallback from '../LoadingFallback';
-import useRevenueProps from './hooks';
 
-export type RevenueViewProps = {
+function useRevenueLogic() {
+  const [anchor, setAnchor] = useState<Element | undefined>();
+  const isPopupVisible = Boolean(anchor);
+  const popupId = isPopupVisible ? 'revenue-popover' : undefined;
+
+  const showDetails: MouseEventHandler = useCallback((event) => {
+    setAnchor(event.currentTarget);
+  }, []);
+
+  const closeDetails = useCallback(() => {
+    setAnchor(undefined);
+  }, []);
+
+  return {
+    popupId,
+    isPopupVisible,
+    popupAnchor: anchor,
+    showDetails,
+    closeDetails,
+  };
+}
+
+export type RevenueProps = {
   income: number;
   outcome: number;
 };
 
-export function RevenueView({ income, outcome }: RevenueViewProps) {
+export default function Revenue({ income, outcome }: RevenueProps) {
   const { popupId, isPopupVisible, popupAnchor, showDetails, closeDetails } =
-    useRevenueProps();
+    useRevenueLogic();
   const it = formatNumber(income);
   const ot = formatNumber(outcome);
   return (
@@ -51,15 +70,5 @@ export function RevenueView({ income, outcome }: RevenueViewProps) {
         </Typography>
       </Popover>
     </>
-  );
-}
-
-export default function Revenue() {
-  const filter = useAtomValue(activityFilterAtom);
-  const { data } = useGetRevenueQuery(filter);
-  return (
-    <LoadingFallback style="empty">
-      <RevenueView {...data} />
-    </LoadingFallback>
   );
 }

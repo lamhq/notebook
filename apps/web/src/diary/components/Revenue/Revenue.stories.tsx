@@ -1,17 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import Revenue, { RevenueView } from './Revenue';
+import Revenue from './Revenue';
 
 const meta = {
-  component: RevenueView,
-} satisfies Meta<typeof RevenueView>;
+  component: Revenue,
+} satisfies Meta<typeof Revenue>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
 export const Default = {
-  render: () => <Revenue />,
+  render: () => <Revenue income={0} outcome={0} />,
 };
 
 export const Positive: Story = {
