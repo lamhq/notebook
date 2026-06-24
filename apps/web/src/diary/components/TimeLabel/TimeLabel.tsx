@@ -1,6 +1,6 @@
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import Box from '@mui/material/Box';
-import Typography from '../../../common/atoms/Typography';
+import Typography from '../../../common/components/Typography';
 import { formatTime } from '../../../common/utils';
 
 export type TimeLabelProps = {

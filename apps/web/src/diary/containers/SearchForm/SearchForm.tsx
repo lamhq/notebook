@@ -1,7 +1,7 @@
 import Grid from '@mui/material/Grid2';
 import TextField from '@mui/material/TextField';
 import { Controller, useForm, useWatch } from 'react-hook-form';
-import { DesktopDatePicker } from '../../../common/atoms/DatePicker';
+import { DesktopDatePicker } from '../../../common/components/DatePicker';
 import TimeRangeSelect from '../../components/TimeRangeSelect';
 import type { ActivityFilter } from '../../types';
 import { TimeRange } from '../../types';

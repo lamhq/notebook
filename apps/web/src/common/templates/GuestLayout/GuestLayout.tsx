@@ -1,6 +1,6 @@
 import Container from '@mui/material/Container';
 import type { ReactNode } from 'react';
-import Typography from '../../atoms/Typography';
+import Typography from '../../components/Typography';
 
 export type GuestLayoutProps = {
   title: string;

@@ -7,7 +7,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { AxiosError } from 'axios';
 import type { FallbackProps } from 'react-error-boundary';
-import Actions from '../../common/atoms/Actions';
+import Actions from '../../common/components/Actions';
 
 export default function ErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
   const iconStyle = { fontSize: '5rem' };

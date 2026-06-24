@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router';
-import LoadingFallback from '../../../common/atoms/LoadingFallback';
+import SuspenseWrapper from '../../../common/components/SuspenseWrapper';
 import { Title } from '../../../common/templates/MainLayout';
 import { useErrorHandler } from '../../../error';
 import UpdateActivityForm from '../../containers/UpdateActivityForm';
@@ -41,9 +41,9 @@ export default function UpdateActivityPage() {
   return (
     <>
       <Title>Update Activity</Title>
-      <LoadingFallback style="circular">
+      <SuspenseWrapper style="circular">
         <FetchActivityForm activityId={activityId} />
-      </LoadingFallback>
+      </SuspenseWrapper>
     </>
   );
 }

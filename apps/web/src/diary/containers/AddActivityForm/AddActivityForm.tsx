@@ -10,8 +10,8 @@ import { Controller, useForm, useWatch } from 'react-hook-form';
 import { Link as RouterLink } from 'react-router';
 import * as yup from 'yup';
 
-import Actions from '../../../common/atoms/Actions';
-import DateTimePicker from '../../../common/atoms/DateTimePicker';
+import Actions from '../../../common/components/Actions';
+import DateTimePicker from '../../../common/components/DateTimePicker';
 import type { AddActivityFormData } from '../../types';
 import { getTotalAmounts as calcAmounts } from '../../utils';
 import TagsSelectContainer from '../TagsSelectContainer';

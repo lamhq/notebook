@@ -2,8 +2,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import { Link } from 'react-router';
-import Actions from '../../atoms/Actions';
-import Typography from '../../atoms/Typography';
+import Actions from '../../components/Actions';
+import Typography from '../../components/Typography';
 
 export default function NotFoundPage() {
   return (

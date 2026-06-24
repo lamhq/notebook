@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import LoadingFallback from '../../../common/atoms/LoadingFallback';
+import SuspenseWrapper from '../../../common/components/SuspenseWrapper';
 import ActivityList from '../../components/ActivityList';
 import { useActivityFilter, usePaginatedActivities } from '../../hooks';
 
@@ -30,8 +30,8 @@ function FetchActivityList() {
 
 export default function ActivityListContainer() {
   return (
-    <LoadingFallback style="circular">
+    <SuspenseWrapper style="circular">
       <FetchActivityList />
-    </LoadingFallback>
+    </SuspenseWrapper>
   );
 }

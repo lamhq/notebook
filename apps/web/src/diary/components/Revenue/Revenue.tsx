@@ -1,8 +1,8 @@
 import Box from '@mui/material/Box';
 import Popover from '@mui/material/Popover';
 import type { MouseEventHandler } from 'react';
-import AmountBadge from '../../../common/atoms/AmountBadge';
-import Typography from '../../../common/atoms/Typography';
+import AmountBadge from '../../../common/components/AmountBadge';
+import Typography from '../../../common/components/Typography';
 import { formatNumber } from '../../../common/utils';
 
 export type RevenueProps = {

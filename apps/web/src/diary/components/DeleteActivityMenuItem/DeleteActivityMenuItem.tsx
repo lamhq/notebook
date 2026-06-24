@@ -1,5 +1,9 @@
 import DeleteIcon from '@mui/icons-material/Delete';
-import { ItemIcon, ItemText, MenuItem } from '../../../common/atoms/ContextMenu';
+import {
+  ItemIcon,
+  ItemText,
+  MenuItem,
+} from '../../../common/components/ContextMenu';
 
 export type DeleteActivityMenuItemProps = {
   onClick: () => void;

@@ -4,8 +4,8 @@ import { QueryErrorResetBoundary } from '@tanstack/react-query';
 import { Suspense } from 'react';
 import type { FallbackProps } from 'react-error-boundary';
 import { ErrorBoundary } from 'react-error-boundary';
-import type { TagInputProps } from '../../../common/atoms/TagInput/TagInput';
-import TagInput from '../../../common/atoms/TagInput/TagInput';
+import type { TagInputProps } from '../../../common/components/TagInput/TagInput';
+import TagInput from '../../../common/components/TagInput/TagInput';
 import { useTags } from '../../hooks';
 
 export type TagsSelectContainerProps = Omit<TagInputProps, 'options'>;

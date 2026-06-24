@@ -1,6 +1,6 @@
 import type { ComponentType } from 'react';
 import { withAuthenticationRequired } from 'react-oidc-context';
-import LoadingFallback from '../common/organism/LoadingFallback';
+import LoadingFallback from '../common/components/LoadingFallback';
 import { REDIRECT_ROUTE } from './constants';
 
 export function requireAuth(comp: ComponentType): ComponentType {

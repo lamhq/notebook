@@ -9,7 +9,7 @@ import {
   ItemText,
   Menu,
   MenuItem,
-} from '../../../common/atoms/ContextMenu';
+} from '../../../common/components/ContextMenu';
 import DeleteActivityMenuItemContainer from '../../containers/DeleteActivityMenuItemContainer';
 import type { Activity } from '../../types';
 

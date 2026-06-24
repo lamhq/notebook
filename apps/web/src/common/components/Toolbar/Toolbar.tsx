@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box/Box';
 import type { ReactNode } from 'react';
-import Actions from '../../../common/atoms/Actions';
+import Actions from '../Actions';
 
 export type ToolbarProps = {
   children?: ReactNode;

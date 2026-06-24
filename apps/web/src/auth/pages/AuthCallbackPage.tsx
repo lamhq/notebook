@@ -1,7 +1,7 @@
 import Button from '@mui/material/Button';
 import { useAuth } from 'react-oidc-context';
 import { Link, Navigate } from 'react-router';
-import LoadingFallback from '../../common/organism/LoadingFallback';
+import LoadingFallback from '../../common/components/LoadingFallback';
 import GuestLayout from '../../common/templates/GuestLayout';
 import { HOME_ROUTE } from '../../routes';
 import { REDIRECT_ROUTE } from '../constants';

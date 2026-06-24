@@ -1,6 +1,6 @@
 import type { MouseEventHandler } from 'react';
 import { useState } from 'react';
-import LoadingFallback from '../../../common/atoms/LoadingFallback';
+import SuspenseWrapper from '../../../common/components/SuspenseWrapper';
 import Revenue from '../../components/Revenue/Revenue';
 import { useRevenue } from '../../hooks';
 
@@ -31,8 +31,8 @@ function FetchRevenue() {
 
 export default function RevenueContainer() {
   return (
-    <LoadingFallback style="empty">
+    <SuspenseWrapper style="empty">
       <FetchRevenue />
-    </LoadingFallback>
+    </SuspenseWrapper>
   );
 }

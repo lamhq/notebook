@@ -1,6 +1,8 @@
 import Box from '@mui/material/Box';
-import Pagination, { type PaginationProps } from '../../../common/atoms/Pagination';
-import Typography from '../../../common/atoms/Typography';
+import Pagination, {
+  type PaginationProps,
+} from '../../../common/components/Pagination';
+import Typography from '../../../common/components/Typography';
 import { formatDate } from '../../../common/utils';
 import type { Activity } from '../../types';
 import ActivityItem from '../ActivityItem';

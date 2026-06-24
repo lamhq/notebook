@@ -4,7 +4,7 @@ import SearchDialog from '../../components/SearchDialog/SearchDialog';
 import { useActivityFilter } from '../../hooks';
 import type { ActivityFilter } from '../../types';
 
-function useSearchButtonContainer() {
+export default function SearchButtonContainer() {
   const { filter, updateFilter } = useActivityFilter();
   const [isDialogOpen, setOpen] = useState(false);
   const handleOpenDialog = () => {
@@ -17,18 +17,6 @@ function useSearchButtonContainer() {
     updateFilter({ ...data, page: 1 });
     setOpen(false);
   };
-  return {
-    filter,
-    isDialogOpen,
-    handleOpenDialog,
-    handleCloseDialog,
-    handleSearch,
-  };
-}
-
-export default function SearchButtonContainer() {
-  const { filter, isDialogOpen, handleOpenDialog, handleCloseDialog, handleSearch } =
-    useSearchButtonContainer();
 
   return (
     <>
