@@ -6,7 +6,7 @@ import Grid from '@mui/material/Grid2';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
 import TextField from '@mui/material/TextField';
 import { useEffect } from 'react';
-import { Controller, type SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, type SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import { Link as RouterLink } from 'react-router';
 import * as yup from 'yup';
 
@@ -38,14 +38,13 @@ export default function AddActivityForm({
     control,
     handleSubmit,
     formState: { isSubmitting, errors },
-    watch,
     setValue,
   } = useForm<AddActivityFormData>({
     defaultValues,
     resolver: yupResolver(activityFormSchema),
   });
-  const noteContent = watch('content');
-  const tags = watch('tags');
+  const noteContent = useWatch({ control, name: 'content' });
+  const tags = useWatch({ control, name: 'tags' });
 
   // auto set income and outcome value base on activity's note
   useEffect(() => {

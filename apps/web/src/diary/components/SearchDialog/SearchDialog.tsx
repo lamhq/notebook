@@ -3,32 +3,27 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import type { SubmitHandler } from 'react-hook-form';
+import SearchForm from '../../containers/SearchForm/SearchForm';
 import type { ActivityFilter } from '../../types';
-import SearchForm from '../SearchForm/SearchForm';
 
 export type SearchDialogProps = {
   open: boolean;
-  onClose: () => void;
   defaultFormValues: ActivityFilter;
-  onFormSubmit: SubmitHandler<ActivityFilter>;
+  onCancel: () => void;
+  onSubmit: (data: ActivityFilter) => void;
 };
 
 export default function SearchDialog({
   open,
   defaultFormValues,
-  onClose,
-  onFormSubmit,
+  onCancel,
+  onSubmit,
 }: SearchDialogProps) {
-  const submitHandler: SubmitHandler<ActivityFilter> = (data) => {
-    onFormSubmit(data);
-    onClose();
-  };
   return (
-    <Dialog open={open} onClose={onClose} keepMounted={false}>
+    <Dialog open={open} onClose={onCancel} keepMounted={false}>
       <DialogTitle>Search activities</DialogTitle>
       <DialogContent>
-        <SearchForm defaultValues={defaultFormValues} onSubmit={submitHandler} />
+        <SearchForm defaultValues={defaultFormValues} onSubmit={onSubmit} />
       </DialogContent>
       <DialogActions>
         <Button

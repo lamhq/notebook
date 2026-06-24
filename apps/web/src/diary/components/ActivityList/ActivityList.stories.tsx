@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { fn } from 'storybook/test';
 
 import ActivityList from './ActivityList';
 
@@ -15,7 +16,7 @@ export const Default: Story = {
     activities: [
       {
         id: '1',
-        time: '2021-06-15T01:21:03.368Z',
+        time: new Date('2021-06-15T01:21:03.368Z'),
         tags: ['play', 'gog'],
         income: 100.0,
         outcome: 0,
@@ -24,7 +25,7 @@ export const Default: Story = {
       },
       {
         id: '2',
-        time: '2021-06-15T01:20:03.368Z',
+        time: new Date('2021-06-15T01:20:03.368Z'),
         tags: ['play'],
         income: 0,
         outcome: 123.0,
@@ -32,7 +33,7 @@ export const Default: Story = {
       },
       {
         id: '3',
-        time: '2021-06-15T01:19:03.368Z',
+        time: new Date('2021-06-15T01:19:03.368Z'),
         tags: ['nec'],
         income: 0,
         outcome: 230.0,
@@ -41,7 +42,7 @@ export const Default: Story = {
       },
       {
         id: '4',
-        time: '2021-06-14T01:21:03.368Z',
+        time: new Date('2021-06-14T01:21:03.368Z'),
         tags: ['play', 'gog'],
         income: 100.0,
         outcome: 0,
@@ -50,7 +51,7 @@ export const Default: Story = {
       },
       {
         id: '5',
-        time: '2021-06-14T01:20:03.368Z',
+        time: new Date('2021-06-14T01:20:03.368Z'),
         tags: ['play'],
         income: 0,
         outcome: 123.0,
@@ -58,7 +59,7 @@ export const Default: Story = {
       },
       {
         id: '6',
-        time: '2021-06-13T01:19:03.368Z',
+        time: new Date('2021-06-13T01:19:03.368Z'),
         tags: ['nec'],
         income: 0,
         outcome: 230.0,
@@ -66,5 +67,24 @@ export const Default: Story = {
           'At vero eos et accusamus et iusto odio dignissimos\nut aut reiciendis voluptatibus ',
       },
     ],
+    currentPage: 1,
+    pageCount: 1,
+    onPageChange: fn(),
+  },
+};
+
+export const WithPagination: Story = {
+  args: {
+    ...Default.args,
+    pageCount: 5,
+  },
+};
+
+export const Empty: Story = {
+  args: {
+    activities: [],
+    currentPage: 1,
+    pageCount: 0,
+    onPageChange: fn(),
   },
 };

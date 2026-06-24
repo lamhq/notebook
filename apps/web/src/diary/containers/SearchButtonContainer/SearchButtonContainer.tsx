@@ -41,7 +41,7 @@ export default function SearchButtonContainer() {
         open={isDialogOpen}
         onClose={handleCloseDialog}
         defaultFormValues={filter}
-        onFormSubmit={handleSearch}
+        onSubmit={handleSearch}
       />
     </>
   );

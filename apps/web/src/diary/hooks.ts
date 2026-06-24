@@ -44,8 +44,8 @@ export function useGetTagsQuery() {
   );
 }
 
-export function useGetActivitiesQuery(filter: ActivityFilter) {
-  return useSuspenseQuery(
+export function usePaginatedActivities(filter: ActivityFilter) {
+  const result = useSuspenseQuery(
     queryOptions({
       queryKey: [...ACTIVITIES_QUERY_KEY, filter],
       queryFn: async () => {
@@ -62,6 +62,7 @@ export function useGetActivitiesQuery(filter: ActivityFilter) {
       },
     }),
   );
+  return result.data;
 }
 
 export function useRevenue(): Revenue {

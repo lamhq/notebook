@@ -1,8 +1,7 @@
 import Grid from '@mui/material/Grid2';
 import TextField from '@mui/material/TextField';
-import { useCallback } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 import { DesktopDatePicker } from '../../../common/atoms/DatePicker';
 import TimeRangeSelect from '../../atoms/TimeRangeSelect';
 import ActivityTagSelect from '../../molecules/ActivityTagSelect';
@@ -15,23 +14,16 @@ export type SearchFormProps = {
 };
 
 export default function SearchForm({ defaultValues, onSubmit }: SearchFormProps) {
-  const { control, handleSubmit, watch } = useForm<ActivityFilter>({
+  const { control, handleSubmit } = useForm<ActivityFilter>({
     defaultValues,
   });
-  const timeRange = watch('timeRange');
-
-  const handleFormSubmit = useCallback<SubmitHandler<ActivityFilter>>(
-    (data) => {
-      onSubmit(data);
-    },
-    [onSubmit],
-  );
+  const timeRange = useWatch({ control, name: 'timeRange' });
 
   return (
     <form
       id="activitySearchForm"
       onSubmit={(e) => {
-        void handleSubmit(handleFormSubmit)(e);
+        void handleSubmit(onSubmit)(e);
       }}
     >
       <Grid container spacing={1}>

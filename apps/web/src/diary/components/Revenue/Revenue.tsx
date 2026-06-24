@@ -1,41 +1,29 @@
 import Box from '@mui/material/Box';
 import Popover from '@mui/material/Popover';
 import type { MouseEventHandler } from 'react';
-import { useCallback, useState } from 'react';
 import AmountBadge from '../../../common/atoms/AmountBadge';
 import Typography from '../../../common/atoms/Typography';
 import { formatNumber } from '../../../common/utils';
 
-function useRevenueLogic() {
-  const [anchor, setAnchor] = useState<Element | undefined>();
-  const isPopupVisible = Boolean(anchor);
-  const popupId = isPopupVisible ? 'revenue-popover' : undefined;
-
-  const showDetails: MouseEventHandler = useCallback((event) => {
-    setAnchor(event.currentTarget);
-  }, []);
-
-  const closeDetails = useCallback(() => {
-    setAnchor(undefined);
-  }, []);
-
-  return {
-    popupId,
-    isPopupVisible,
-    popupAnchor: anchor,
-    showDetails,
-    closeDetails,
-  };
-}
-
 export type RevenueProps = {
   income: number;
   outcome: number;
+  popoverId: string | undefined;
+  popoverVisible: boolean;
+  popoverAnchor: Element | undefined;
+  showPopover: MouseEventHandler;
+  closePopover: () => void;
 };
 
-export default function Revenue({ income, outcome }: RevenueProps) {
-  const { popupId, isPopupVisible, popupAnchor, showDetails, closeDetails } =
-    useRevenueLogic();
+export default function Revenue({
+  income,
+  outcome,
+  popoverId,
+  popoverVisible,
+  popoverAnchor,
+  showPopover,
+  closePopover,
+}: RevenueProps) {
   const it = formatNumber(income);
   const ot = formatNumber(outcome);
   return (
@@ -43,13 +31,13 @@ export default function Revenue({ income, outcome }: RevenueProps) {
       <AmountBadge
         isIncome={income > outcome}
         amount={Math.abs(income - outcome)}
-        onClick={showDetails}
+        onClick={showPopover}
       />
       <Popover
-        id={popupId}
-        open={isPopupVisible}
-        anchorEl={popupAnchor}
-        onClose={closeDetails}
+        id={popoverId}
+        open={popoverVisible}
+        anchorEl={popoverAnchor}
+        onClose={closePopover}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'right',
