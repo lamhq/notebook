@@ -84,8 +84,8 @@ export function useRevenue(): Revenue {
   return data;
 }
 
-export function useGetActivityQuery(id: string) {
-  return useSuspenseQuery(
+export function useActivity(id: string) {
+  const result = useSuspenseQuery(
     queryOptions({
       queryKey: [...ACTIVITIES_QUERY_KEY, id],
       queryFn: async () => {
@@ -97,6 +97,7 @@ export function useGetActivityQuery(id: string) {
       },
     }),
   );
+  return result.data;
 }
 
 export function useAddActivity() {

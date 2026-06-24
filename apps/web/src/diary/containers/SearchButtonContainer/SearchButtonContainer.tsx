@@ -35,7 +35,7 @@ export default function SearchButtonContainer() {
       <SearchButton onClick={handleOpenDialog} />
       <SearchDialog
         open={isDialogOpen}
-        onClose={handleCloseDialog}
+        onCancel={handleCloseDialog}
         defaultFormValues={filter}
         onSubmit={handleSearch}
       />

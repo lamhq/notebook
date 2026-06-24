@@ -1,14 +1,13 @@
-import CircularProgress from '@mui/material/CircularProgress';
-import { Suspense } from 'react';
 import { useNavigate, useParams } from 'react-router';
+import LoadingFallback from '../../../common/atoms/LoadingFallback';
 import { Title } from '../../../common/templates/MainLayout';
 import { useErrorHandler } from '../../../error';
 import UpdateActivityForm from '../../containers/UpdateActivityForm';
-import { useGetActivityQuery, useUpdateActivity } from '../../hooks';
+import { useActivity, useUpdateActivity } from '../../hooks';
 import type { UpdateActivityFormData } from '../../types';
 
-function UpdateActivityFormView({ activityId }: { activityId: string }) {
-  const { data: activity } = useGetActivityQuery(activityId);
+function FetchActivityForm({ activityId }: { activityId: string }) {
+  const activity = useActivity(activityId);
   const updateActivity = useUpdateActivity();
   const navigate = useNavigate();
   const handleError = useErrorHandler();
@@ -42,9 +41,9 @@ export default function UpdateActivityPage() {
   return (
     <>
       <Title>Update Activity</Title>
-      <Suspense fallback={<CircularProgress />}>
-        <UpdateActivityFormView activityId={activityId} />
-      </Suspense>
+      <LoadingFallback style="circular">
+        <FetchActivityForm activityId={activityId} />
+      </LoadingFallback>
     </>
   );
 }
