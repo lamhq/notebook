@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import { formatDate } from '../../../common/utils';
 import { useDialogs } from '../../../dialog';
 import { useErrorHandler } from '../../../error';
@@ -19,7 +18,7 @@ export default function DeleteActivityMenuItemContainer({
   const { confirm } = useDialogs();
   const handleError = useErrorHandler();
 
-  const handleDelete = useCallback(async () => {
+  const handleDelete = async () => {
     try {
       if (onClick) onClick();
       const isOk = await confirm(
@@ -31,7 +30,7 @@ export default function DeleteActivityMenuItemContainer({
     } catch (error) {
       handleError(error);
     }
-  }, [confirm, deleteActivity, activity, handleError, onClick]);
+  };
 
   return (
     <DeleteActivityMenuItem

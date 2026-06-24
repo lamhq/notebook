@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid2';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
 import TextField from '@mui/material/TextField';
 import { useEffect } from 'react';
-import { Controller, type SubmitHandler, useForm, useWatch } from 'react-hook-form';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 import { Link as RouterLink } from 'react-router';
 import * as yup from 'yup';
 
@@ -24,7 +24,7 @@ const activityFormSchema = yup.object().shape({
 
 export type UpdateActivityFormProps = {
   defaultValues: UpdateActivityFormData;
-  onSubmit: SubmitHandler<UpdateActivityFormData>;
+  onSubmit: (data: UpdateActivityFormData) => void | Promise<void>;
 };
 
 export default function UpdateActivityForm({

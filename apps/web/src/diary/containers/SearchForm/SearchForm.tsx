@@ -1,6 +1,5 @@
 import Grid from '@mui/material/Grid2';
 import TextField from '@mui/material/TextField';
-import type { SubmitHandler } from 'react-hook-form';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import { DesktopDatePicker } from '../../../common/atoms/DatePicker';
 import TimeRangeSelect from '../../components/TimeRangeSelect';
@@ -10,7 +9,7 @@ import TagsSelectContainer from '../TagsSelectContainer';
 
 export type SearchFormProps = {
   defaultValues: ActivityFilter;
-  onSubmit: SubmitHandler<ActivityFilter>;
+  onSubmit: (data: ActivityFilter) => void;
 };
 
 export default function SearchForm({ defaultValues, onSubmit }: SearchFormProps) {

@@ -1,5 +1,4 @@
-import { useCallback, useState } from 'react';
-import type { SubmitHandler } from 'react-hook-form';
+import { useState } from 'react';
 import SearchButton from '../../components/SearchButton/SearchButton';
 import SearchDialog from '../../components/SearchDialog/SearchDialog';
 import { useActivityFilter } from '../../hooks';
@@ -8,19 +7,16 @@ import type { ActivityFilter } from '../../types';
 function useSearchButtonContainer() {
   const { filter, updateFilter } = useActivityFilter();
   const [isDialogOpen, setOpen] = useState(false);
-  const handleOpenDialog = useCallback(() => {
+  const handleOpenDialog = () => {
     setOpen(true);
-  }, []);
-  const handleCloseDialog = useCallback(() => {
+  };
+  const handleCloseDialog = () => {
     setOpen(false);
-  }, []);
-  const handleSearch = useCallback<SubmitHandler<ActivityFilter>>(
-    (data) => {
-      updateFilter({ ...data, page: 1 });
-      setOpen(false);
-    },
-    [updateFilter],
-  );
+  };
+  const handleSearch = (data: ActivityFilter) => {
+    updateFilter({ ...data, page: 1 });
+    setOpen(false);
+  };
   return {
     filter,
     isDialogOpen,

@@ -1,5 +1,5 @@
 import type { MouseEventHandler } from 'react';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import LoadingFallback from '../../../common/atoms/LoadingFallback';
 import Revenue from '../../components/Revenue/Revenue';
 import { useRevenue } from '../../hooks';
@@ -9,12 +9,12 @@ function FetchRevenue() {
   const [popoverAnchor, setPopoverAnchor] = useState<Element | undefined>();
   const popoverVisible = Boolean(popoverAnchor);
   const popoverId = popoverVisible ? 'revenue-popover' : undefined;
-  const showPopover: MouseEventHandler = useCallback((event) => {
+  const showPopover: MouseEventHandler = (event) => {
     setPopoverAnchor(event.currentTarget);
-  }, []);
-  const closePopover = useCallback(() => {
+  };
+  const closePopover = () => {
     setPopoverAnchor(undefined);
-  }, []);
+  };
 
   return (
     <Revenue

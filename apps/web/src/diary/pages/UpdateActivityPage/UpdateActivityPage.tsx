@@ -1,6 +1,5 @@
 import CircularProgress from '@mui/material/CircularProgress';
-import { Suspense, useCallback } from 'react';
-import type { SubmitHandler } from 'react-hook-form';
+import { Suspense } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { Title } from '../../../common/templates/MainLayout';
 import { useErrorHandler } from '../../../error';
@@ -20,17 +19,14 @@ function UpdateActivityFormView({ activityId }: { activityId: string }) {
     income: activity.income?.toString(),
     outcome: activity.outcome?.toString(),
   };
-  const handleSubmit: SubmitHandler<UpdateActivityFormData> = useCallback(
-    async (data) => {
-      try {
-        await updateActivity({ id: activityId, data });
-        void navigate('/');
-      } catch (error) {
-        handleError(error);
-      }
-    },
-    [activityId, updateActivity, navigate, handleError],
-  );
+  const handleSubmit = async (data: UpdateActivityFormData) => {
+    try {
+      await updateActivity({ id: activityId, data });
+      void navigate('/');
+    } catch (error) {
+      handleError(error);
+    }
+  };
 
   return (
     <UpdateActivityForm defaultValues={defaultFormValues} onSubmit={handleSubmit} />
