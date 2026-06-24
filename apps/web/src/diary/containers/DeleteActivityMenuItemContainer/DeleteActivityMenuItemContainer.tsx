@@ -2,16 +2,26 @@ import { useCallback } from 'react';
 import { formatDate } from '../../../common/utils';
 import { useDialogs } from '../../../dialog';
 import { useErrorHandler } from '../../../error';
+import DeleteActivityMenuItem from '../../components/DeleteActivityMenuItem';
 import { useDeleteActivityMutation } from '../../hooks';
 import type { Activity } from '../../types';
 
-export function useDeleteActivityItemProps(activity: Activity) {
-  const { mutateAsync: deleteActivity, isPending: isDeleting } =
-    useDeleteActivityMutation();
+export type DeleteActivityMenuItemContainerProps = {
+  activity: Activity;
+  onClick?: () => void;
+};
+
+export default function DeleteActivityMenuItemContainer({
+  activity,
+  onClick,
+}: DeleteActivityMenuItemContainerProps) {
+  const { mutateAsync: deleteActivity } = useDeleteActivityMutation();
   const { confirm } = useDialogs();
   const handleError = useErrorHandler();
+
   const handleDelete = useCallback(async () => {
     try {
+      if (onClick) onClick();
       const isOk = await confirm(
         `Are you sure to delete the activity on ${formatDate(activity.time)}?`,
       );
@@ -21,10 +31,13 @@ export function useDeleteActivityItemProps(activity: Activity) {
     } catch (error) {
       handleError(error);
     }
-  }, [confirm, deleteActivity, activity, handleError]);
+  }, [confirm, deleteActivity, activity, handleError, onClick]);
 
-  return {
-    handleDelete,
-    isDeleting,
-  };
+  return (
+    <DeleteActivityMenuItem
+      onClick={() => {
+        void handleDelete();
+      }}
+    />
+  );
 }

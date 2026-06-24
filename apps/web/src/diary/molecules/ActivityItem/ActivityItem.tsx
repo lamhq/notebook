@@ -3,8 +3,8 @@ import Grid from '@mui/material/Grid2';
 import Typography from '../../../common/atoms/Typography';
 import { formatNumber } from '../../../common/utils';
 import TimeLabel from '../../atoms/TimeLabel/TimeLabel';
+import ActivityMenuContainer from '../../containers/ActivityMenuContainer';
 import type { Activity } from '../../types';
-import ActivityMenu from '../ActivityMenu';
 
 export type ActivityItemProps = {
   activity: Activity;
@@ -25,7 +25,7 @@ export default function ActivityItem({ activity }: ActivityItemProps) {
             <TimeLabel time={activity.time} />
           </time>
         </Box>
-        <ActivityMenu activity={activity} />
+        <ActivityMenuContainer activity={activity} />
       </Grid>
       <div>
         <Typography
