@@ -4,24 +4,23 @@ import { QueryErrorResetBoundary } from '@tanstack/react-query';
 import { Suspense } from 'react';
 import type { FallbackProps } from 'react-error-boundary';
 import { ErrorBoundary } from 'react-error-boundary';
-
 import type { TagInputProps } from '../../../common/atoms/TagInput/TagInput';
 import TagInput from '../../../common/atoms/TagInput/TagInput';
-import { useGetTagsQuery } from '../../hooks';
+import { useTags } from '../../hooks';
 
-export type ActivityTagSelectProps = Omit<TagInputProps, 'options'>;
+export type TagsSelectContainerProps = Omit<TagInputProps, 'options'>;
 
-function LoadingSelect(props: ActivityTagSelectProps) {
+function EmptySelect(props: TagsSelectContainerProps) {
   return <TagInput {...props} options={[]} loading />;
 }
 
-function FetchActivitySelect(props: ActivityTagSelectProps) {
-  const { data: tags } = useGetTagsQuery();
+function FetchTagsSelect(props: TagsSelectContainerProps) {
+  const tags = useTags();
   return <TagInput {...props} options={tags} />;
 }
 
-export default function ActivityTagSelect(props: ActivityTagSelectProps) {
-  const loadingFallback = LoadingSelect(props);
+export default function TagsSelectContainer(props: TagsSelectContainerProps) {
+  const fallbackElement = EmptySelect(props);
   const renderErrorFallback = ({ resetErrorBoundary }: FallbackProps) => {
     return (
       <TagInput
@@ -40,8 +39,8 @@ export default function ActivityTagSelect(props: ActivityTagSelectProps) {
     <QueryErrorResetBoundary>
       {({ reset }) => (
         <ErrorBoundary onReset={reset} fallbackRender={renderErrorFallback}>
-          <Suspense fallback={loadingFallback}>
-            <FetchActivitySelect {...props} />
+          <Suspense fallback={fallbackElement}>
+            <FetchTagsSelect {...props} />
           </Suspense>
         </ErrorBoundary>
       )}

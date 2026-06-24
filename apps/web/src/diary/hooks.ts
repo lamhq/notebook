@@ -29,8 +29,8 @@ const ACTIVITIES_QUERY_KEY = ['diary', 'activities'] as const;
 const REVENUE_QUERY_KEY = ['diary', 'revenue'] as const;
 
 // Hooks
-export function useGetTagsQuery() {
-  return useSuspenseQuery(
+export function useTags() {
+  const result = useSuspenseQuery(
     queryOptions({
       queryKey: TAGS_QUERY_KEY,
       queryFn: async () => {
@@ -42,6 +42,7 @@ export function useGetTagsQuery() {
       },
     }),
   );
+  return result.data;
 }
 
 export function usePaginatedActivities(filter: ActivityFilter) {

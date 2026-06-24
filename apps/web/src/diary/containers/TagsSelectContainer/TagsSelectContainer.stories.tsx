@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useArgs } from 'storybook/preview-api';
-import type { ActivityTagSelectProps } from './ActivityTagSelect';
-import ActivityTagSelect from './ActivityTagSelect';
+import type { TagsSelectContainerProps } from './TagsSelectContainer';
+import TagsSelectContainer from './TagsSelectContainer';
 
 const meta = {
-  component: ActivityTagSelect,
-} satisfies Meta<typeof ActivityTagSelect>;
+  component: TagsSelectContainer,
+} satisfies Meta<typeof TagsSelectContainer>;
 
 export default meta;
 
@@ -17,8 +17,8 @@ export const Default: Story = {
   },
   render: () => {
     const [{ onChange: sbOnChange, ...rest }, updateArgs] =
-      useArgs<ActivityTagSelectProps>();
-    const handleChange: ActivityTagSelectProps['onChange'] = (
+      useArgs<TagsSelectContainerProps>();
+    const handleChange: TagsSelectContainerProps['onChange'] = (
       event,
       newVal,
       reason,
@@ -27,7 +27,7 @@ export const Default: Story = {
       updateArgs({ value: newVal });
       sbOnChange?.(event, newVal, reason, details);
     };
-    return <ActivityTagSelect onChange={handleChange} {...rest} />;
+    return <TagsSelectContainer onChange={handleChange} {...rest} />;
   },
 };
 

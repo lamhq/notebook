@@ -4,9 +4,9 @@ import type { SubmitHandler } from 'react-hook-form';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import { DesktopDatePicker } from '../../../common/atoms/DatePicker';
 import TimeRangeSelect from '../../atoms/TimeRangeSelect';
-import ActivityTagSelect from '../../molecules/ActivityTagSelect';
 import type { ActivityFilter } from '../../types';
 import { TimeRange } from '../../types';
+import TagsSelectContainer from '../TagsSelectContainer';
 
 export type SearchFormProps = {
   defaultValues: ActivityFilter;
@@ -39,7 +39,7 @@ export default function SearchForm({ defaultValues, onSubmit }: SearchFormProps)
             name="tags"
             control={control}
             render={({ field: { onChange, ...rest } }) => (
-              <ActivityTagSelect
+              <TagsSelectContainer
                 label="Tags"
                 onChange={(_, v) => {
                   onChange(v);

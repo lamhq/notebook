@@ -10,7 +10,7 @@ import * as yup from 'yup';
 
 import Actions from '../../../common/atoms/Actions';
 import DateTimePicker from '../../../common/atoms/DateTimePicker';
-import ActivityTagSelect from '../../molecules/ActivityTagSelect';
+import TagsSelectContainer from '../../containers/TagsSelectContainer';
 import type { UpdateActivityFormData } from '../../types';
 import { getTotalAmounts as calcAmounts } from '../../utils';
 
@@ -128,7 +128,7 @@ export default function UpdateActivityForm({
             name="tags"
             control={control}
             render={({ field: { onChange, ...rest } }) => (
-              <ActivityTagSelect
+              <TagsSelectContainer
                 label="Tags"
                 onChange={(_, v) => {
                   onChange(v);
