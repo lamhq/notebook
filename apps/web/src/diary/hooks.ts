@@ -4,7 +4,7 @@ import {
   useQueryClient,
   useSuspenseQuery,
 } from '@tanstack/react-query';
-import { useAtomValue } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { axiosRequest } from '../api/request';
 import { activityFilterAtom } from './atoms';
 import type {
@@ -153,4 +153,9 @@ export function useDeleteActivityMutation() {
       void queryClient.invalidateQueries({ queryKey: REVENUE_QUERY_KEY });
     },
   });
+}
+
+export function useActivityFilter() {
+  const [filter, setFilter] = useAtom(activityFilterAtom);
+  return { filter, updateFilter: setFilter };
 }

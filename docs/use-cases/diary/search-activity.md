@@ -88,21 +88,7 @@ Users can search and filter transactions using text, tags, and dates. The featur
    - Activities within this month
 7. The activity list displays only activities matching all criteria
 
-### Alternate Flow 4: Reset Search Filters
-
-1. From the Main Flow, after step 4 (user enters search criteria)
-2. The user has entered values in one or more search fields
-3. The user clicks the "Reset" button
-4. The system clears all fields to default values:
-   - Text: empty string
-   - Tags: empty array
-   - Time Range: "This Month"
-   - Custom date fields: hidden and cleared
-5. The dialog remains open
-6. The search is NOT executed
-7. The user can enter new search criteria or close the dialog
-
-### Alternate Flow 5: No Search Results
+### Alternate Flow 4: No Search Results
 
 1. From the Main Flow, after step 12 (dialog closes and activity list updates)
 2. No activities match the applied search criteria
@@ -135,8 +121,6 @@ flowchart TD
     O -->|Yes| Q[Display filtered activities with pagination]
     P --> R[User sees search results]
     Q --> R
-    D -->|User clicks Reset| S[Clear all fields to defaults]
-    S --> C
     D -->|User clicks outside| T[Close dialog without searching]
     T --> U[Activity list unchanged]
 ```
@@ -159,7 +143,6 @@ flowchart TD
 - The user can select a preset time range and see activities from that period
 - The user can select a custom date range and see activities within that range
 - The user can combine multiple search criteria and see activities matching all criteria (AND logic)
-- The Reset button clears all search fields to defaults without executing a search
 - Incomplete custom date ranges are caught with validation messages
 - Search results update immediately when the Search button is clicked
 - Pagination resets to page 1 after applying search filters

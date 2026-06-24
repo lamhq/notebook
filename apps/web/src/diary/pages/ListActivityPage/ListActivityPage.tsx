@@ -1,8 +1,8 @@
 import { Title } from '../../../common/templates/MainLayout';
 import AddActivityButton from '../../atoms/AddActivityButton';
 import RevenueContainer from '../../containers/RevenueContainer';
+import SearchButtonContainer from '../../containers/SearchButtonContainer';
 import ActivityList from '../../organisms/ActivityList';
-import SearchButton from '../../organisms/SearchButton';
 import Toolbar, { LeftArea, RightArea } from '../../organisms/Toolbar';
 
 export default function ListActivityPage() {
@@ -13,7 +13,7 @@ export default function ListActivityPage() {
       <Toolbar>
         <LeftArea>
           <AddActivityButton />
-          <SearchButton />
+          <SearchButtonContainer />
         </LeftArea>
         <RightArea>
           <RevenueContainer />

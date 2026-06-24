@@ -272,45 +272,7 @@ Verify that user can combine text, tags, and custom date range in a complex mult
 
 ---
 
-## TC_SA_08 - Reset Button Clears All Fields
-
-### Description
-
-Verify that clicking the Reset button clears all search fields to default values and dialog remains open.
-
-### Pre-conditions
-
-- User is logged in
-- Search dialog is open
-- User has entered search criteria
-
-### Test Data
-
-- Previous search: Text="coffee", Tags=["food"], Time Range="This Week"
-
-### Test Steps
-
-1. Enter "coffee" in Text field
-2. Select "food" tag from Tags dropdown
-3. Select "This Week" from Time Range dropdown
-4. Click "Reset" button
-
-### Expected Result
-
-- Text field is cleared (empty)
-- Tags field is cleared (no tags selected)
-- Time Range reverts to default "This Month"
-- Custom date fields (if visible) are cleared and hidden
-- Search dialog remains open
-- Activity list still shows previously filtered results (search not executed)
-
-### Postconditions
-
-- Search dialog can be reopened to perform new search or further refine criteria
-
----
-
-## TC_SA_09 - No Search Results Display Empty State
+## TC_SA_08 - No Search Results Display Empty State
 
 ### Description
 
@@ -344,7 +306,7 @@ Verify that when search criteria return no results, the empty state message is d
 
 ---
 
-## TC_SA_10 - Responsive Design - Mobile Viewport
+## TC_SA_09 - Responsive Design - Mobile Viewport
 
 ### Description
 
@@ -375,7 +337,7 @@ Verify that search dialog is responsive and functions correctly on mobile viewpo
 - Search dialog is fully visible and usable on mobile
 - All form fields are accessible and properly sized
 - Dropdown menus are functional
-- Reset and Search buttons are reachable
+- Search button is reachable
 - No horizontal scrolling required
 
 ### Postconditions
