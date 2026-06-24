@@ -8,5 +8,5 @@
  * - axios: for handling network error
  * - /dialog module: for displaying error alert
  */
-export { default as ErrorBoundary } from './ErrorBoundary';
+export { default as ErrorBoundary } from './containers/ErrorBoundaryContainer';
 export { default as useErrorHandler } from './useErrorHandler';

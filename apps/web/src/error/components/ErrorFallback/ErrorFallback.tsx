@@ -5,19 +5,27 @@ import WarningIcon from '@mui/icons-material/Warning';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { AxiosError } from 'axios';
-import type { FallbackProps } from 'react-error-boundary';
-import Actions from '../../common/components/Actions';
+import type { AxiosError } from 'axios';
+import Actions from '../../../common/components/Actions';
 
-export default function ErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
+export type ErrorFallbackProps = {
+  error: Error;
+  resetErrorBoundary: () => void;
+};
+
+export default function ErrorFallback({
+  error,
+  resetErrorBoundary,
+}: ErrorFallbackProps) {
   const iconStyle = { fontSize: '5rem' };
   let message = 'An error occurred in the app.';
   let icon = <WarningIcon style={iconStyle} />;
 
-  if (error instanceof AxiosError) {
+  const axiosError = error as AxiosError;
+  if (axiosError.response || axiosError.request) {
     // network error
-    let statusCode = error.status;
-    if (error.request && !error.response) {
+    let statusCode = axiosError.status;
+    if (axiosError.request && !axiosError.response) {
       statusCode = 0;
     }
 
