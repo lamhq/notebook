@@ -99,9 +99,9 @@ export function useGetActivityQuery(id: string) {
   );
 }
 
-export function useAddActivityMutation() {
+export function useAddActivity() {
   const queryClient = useQueryClient();
-  return useMutation({
+  const result = useMutation({
     mutationFn: async (data: AddActivityFormData) => {
       const resp = await axiosRequest<Activity[]>({
         url: `/diary/activities`,
@@ -115,11 +115,12 @@ export function useAddActivityMutation() {
       void queryClient.invalidateQueries({ queryKey: REVENUE_QUERY_KEY });
     },
   });
+  return result.mutateAsync;
 }
 
-export function useUpdateActivityMutation() {
+export function useUpdateActivity() {
   const queryClient = useQueryClient();
-  return useMutation({
+  const result = useMutation({
     mutationFn: async ({
       id,
       data,
@@ -139,11 +140,12 @@ export function useUpdateActivityMutation() {
       void queryClient.invalidateQueries({ queryKey: REVENUE_QUERY_KEY });
     },
   });
+  return result.mutateAsync;
 }
 
-export function useDeleteActivityMutation() {
+export function useDeleteActivity() {
   const queryClient = useQueryClient();
-  return useMutation({
+  const result = useMutation({
     mutationFn: async (id: string) => {
       await axiosRequest<never>({
         url: `/diary/activities/${id}`,
@@ -155,6 +157,7 @@ export function useDeleteActivityMutation() {
       void queryClient.invalidateQueries({ queryKey: REVENUE_QUERY_KEY });
     },
   });
+  return result.mutateAsync;
 }
 
 export function useActivityFilter() {

@@ -2,8 +2,8 @@ import Box from '@mui/material/Box';
 import Pagination, { type PaginationProps } from '../../../common/atoms/Pagination';
 import Typography from '../../../common/atoms/Typography';
 import { formatDate } from '../../../common/utils';
-import ActivityItem from '../../molecules/ActivityItem';
 import type { Activity } from '../../types';
+import ActivityItem from '../ActivityItem';
 
 export type ActivityListProps = {
   activities: Activity[];

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import LoadingFallback from '../../atoms/LoadingFallback';
+import LoadingFallback from '../../../common/atoms/LoadingFallback';
 import ActivityList from '../../components/ActivityList';
 import { useActivityFilter, usePaginatedActivities } from '../../hooks';
 

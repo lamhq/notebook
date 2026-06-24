@@ -3,7 +3,7 @@ import { formatDate } from '../../../common/utils';
 import { useDialogs } from '../../../dialog';
 import { useErrorHandler } from '../../../error';
 import DeleteActivityMenuItem from '../../components/DeleteActivityMenuItem';
-import { useDeleteActivityMutation } from '../../hooks';
+import { useDeleteActivity } from '../../hooks';
 import type { Activity } from '../../types';
 
 export type DeleteActivityMenuItemContainerProps = {
@@ -15,7 +15,7 @@ export default function DeleteActivityMenuItemContainer({
   activity,
   onClick,
 }: DeleteActivityMenuItemContainerProps) {
-  const { mutateAsync: deleteActivity } = useDeleteActivityMutation();
+  const deleteActivity = useDeleteActivity();
   const { confirm } = useDialogs();
   const handleError = useErrorHandler();
 

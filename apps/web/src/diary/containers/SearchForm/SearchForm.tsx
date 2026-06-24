@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField';
 import type { SubmitHandler } from 'react-hook-form';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import { DesktopDatePicker } from '../../../common/atoms/DatePicker';
-import TimeRangeSelect from '../../atoms/TimeRangeSelect';
+import TimeRangeSelect from '../../components/TimeRangeSelect';
 import type { ActivityFilter } from '../../types';
 import { TimeRange } from '../../types';
 import TagsSelectContainer from '../TagsSelectContainer';

@@ -1,9 +1,9 @@
 import { Title } from '../../../common/templates/MainLayout';
-import AddActivityButton from '../../atoms/AddActivityButton';
+import AddActivityButton from '../../components/AddActivityButton';
+import Toolbar, { LeftArea, RightArea } from '../../components/Toolbar';
 import ActivityListContainer from '../../containers/ActivityListContainer';
 import RevenueContainer from '../../containers/RevenueContainer';
 import SearchButtonContainer from '../../containers/SearchButtonContainer';
-import Toolbar, { LeftArea, RightArea } from '../../organisms/Toolbar';
 
 export default function ListActivityPage() {
   return (

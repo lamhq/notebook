@@ -6,15 +6,15 @@ import Grid from '@mui/material/Grid2';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
 import TextField from '@mui/material/TextField';
 import { useEffect } from 'react';
-import { Controller, type SubmitHandler, useForm, useWatch } from 'react-hook-form';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 import { Link as RouterLink } from 'react-router';
 import * as yup from 'yup';
 
 import Actions from '../../../common/atoms/Actions';
 import DateTimePicker from '../../../common/atoms/DateTimePicker';
-import TagsSelectContainer from '../../containers/TagsSelectContainer';
 import type { AddActivityFormData } from '../../types';
 import { getTotalAmounts as calcAmounts } from '../../utils';
+import TagsSelectContainer from '../TagsSelectContainer';
 
 const activityFormSchema = yup.object().shape({
   time: yup.date().required(),
@@ -27,7 +27,7 @@ const activityFormSchema = yup.object().shape({
 
 export type AddActivityFormProps = {
   defaultValues: AddActivityFormData;
-  onSubmit: SubmitHandler<AddActivityFormData>;
+  onSubmit: (data: AddActivityFormData) => Promise<void>;
 };
 
 export default function AddActivityForm({

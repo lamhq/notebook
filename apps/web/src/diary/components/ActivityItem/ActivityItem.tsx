@@ -2,9 +2,9 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid2';
 import Typography from '../../../common/atoms/Typography';
 import { formatNumber } from '../../../common/utils';
-import TimeLabel from '../../atoms/TimeLabel/TimeLabel';
 import ActivityMenuContainer from '../../containers/ActivityMenuContainer';
 import type { Activity } from '../../types';
+import TimeLabel from '../TimeLabel/TimeLabel';
 
 export type ActivityItemProps = {
   activity: Activity;

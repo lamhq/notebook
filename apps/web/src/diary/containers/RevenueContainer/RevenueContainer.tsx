@@ -1,6 +1,6 @@
 import type { MouseEventHandler } from 'react';
 import { useCallback, useState } from 'react';
-import LoadingFallback from '../../atoms/LoadingFallback';
+import LoadingFallback from '../../../common/atoms/LoadingFallback';
 import Revenue from '../../components/Revenue/Revenue';
 import { useRevenue } from '../../hooks';
 

@@ -4,13 +4,13 @@ import type { SubmitHandler } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router';
 import { Title } from '../../../common/templates/MainLayout';
 import { useErrorHandler } from '../../../error';
-import { useGetActivityQuery, useUpdateActivityMutation } from '../../hooks';
-import UpdateActivityForm from '../../organisms/UpdateActivityForm';
+import UpdateActivityForm from '../../containers/UpdateActivityForm';
+import { useGetActivityQuery, useUpdateActivity } from '../../hooks';
 import type { UpdateActivityFormData } from '../../types';
 
 function UpdateActivityFormView({ activityId }: { activityId: string }) {
   const { data: activity } = useGetActivityQuery(activityId);
-  const { mutateAsync: updateActivity } = useUpdateActivityMutation();
+  const updateActivity = useUpdateActivity();
   const navigate = useNavigate();
   const handleError = useErrorHandler();
   const defaultFormValues: UpdateActivityFormData = {
