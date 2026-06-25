@@ -16,7 +16,6 @@ export const Default: Story = {
     title: 'Confirm',
     okText: 'Yes',
     cancelText: 'No',
-    severity: 'warning',
   },
 };
 

@@ -3,9 +3,6 @@ import type {} from '@mui/x-date-pickers/themeAugmentation';
 
 export const theme = createTheme({
   palette: {
-    success: {
-      main: 'rgb(76, 175, 80)',
-    },
     primary: {
       main: '#296BE3',
     },
