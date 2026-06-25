@@ -1,6 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-
-import { fn } from 'storybook/test';
 import PromptDialog from './PromptDialog';
 
 const meta = {
@@ -9,13 +7,14 @@ const meta = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof PromptDialog>;
 
 export const Default: Story = {
   args: {
     isOpen: true,
-    message: 'Dialog Content',
-    title: 'Title',
-    onClose: fn(),
+    message: 'Please enter your input',
+    title: 'Input',
+    okText: 'Ok',
+    cancelText: 'Cancel',
   },
 };

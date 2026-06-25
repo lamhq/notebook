@@ -5,10 +5,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
-import type { SubmitHandler } from 'react-hook-form';
 import { Controller, useForm } from 'react-hook-form';
 import type { PromptDialogProps } from '../../types';
-import { useDialogButtonProps } from '../../utils';
 
 type FormData = {
   input: string;
@@ -22,26 +20,26 @@ export default function PromptDialog({
   cancelText,
   onClose,
 }: PromptDialogProps) {
-  const cancelButtonProps = useDialogButtonProps(async () => onClose());
   const {
     handleSubmit,
     control,
     formState: { isSubmitting },
   } = useForm<FormData>();
-  const onSubmit: SubmitHandler<FormData> = async (data) => onClose(data.input);
+  const onSubmit = (data: FormData) => {
+    onClose?.(data.input);
+  };
   return (
     <Dialog
       maxWidth="xs"
       fullWidth
       open={isOpen}
       onClose={() => {
-        void onClose();
+        onClose?.();
       }}
       slotProps={{
         paper: {
           component: 'form',
-          // eslint-disable-next-line @typescript-eslint/no-misused-promises
-          onSubmit: handleSubmit(onSubmit),
+          onSubmit: () => handleSubmit(onSubmit),
         },
       }}
     >
@@ -70,11 +68,17 @@ export default function PromptDialog({
         />
       </DialogContent>
       <DialogActions>
-        <Button disabled={!open} {...cancelButtonProps} variant="outlined">
+        <Button
+          disabled={!isOpen}
+          onClick={() => {
+            onClose?.();
+          }}
+          variant="outlined"
+        >
           {cancelText ?? 'Cancel'}
         </Button>
         <Button
-          disabled={!open}
+          disabled={!isOpen}
           loading={isSubmitting}
           type="submit"
           variant="contained"

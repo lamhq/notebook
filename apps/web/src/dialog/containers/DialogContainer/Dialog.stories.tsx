@@ -3,7 +3,7 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { useDialogs } from '../../hooks';
-import Dialog from './Dialog';
+import Dialog from './DialogContainer';
 
 const meta = {
   component: Dialog,

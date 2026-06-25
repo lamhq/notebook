@@ -1,54 +1,40 @@
-import type { ComponentType } from 'react';
-
-// #region DialogHooks
-export type DialogHook = {
+// #region Dialog APIs
+export type DialogAPI = {
   alert: OpenAlertDialogFn;
   confirm: OpenConfirmDialogFn;
   prompt: OpenPromptDialogFn;
 };
 
 /**
- * Open an alert dialog. Returns a promise that resolves when the user
- * closes the dialog.
- *
- * @param message The message to show in the dialog.
- * @param options Additional options for the dialog.
- * @returns A promise that resolves when the dialog is closed.
+ * Open an alert dialog.
+ * Returns a promise that resolves when user closes the dialog.
  */
 export type OpenAlertDialogFn = (
-  message: AlertDialogProps['message'],
+  message: string,
   options?: Partial<Omit<AlertDialogProps, 'isOpen' | 'message'>>,
 ) => Promise<void>;
 
 /**
- * Open a confirmation dialog. Returns a promise that resolves to true if
- * the user confirms, false if the user cancels.
- *
- * @param message The message to show in the dialog.
- * @param options Additional options for the dialog.
- * @returns A promise that resolves to true if the user confirms, false if the user cancels.
+ * Open a confirmation dialog.
+ * Returns a boolean promise (true if confirmed, false if canceled).
  */
 export type OpenConfirmDialogFn = (
-  message: ConfirmDialogProps['message'],
+  message: string,
   options?: Partial<Omit<ConfirmDialogProps, 'isOpen' | 'message'>>,
 ) => Promise<boolean>;
 
 /**
- * Open a prompt dialog to request user input. Returns a promise that resolves to the input
- * if the user confirms, undefined if the user cancels.
- *
- * @param message The message to show in the dialog.
- * @param options Additional options for the dialog.
- * @returns A promise that resolves to the user input if the user confirms, undefined if the user cancels.
+ * Open a prompt dialog to request user input.
+ * Returns a promise that resolves to string (user input) or undefined (if user cancels).
  */
 export type OpenPromptDialogFn = (
-  message: PromptDialogProps['message'],
+  message: string,
   options?: Partial<Omit<PromptDialogProps, 'isOpen' | 'message'>>,
 ) => Promise<string | undefined>;
 // #endregion
 
-// #region DialogProps
-type TextType = string;
+// #region Dialog Props
+export type Severity = 'warning' | 'error' | 'info' | 'success';
 
 export type BaseDialogProps = {
   /**
@@ -59,17 +45,17 @@ export type BaseDialogProps = {
   /**
    * Content for the dialog.
    */
-  message: TextType;
+  message: string;
 
   /**
    * Title for the dialog. Defaults to `'Alert'`.
    */
-  title?: TextType;
+  title?: string;
 
   /**
    * The text to show in the "Ok" button. Defaults to `'Ok'`.
    */
-  okText?: TextType;
+  okText?: string;
 };
 
 export type AlertDialogProps = BaseDialogProps & {
@@ -77,71 +63,48 @@ export type AlertDialogProps = BaseDialogProps & {
    * Denotes the purpose of the dialog. This will affect the color of the
    * "Ok" button. Defaults to `undefined`.
    */
-  severity?: 'error' | 'info' | 'success' | 'warning';
+  severity?: Severity;
 
   /**
-   * A function that is called before closing the dialog closes.
+   * A function that is called when dialog is closed
    */
-  onClose: () => Promise<void>;
+  onClose?: () => void;
 };
 
 export type ConfirmDialogProps = BaseDialogProps & {
   /**
    * The text to show in the "Cancel" button. Defaults to `'Cancel'`.
    */
-  cancelText?: TextType;
+  cancelText?: string;
 
   /**
    * Denotes the purpose of the dialog. This will affect the color of the
    * "Ok" button. Defaults to `undefined`.
    */
-  severity?: 'error' | 'info' | 'success' | 'warning';
+  severity?: Severity;
 
   /**
-   * A function that is called before closing the dialog closes.
+   * A function that is called when dialog is closed
    */
-  onClose: (result: boolean) => Promise<void>;
+  onClose?: (result: boolean) => void;
 };
 
 export type PromptDialogProps = BaseDialogProps & {
   /**
    * The text to show in the "Cancel" button. Defaults to `'Cancel'`.
    */
-  cancelText?: TextType;
+  cancelText?: string;
 
   /**
-   * A function that is called before closing the dialog closes.
+   * A function that is called when dialog is closed
    */
-  onClose: (result?: string) => Promise<void>;
-};
-
-/**
- * The props that are passed to a dialog component.
- */
-export type DialogProps<P = undefined, R = void> = {
-  /**
-   * The payload that was passed when the dialog was opened.
-   */
-  payload: P;
-  /**
-   * Whether the dialog is open.
-   */
-  isOpen: boolean;
-  /**
-   * A function to call when the dialog should be closed. If the dialog has a return
-   * value, it should be passed as an argument to this function. You should use the promise
-   * that is returned to show a loading state while the dialog is performing async actions
-   * on close.
-   * @param result The result to return from the dialog.
-   * @returns A promise that resolves when the dialog can be fully closed.
-   */
-  onClose: (result: R) => Promise<void>;
+  onClose?: (result?: string) => void;
 };
 // #endregion
 
 // #region Atoms
-export type AtomState<P> = {
-  Component: ComponentType<P>;
-  props: P;
-};
+export type DialogState =
+  | { type: 'alert'; props: AlertDialogProps }
+  | { type: 'confirm'; props: ConfirmDialogProps }
+  | { type: 'prompt'; props: PromptDialogProps };
 // #endregion

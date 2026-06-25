@@ -12,7 +12,7 @@ import reactDom from 'react-dom/client';
 import type { AuthProviderProps } from 'react-oidc-context';
 import { AuthProvider } from 'react-oidc-context';
 import { BrowserRouter } from 'react-router';
-import { axiosRequest } from './api/request';
+import { apiClient } from './api-client';
 import App from './App';
 import { IndexedDBStorage } from './auth';
 import { getAbsoluteURL } from './common/utils';
@@ -43,7 +43,7 @@ const customEnLocale: Locale = {
 // #region Auth
 function attachTokenToAPIRequest(user: User | undefined | null) {
   if (!user?.id_token) return;
-  axiosRequest.defaults.headers.common.Authorization = `Bearer ${user.id_token}`;
+  apiClient.defaults.headers.common.Authorization = `Bearer ${user.id_token}`;
 }
 
 const userManager = new UserManager({

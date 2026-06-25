@@ -1,113 +1,81 @@
 import { useSetAtom } from 'jotai';
-import { useCallback, useMemo } from 'react';
 import { dialogAtom } from './atoms';
-import AlertDialog from './molecules/AlertDialog/AlertDialog';
-import ConfirmDialog from './molecules/ConfirmDialog/ConfirmDialog';
-import PromptDialog from './molecules/PromptDialog/PromptDialog';
 import type {
-  AlertDialogProps,
-  AtomState,
-  ConfirmDialogProps,
-  DialogHook,
+  DialogAPI,
   OpenAlertDialogFn,
   OpenConfirmDialogFn,
   OpenPromptDialogFn,
-  PromptDialogProps,
 } from './types';
 
-export function useDialogs(): DialogHook {
+export function useDialogs(): DialogAPI {
   const setDialog = useSetAtom(dialogAtom);
 
-  const alert = useCallback<OpenAlertDialogFn>(
-    async (message, options = {}) => {
-      return new Promise((rs) => {
-        const state: AtomState<AlertDialogProps> = {
-          Component: AlertDialog,
-          props: {
-            ...options,
-            message,
-            isOpen: true,
-            onClose: async () => {
-              await options.onClose?.();
-              setDialog({
-                Component: AlertDialog,
-                props: {
-                  ...options,
-                  isOpen: false,
-                },
-              });
-              rs();
-            },
+  const alert: OpenAlertDialogFn = async (message, options) => {
+    const props = {
+      ...options,
+      message,
+      isOpen: true,
+    };
+    return new Promise<void>((rs) => {
+      setDialog({
+        type: 'alert',
+        props: {
+          ...props,
+          onClose: () => {
+            props.onClose?.();
+            setDialog({ type: 'alert', props: { ...props, isOpen: false } });
+            rs();
           },
-        };
-        setDialog(state);
+        },
       });
-    },
-    [setDialog],
-  );
+    });
+  };
 
-  const confirm = useCallback<OpenConfirmDialogFn>(
-    async (message, options = {}) => {
-      return new Promise((rs) => {
-        const state: AtomState<ConfirmDialogProps> = {
-          Component: ConfirmDialog,
-          props: {
-            ...options,
-            message,
-            isOpen: true,
-            onClose: async (result) => {
-              await options.onClose?.(result);
-              setDialog({
-                Component: ConfirmDialog,
-                props: {
-                  ...options,
-                  isOpen: false,
-                },
-              });
-              rs(result);
-            },
+  const confirm: OpenConfirmDialogFn = async (message, options = {}) => {
+    const props = {
+      ...options,
+      message,
+      isOpen: true,
+    };
+    return new Promise((rs) => {
+      setDialog({
+        type: 'confirm',
+        props: {
+          ...props,
+          onClose: (result) => {
+            props.onClose?.(result);
+            setDialog({ type: 'confirm', props: { ...props, isOpen: false } });
+            rs(result);
           },
-        };
-        setDialog(state);
+        },
       });
-    },
-    [setDialog],
-  );
+    });
+  };
 
-  const prompt = useCallback<OpenPromptDialogFn>(
-    async (message, options = {}) => {
-      return new Promise((rs) => {
-        const state: AtomState<PromptDialogProps> = {
-          Component: PromptDialog,
-          props: {
-            ...options,
-            message,
-            isOpen: true,
-            onClose: async (result) => {
-              await options.onClose?.(result);
-              setDialog({
-                Component: PromptDialog,
-                props: {
-                  ...options,
-                  isOpen: false,
-                },
-              });
-              rs(result);
-            },
+  const prompt: OpenPromptDialogFn = async (message, options = {}) => {
+    const props = {
+      ...options,
+      message,
+      isOpen: true,
+    };
+    return new Promise((rs) => {
+      setDialog({
+        type: 'prompt',
+        props: {
+          ...props,
+          onClose: (result) => {
+            props.onClose?.(result);
+            setDialog({ type: 'prompt', props: { ...props, isOpen: false } });
+            rs(result);
           },
-        };
-        setDialog(state);
+        },
       });
-    },
-    [setDialog],
-  );
+    });
+  };
 
-  return useMemo(
-    () => ({
-      alert,
-      confirm,
-      prompt,
-    }),
-    [alert, confirm, prompt],
-  );
+  return {
+    alert,
+    confirm,
+    prompt,
+  };
 }

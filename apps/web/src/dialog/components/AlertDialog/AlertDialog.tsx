@@ -9,13 +9,10 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import type { ReactNode } from 'react';
 import Typography from '../../../common/components/Typography';
-import type { AlertDialogProps } from '../../types';
-import { useDialogButtonProps } from '../../utils';
+import type { AlertDialogProps, Severity } from '../../types';
 
-function getHeaderIcon(severity: AlertDialogProps['severity']): ReactNode {
-  const props = {
-    color: severity,
-  };
+function getHeaderIcon(severity?: Severity): ReactNode {
+  const props = { color: severity };
   switch (severity) {
     case 'warning':
       return <WarningIcon {...props} />;
@@ -39,20 +36,12 @@ export default function AlertDialog({
   message,
   title,
   okText,
-  onClose,
   severity,
+  onClose,
 }: AlertDialogProps) {
-  const okButtonProps = useDialogButtonProps(onClose);
   const icon = getHeaderIcon(severity);
   return (
-    <Dialog
-      maxWidth="xs"
-      fullWidth
-      open={isOpen}
-      onClose={() => {
-        void onClose();
-      }}
-    >
+    <Dialog maxWidth="xs" fullWidth open={isOpen} onClose={onClose}>
       <DialogTitle
         sx={{
           display: 'flex',
@@ -73,7 +62,7 @@ export default function AlertDialog({
           variant="contained"
           color={severity}
           disabled={!isOpen}
-          {...okButtonProps}
+          onClick={onClose}
         >
           {okText ?? 'Ok'}
         </Button>

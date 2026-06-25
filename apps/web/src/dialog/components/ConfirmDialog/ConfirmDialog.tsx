@@ -5,7 +5,6 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Typography from '../../../common/components/Typography';
 import type { ConfirmDialogProps } from '../../types';
-import { useDialogButtonProps } from '../../utils';
 
 export default function ConfirmDialog({
   isOpen,
@@ -13,18 +12,16 @@ export default function ConfirmDialog({
   title,
   okText,
   cancelText,
-  onClose,
   severity,
+  onClose,
 }: ConfirmDialogProps) {
-  const cancelButtonProps = useDialogButtonProps(async () => onClose(false));
-  const okButtonProps = useDialogButtonProps(async () => onClose(true));
   return (
     <Dialog
       maxWidth="xs"
       fullWidth
       open={isOpen}
       onClose={() => {
-        void onClose(false);
+        onClose?.(false);
       }}
     >
       <DialogTitle
@@ -42,14 +39,23 @@ export default function ConfirmDialog({
         <Typography variant="body1">{message}</Typography>
       </DialogContent>
       <DialogActions>
-        <Button variant="outlined" autoFocus disabled={!open} {...cancelButtonProps}>
+        <Button
+          variant="outlined"
+          autoFocus
+          disabled={!isOpen}
+          onClick={() => {
+            onClose?.(false);
+          }}
+        >
           {cancelText ?? 'Cancel'}
         </Button>
         <Button
           variant="contained"
           color={severity}
-          disabled={!open}
-          {...okButtonProps}
+          disabled={!isOpen}
+          onClick={() => {
+            onClose?.(true);
+          }}
         >
           {okText ?? 'Ok'}
         </Button>

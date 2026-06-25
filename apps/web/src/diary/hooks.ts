@@ -5,7 +5,7 @@ import {
   useSuspenseQuery,
 } from '@tanstack/react-query';
 import { useAtom, useAtomValue } from 'jotai';
-import { axiosRequest } from '../api/request';
+import { apiClient } from '../api-client';
 import { activityFilterAtom } from './atoms';
 import type {
   Activity,
@@ -34,7 +34,7 @@ export function useTags() {
     queryOptions({
       queryKey: TAGS_QUERY_KEY,
       queryFn: async () => {
-        const resp = await axiosRequest<string[]>({
+        const resp = await apiClient<string[]>({
           url: `/diary/tags`,
           method: 'GET',
         });
@@ -50,7 +50,7 @@ export function usePaginatedActivities(filter: ActivityFilter) {
     queryOptions({
       queryKey: [...ACTIVITIES_QUERY_KEY, filter],
       queryFn: async () => {
-        const resp = await axiosRequest<Activity[]>({
+        const resp = await apiClient<Activity[]>({
           url: '/diary/activities',
           method: 'GET',
           params: buildQueryFromFilter(filter),
@@ -72,7 +72,7 @@ export function useRevenue(): Revenue {
     queryOptions({
       queryKey: [...REVENUE_QUERY_KEY, filter],
       queryFn: async () => {
-        const resp = await axiosRequest<Revenue>({
+        const resp = await apiClient<Revenue>({
           url: '/diary/stat/revenue',
           method: 'GET',
           params: buildQueryFromFilter(filter),
@@ -89,7 +89,7 @@ export function useActivity(id: string) {
     queryOptions({
       queryKey: [...ACTIVITIES_QUERY_KEY, id],
       queryFn: async () => {
-        const resp = await axiosRequest<Activity>({
+        const resp = await apiClient<Activity>({
           url: `/diary/activities/${id}`,
           method: 'GET',
         });
@@ -104,7 +104,7 @@ export function useAddActivity() {
   const queryClient = useQueryClient();
   const result = useMutation({
     mutationFn: async (data: AddActivityFormData) => {
-      const resp = await axiosRequest<Activity[]>({
+      const resp = await apiClient<Activity[]>({
         url: `/diary/activities`,
         method: 'POST',
         data,
@@ -129,7 +129,7 @@ export function useUpdateActivity() {
       id: string;
       data: UpdateActivityFormData;
     }) => {
-      const resp = await axiosRequest<Activity>({
+      const resp = await apiClient<Activity>({
         url: `/diary/activities/${id}`,
         method: 'PUT',
         data,
@@ -148,7 +148,7 @@ export function useDeleteActivity() {
   const queryClient = useQueryClient();
   const result = useMutation({
     mutationFn: async (id: string) => {
-      await axiosRequest<never>({
+      await apiClient<never>({
         url: `/diary/activities/${id}`,
         method: 'DELETE',
       });
