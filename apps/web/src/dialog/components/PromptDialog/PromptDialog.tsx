@@ -5,7 +5,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
 import type { PromptDialogProps } from '../../types';
 
 type FormData = {
@@ -25,7 +25,7 @@ export default function PromptDialog({
     control,
     formState: { isSubmitting },
   } = useForm<FormData>();
-  const onSubmit = (data: FormData) => {
+  const onSubmit: SubmitHandler<FormData> = (data) => {
     onClose?.(data.input);
   };
   return (
@@ -36,36 +36,32 @@ export default function PromptDialog({
       onClose={() => {
         onClose?.();
       }}
-      slotProps={{
-        paper: {
-          component: 'form',
-          onSubmit: () => handleSubmit(onSubmit),
-        },
-      }}
     >
       <DialogTitle>{title ?? 'Confirm'}</DialogTitle>
       <DialogContent>
         <DialogContentText>{message} </DialogContentText>
-        <Controller
-          name="input"
-          control={control}
-          defaultValue=""
-          render={({ field: { ref, onChange, ...props } }) => (
-            <TextField
-              {...props}
-              autoFocus
-              required
-              margin="dense"
-              type="text"
-              fullWidth
-              variant="standard"
-              inputRef={ref}
-              onChange={(event) => {
-                onChange(event.target.value);
-              }}
-            />
-          )}
-        />
+        <form onSubmit={handleSubmit(onSubmit)} id="prompt-dialog-form">
+          <Controller
+            name="input"
+            control={control}
+            defaultValue=""
+            render={({ field: { ref, onChange, ...props } }) => (
+              <TextField
+                {...props}
+                autoFocus
+                required
+                margin="dense"
+                type="text"
+                fullWidth
+                variant="standard"
+                inputRef={ref}
+                onChange={(event) => {
+                  onChange(event.target.value);
+                }}
+              />
+            )}
+          />
+        </form>
       </DialogContent>
       <DialogActions>
         <Button
@@ -79,9 +75,10 @@ export default function PromptDialog({
         </Button>
         <Button
           disabled={!isOpen}
-          loading={isSubmitting}
+          form="prompt-dialog-form"
           type="submit"
           variant="contained"
+          loading={isSubmitting}
         >
           {okText ?? 'Ok'}
         </Button>

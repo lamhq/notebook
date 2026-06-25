@@ -61,6 +61,16 @@ export default defineConfig(
     rules: {
       // use `type` instead of `interface`
       '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
+
+      // fix react-hook-form onSubmit type error
+      '@typescript-eslint/no-misused-promises': [
+        'error',
+        {
+          checksVoidReturn: {
+            attributes: false,
+          },
+        },
+      ],
     },
   },
 

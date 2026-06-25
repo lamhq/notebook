@@ -50,11 +50,7 @@ export default function UpdateActivityForm({
   }, [noteContent, setValue]);
 
   return (
-    <form
-      onSubmit={(e) => {
-        void handleSubmit(onSubmit)(e);
-      }}
-    >
+    <form onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={1}>
         <Grid size={{ xs: 12 }}>
           <Controller

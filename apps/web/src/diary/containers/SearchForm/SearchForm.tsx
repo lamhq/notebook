@@ -19,12 +19,7 @@ export default function SearchForm({ defaultValues, onSubmit }: SearchFormProps)
   const timeRange = useWatch({ control, name: 'timeRange' });
 
   return (
-    <form
-      id="activitySearchForm"
-      onSubmit={(e) => {
-        void handleSubmit(onSubmit)(e);
-      }}
-    >
+    <form id="activitySearchForm" onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={1}>
         <Grid size={{ xs: 12 }}>
           <Controller
