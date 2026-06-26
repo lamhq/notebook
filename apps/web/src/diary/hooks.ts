@@ -112,8 +112,8 @@ export function useAddActivity() {
       return resp.data;
     },
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: ACTIVITIES_QUERY_KEY });
-      void queryClient.invalidateQueries({ queryKey: REVENUE_QUERY_KEY });
+      void queryClient.resetQueries({ queryKey: ACTIVITIES_QUERY_KEY });
+      void queryClient.resetQueries({ queryKey: REVENUE_QUERY_KEY });
     },
   });
   return result.mutateAsync;
@@ -137,8 +137,8 @@ export function useUpdateActivity() {
       return resp.data;
     },
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: ACTIVITIES_QUERY_KEY });
-      void queryClient.invalidateQueries({ queryKey: REVENUE_QUERY_KEY });
+      void queryClient.resetQueries({ queryKey: ACTIVITIES_QUERY_KEY });
+      void queryClient.resetQueries({ queryKey: REVENUE_QUERY_KEY });
     },
   });
   return result.mutateAsync;
@@ -154,8 +154,8 @@ export function useDeleteActivity() {
       });
     },
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: ACTIVITIES_QUERY_KEY });
-      void queryClient.invalidateQueries({ queryKey: REVENUE_QUERY_KEY });
+      void queryClient.resetQueries({ queryKey: ACTIVITIES_QUERY_KEY });
+      void queryClient.resetQueries({ queryKey: REVENUE_QUERY_KEY });
     },
   });
   return result.mutateAsync;

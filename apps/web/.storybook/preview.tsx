@@ -5,7 +5,9 @@ import '../src/styles.css';
 import MockProvider from './MockProvider';
 
 // Initialize Mock Service Worker
-initialize();
+initialize({
+  onUnhandledRequest: 'bypass', // or 'warn' or 'error'
+});
 
 const preview: Preview = {
   parameters: {

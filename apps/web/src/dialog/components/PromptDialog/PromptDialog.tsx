@@ -36,32 +36,36 @@ export default function PromptDialog({
       onClose={() => {
         onClose?.();
       }}
+      slotProps={{
+        paper: {
+          component: 'form',
+          onSubmit: void handleSubmit(onSubmit),
+        },
+      }}
     >
       <DialogTitle>{title ?? 'Confirm'}</DialogTitle>
       <DialogContent>
         <DialogContentText>{message} </DialogContentText>
-        <form onSubmit={handleSubmit(onSubmit)} id="prompt-dialog-form">
-          <Controller
-            name="input"
-            control={control}
-            defaultValue=""
-            render={({ field: { ref, onChange, ...props } }) => (
-              <TextField
-                {...props}
-                autoFocus
-                required
-                margin="dense"
-                type="text"
-                fullWidth
-                variant="standard"
-                inputRef={ref}
-                onChange={(event) => {
-                  onChange(event.target.value);
-                }}
-              />
-            )}
-          />
-        </form>
+        <Controller
+          name="input"
+          control={control}
+          defaultValue=""
+          render={({ field: { ref, onChange, ...props } }) => (
+            <TextField
+              {...props}
+              autoFocus
+              required
+              margin="dense"
+              type="text"
+              fullWidth
+              variant="standard"
+              inputRef={ref}
+              onChange={(event) => {
+                onChange(event.target.value);
+              }}
+            />
+          )}
+        />
       </DialogContent>
       <DialogActions>
         <Button
@@ -75,7 +79,6 @@ export default function PromptDialog({
         </Button>
         <Button
           disabled={!isOpen}
-          form="prompt-dialog-form"
           type="submit"
           variant="contained"
           loading={isSubmitting}
