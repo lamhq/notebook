@@ -21,6 +21,7 @@ import { EventProvider } from './event';
 import { AUTH_CALLBACK_ROUTE } from './routes';
 import './styles.css';
 import { theme } from './theme';
+import { ToastProvider } from './toast';
 
 const oidcAuthority = import.meta.env.VITE_OIDC_AUTHORITY;
 const oidcClientId = import.meta.env.VITE_OIDC_CLIENT_ID;
@@ -88,20 +89,23 @@ if (rootEl) {
           dateAdapter={AdapterDateFns}
           adapterLocale={customEnLocale}
         >
-          {/* React Router */}
-          <BrowserRouter>
-            {/* react-oidc-context */}
-            <AuthProvider {...oidcConfig}>
-              {/* Event emitter */}
-              <EventProvider emitter={eventEmitter}>
-                {/* TanStack Query */}
-                <QueryClientProvider client={queryClient}>
-                  <App />
-                </QueryClientProvider>
-              </EventProvider>
-            </AuthProvider>
-            <Dialog />
-          </BrowserRouter>
+          {/* Toast Notifications */}
+          <ToastProvider>
+            {/* React Router */}
+            <BrowserRouter>
+              {/* react-oidc-context */}
+              <AuthProvider {...oidcConfig}>
+                {/* Event emitter */}
+                <EventProvider emitter={eventEmitter}>
+                  {/* TanStack Query */}
+                  <QueryClientProvider client={queryClient}>
+                    <App />
+                  </QueryClientProvider>
+                </EventProvider>
+              </AuthProvider>
+              <Dialog />
+            </BrowserRouter>
+          </ToastProvider>
         </LocalizationProvider>
       </ThemeProvider>
     </StrictMode>,
