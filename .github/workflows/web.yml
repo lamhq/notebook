@@ -90,7 +90,7 @@ jobs:
   deploy-dev:
     # if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     # TODO: uncomment the above line after fixing deployment issues on dev environment.
-    if: github.event_name == 'push'
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     environment: dev
 
