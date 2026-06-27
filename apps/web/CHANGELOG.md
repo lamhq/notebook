@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.3](https://github.com/lamhq/notebook/compare/web-v0.2.2...web-v0.2.3) (2026-06-27)
+
+
+### Bug Fixes
+
+* **ci:** deploy web to dev ([#20](https://github.com/lamhq/notebook/issues/20)) ([cbf110d](https://github.com/lamhq/notebook/commit/cbf110d9108f3b586284f04ddfdf390231ef180e))
+
 ## [0.2.2](https://github.com/lamhq/notebook/compare/web-v0.2.1...web-v0.2.2) (2026-06-21)
 
 
