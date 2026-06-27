@@ -13,6 +13,7 @@ on:
     paths:
       - 'apps/web/**'
       - 'packages/**'
+      - '.github/workflows/**'
 
   push:
     branches: [main]
@@ -119,4 +120,5 @@ jobs:
           aws_region: ${{ vars.AWS_REGION }}
           deployment_role_arn: ${{ vars.DEPLOYMENT_ROLE_ARN }}
           app_bucket: ${{ vars.APP_BUCKET }}
+          cf_dist_id: ${{ vars.CF_DIST_ID }}
           web_env_vars: ${{ vars.WEB_ENV_VARS }}
