@@ -135,6 +135,9 @@ test.describe('Successful deletion', () => {
     // Wait for dialog to close (up to 15 seconds for the API call to complete)
     await expect(confirmDialog).toBeHidden();
 
+    // Verify success toast appears
+    await expect(deleteActivityPage.getAlert()).toContainText(/deleted|success/i);
+
     // Wait a bit for the list to update after deletion
     await expect(activity).toBeHidden();
 
@@ -181,10 +184,10 @@ test.describe('Error handling', () => {
     // Click Delete button
     await deleteActivityPage.clickDialogDeleteButton();
 
-    // Verify the dialog show an error message
+    // Verify the dialog shows an error message inside it
     await expect(confirmDialog).toContainText('Error');
 
-    // Close the confirmation dialog by clicking Ok button
+    // Close the confirmation dialog by pressing Escape
     await page.keyboard.press('Escape');
 
     // Verify dialog closes
@@ -221,10 +224,10 @@ test.describe('Error handling', () => {
     // Click Delete button
     await deleteActivityPage.clickDialogDeleteButton();
 
-    // Verify the dialog show an error message
+    // Verify the dialog shows an error message inside it
     await expect(confirmDialog).toContainText('Error');
 
-    // Close the confirmation dialog by clicking Ok button
+    // Close the confirmation dialog by pressing Escape
     await page.keyboard.press('Escape');
 
     // Verify dialog closes

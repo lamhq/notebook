@@ -158,7 +158,7 @@ export function useDeleteActivity() {
       void queryClient.resetQueries({ queryKey: REVENUE_QUERY_KEY });
     },
   });
-  return result.mutateAsync;
+  return [result.mutateAsync, result.isPending] as const;
 }
 
 export function useActivityFilter() {

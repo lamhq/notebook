@@ -1,12 +1,10 @@
-import { useDialogs } from '../dialog';
+import { useToast } from '../toast';
 
 export default function useErrorHandler() {
-  const { alert } = useDialogs();
+  const { showError } = useToast();
   return (error: unknown) => {
     if (error instanceof Error) {
-      alert(error.message, { title: 'Error', severity: 'error' }).catch(
-        console.error,
-      );
+      showError(error.message);
     } else {
       console.error('Unexpected error', error);
     }

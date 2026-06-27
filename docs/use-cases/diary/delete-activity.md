@@ -37,10 +37,11 @@ Users can remove financial activity records permanently. The workflow includes c
 10. The backend removes the activity record from the database
 11. The backend emits an ActivityDeletedEvent
 12. The system receives a successful response (200 or 204) from the API
-13. The system closes the confirmation dialog
-14. The system reloads the activity list from the API
-15. The system displays the updated activity list without the deleted activity
-16. The user sees the activity list with the deleted activity removed
+13. The system shows a success toast notification (e.g., "Activity deleted successfully")
+14. The system closes the confirmation dialog
+15. The system reloads the activity list from the API
+16. The system displays the updated activity list without the deleted activity
+17. The user sees the activity list with the deleted activity removed
 
 ## Alternate Flows
 
@@ -60,17 +61,18 @@ Users can remove financial activity records permanently. The workflow includes c
 2. The backend returns a 500 Internal Server Error response
 3. A database or server error occurs during deletion
 4. The system closes the loading state on the Delete button
-5. The system displays an error message: "Failed to delete activity. Please try again later."
-6. The system closes the confirmation dialog
-7. The user remains on the activity list
-8. The use case ends
+5. The system displays an error message inside the confirmation dialog: "Failed to delete activity. Please try again later."
+6. The confirmation dialog remains open, allowing the user to retry
+7. The user can click the "Delete" button again to retry the deletion
+8. If retry succeeds, the use case continues from Main Flow, step 9 (if successful) or displays new error
+9. If retry fails, the error message is displayed again
 
 ### Alternate Flow 3: Network Error
 
 1. From the Main Flow, after step 8 (system sends DELETE request)
 2. A network error or timeout occurs before receiving a response from the API
 3. The system closes the loading state on the Delete button
-4. The system displays an error message: "Network error. Failed to delete activity. Please check your connection and try again."
+4. The system displays an error message inside the confirmation dialog: "Network error. Failed to delete activity. Please check your connection and try again."
 5. The confirmation dialog remains open, allowing the user to retry
 6. The user can click the "Delete" button again to retry the deletion
 7. If retry succeeds, the use case continues from Main Flow, step 9
@@ -109,22 +111,18 @@ flowchart TD
     E -->|Confirms Delete| H[Display loading state on Delete button]
     H --> I[Send DELETE request to API]
     I --> J{Request successful?}
-    J -->|No - Network error| K["Display: 'Network error...'"]
+    J -->|No - Error| K["Display error inside dialog"]
     K --> L{User retries?}
     L -->|Yes| H
-    L -->|No| M[Close dialog]
-    M --> G
-    J -->|No - Server error| N["Display: 'Failed to delete activity...'"]
-    N --> M
-    J -->|Yes| O[Delete activity from database]
-    O --> P[Emit ActivityDeletedEvent]
-    P --> Q[Close confirmation dialog]
-    Q --> R[Reload activity list from API]
-    R --> S{Current page empty?}
-    S -->|Yes| T[Navigate to previous page]
-    S -->|No| U[Display updated list]
-    T --> U
-    U --> V[User sees updated activity list]
+    L -->|No| F
+    J -->|Yes| M[Show success toast notification]
+    M --> N[Close confirmation dialog]
+    N --> O[Reload activity list from API]
+    O --> P{Current page empty?}
+    P -->|Yes| Q[Navigate to previous page]
+    P -->|No| R[Display updated list]
+    Q --> R
+    R --> S[User sees updated activity list]
 ```
 
 ## Postconditions
@@ -144,10 +142,12 @@ flowchart TD
 - Cancelling the deletion does not modify the activity in the database
 - The deletion API request is sent with correct authentication
 - Successful deletion results in the activity being removed from the database
+- A success toast notification is displayed after successful deletion
 - The activity list is automatically reloaded to reflect the deletion
 - Deleted activity is no longer visible in the activity list
-- Network and server errors are handled gracefully with appropriate error messages
-- Users can retry failed deletion attempts
+- Network and server errors are handled gracefully with error messages displayed inline in the dialog
+- The dialog remains open when an error occurs, allowing users to retry or cancel
+- Users can retry failed deletion attempts without closing and reopening the dialog
 - If the current page becomes empty after deletion, the user is navigated to the previous page
 - The Delete button displays a loading state during the API request
 - All dialogs and controls are accessible via keyboard navigation
