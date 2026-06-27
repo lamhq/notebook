@@ -14,6 +14,9 @@ inputs:
   cf_dist_id:
     description: CloudFront distribution ID for cache invalidation
     required: true
+  web_env_vars:
+    description: Environment variables for the web app
+    required: true
 
 runs:
   using: composite
@@ -23,7 +26,7 @@ runs:
 
     - name: Build application
       run: |
-        echo "${{ vars.WEB_ENV_VARS }}" > apps/web/.env
+        echo "${{ inputs.web_env_vars }}" > apps/web/.env
         pnpm -F web build
 
     - name: Configure AWS credentials

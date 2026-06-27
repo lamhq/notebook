@@ -87,7 +87,9 @@ jobs:
           retention-days: 30
 
   deploy-dev:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    # if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    # TODO: uncomment the above line after fixing deployment issues on dev environment.
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     environment: dev
 
@@ -102,6 +104,7 @@ jobs:
           deployment_role_arn: ${{ vars.DEPLOYMENT_ROLE_ARN }}
           app_bucket: ${{ vars.APP_BUCKET }}
           cf_dist_id: ${{ vars.CF_DIST_ID }}
+          web_env_vars: ${{ vars.WEB_ENV_VARS }}
 
   deploy-prod:
     if: startsWith(github.ref, 'refs/tags/web-v')
@@ -118,4 +121,4 @@ jobs:
           aws_region: ${{ vars.AWS_REGION }}
           deployment_role_arn: ${{ vars.DEPLOYMENT_ROLE_ARN }}
           app_bucket: ${{ vars.APP_BUCKET }}
-          cf_dist_id: ${{ vars.CF_DIST_ID }}
+          web_env_vars: ${{ vars.WEB_ENV_VARS }}
