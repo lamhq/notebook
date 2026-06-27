@@ -59,8 +59,8 @@ export default defineConfig(
       ...tseslint.configs.stylisticTypeChecked,
     ],
     rules: {
-      // use `type` instead of `interface`
-      '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
+      // allow NestJS module classes
+      '@typescript-eslint/no-extraneous-class': 'off',
 
       // fix react-hook-form onSubmit type error
       '@typescript-eslint/no-misused-promises': [
