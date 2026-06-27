@@ -8,11 +8,11 @@ import { formatNumber } from '../../../common/utils';
 export type RevenueProps = {
   income: number;
   outcome: number;
-  popoverId: string | undefined;
-  popoverVisible: boolean;
-  popoverAnchor: Element | undefined;
-  showPopover: MouseEventHandler;
-  closePopover: () => void;
+  popoverId?: string;
+  popoverVisible?: boolean;
+  popoverAnchor?: Element;
+  showPopover?: MouseEventHandler;
+  closePopover?: () => void;
 };
 
 export default function Revenue({
@@ -35,7 +35,7 @@ export default function Revenue({
       />
       <Popover
         id={popoverId}
-        open={popoverVisible}
+        open={!!popoverVisible}
         anchorEl={popoverAnchor}
         onClose={closePopover}
         anchorOrigin={{
