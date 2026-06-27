@@ -11,6 +11,7 @@ import type {
   Activity,
   ActivityFilter,
   AddActivityFormData,
+  Report,
   Revenue,
   UpdateActivityFormData,
 } from './types';
@@ -164,4 +165,107 @@ export function useDeleteActivity() {
 export function useActivityFilter() {
   const [filter, setFilter] = useAtom(activityFilterAtom);
   return { filter, updateFilter: setFilter };
+}
+
+// Report query keys
+const REPORTS_QUERY_KEY = ['diary', 'reports'] as const;
+
+export function useAllActivities(filter: ActivityFilter) {
+  const result = useSuspenseQuery(
+    queryOptions({
+      queryKey: [...ACTIVITIES_QUERY_KEY, 'all', filter],
+      queryFn: async () => {
+        const params = buildQueryFromFilter({ ...filter, page: 1, pageSize: 1000 });
+        const resp = await apiClient<Activity[]>({
+          url: '/diary/activities',
+          method: 'GET',
+          params,
+        });
+        return resp.data.map(transformActivityResponse);
+      },
+    }),
+  );
+  return result.data;
+}
+
+function transformReportResponse(data: Report): Report {
+  return {
+    ...data,
+    createdAt: new Date(data.createdAt),
+    transactions: data.transactions.map((t) => ({
+      ...t,
+      time: new Date(t.time),
+    })),
+  };
+}
+
+export function useReports() {
+  const result = useSuspenseQuery(
+    queryOptions({
+      queryKey: REPORTS_QUERY_KEY,
+      queryFn: async () => {
+        const resp = await apiClient<Report[]>({
+          url: '/diary/reports',
+          method: 'GET',
+        });
+        return resp.data.map(transformReportResponse);
+      },
+    }),
+  );
+  return result.data;
+}
+
+export function useReport(id: string) {
+  const result = useSuspenseQuery(
+    queryOptions({
+      queryKey: [...REPORTS_QUERY_KEY, id],
+      queryFn: async () => {
+        const resp = await apiClient<Report>({
+          url: `/diary/reports/${id}`,
+          method: 'GET',
+        });
+        return transformReportResponse(resp.data);
+      },
+    }),
+  );
+  return result.data;
+}
+
+export function useCreateReport() {
+  const queryClient = useQueryClient();
+  const result = useMutation({
+    mutationFn: async (data: {
+      name: string;
+      paymentQR: string;
+      filters: ActivityFilter;
+      transactions: Activity[];
+    }) => {
+      const resp = await apiClient<Report>({
+        url: '/diary/reports',
+        method: 'POST',
+        data,
+      });
+      return transformReportResponse(resp.data);
+    },
+    onSuccess: () => {
+      void queryClient.resetQueries({ queryKey: REPORTS_QUERY_KEY });
+    },
+  });
+  return result.mutateAsync;
+}
+
+export function useDeleteReport() {
+  const queryClient = useQueryClient();
+  const result = useMutation({
+    mutationFn: async (id: string) => {
+      await apiClient<never>({
+        url: `/diary/reports/${id}`,
+        method: 'DELETE',
+      });
+    },
+    onSuccess: () => {
+      void queryClient.resetQueries({ queryKey: REPORTS_QUERY_KEY });
+    },
+  });
+  return [result.mutateAsync, result.isPending] as const;
 }

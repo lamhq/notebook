@@ -1,33 +1,33 @@
-export type Activity = {
+export interface Activity {
   id: string;
   content: string;
   time: Date;
   tags: string[];
   income?: number;
   outcome?: number;
-};
+}
 
-export type AddActivityFormData = {
+export interface AddActivityFormData {
   content: string;
   time: Date;
   tags: string[];
   income?: string;
   outcome?: string;
   splitByTag?: boolean;
-};
+}
 
-export type UpdateActivityFormData = {
+export interface UpdateActivityFormData {
   content: string;
   time: Date;
   tags: string[];
   income?: string;
   outcome?: string;
-};
+}
 
-export type Revenue = {
+export interface Revenue {
   income: number;
   outcome: number;
-};
+}
 
 export enum TimeRange {
   All = 'all',
@@ -38,7 +38,7 @@ export enum TimeRange {
   Custom = 'custom',
 }
 
-export type ActivityFilter = {
+export interface ActivityFilter {
   text: string;
   tags: string[];
   timeRange: TimeRange;
@@ -46,4 +46,20 @@ export type ActivityFilter = {
   pageSize: number;
   from?: Date;
   to?: Date;
-};
+}
+
+export interface Report {
+  id: string;
+  name: string;
+  paymentQR: string;
+  filters: ActivityFilter;
+  transactions: Activity[];
+  pdfUrl: string;
+  createdAt: Date;
+}
+
+export interface CreateReportFormData {
+  name: string;
+  paymentQR: string;
+  filters: ActivityFilter;
+}

@@ -1,5 +1,5 @@
 import { atom } from 'jotai';
-import { TimeRange, type Activity, type ActivityFilter } from './types';
+import { TimeRange, type Activity, type ActivityFilter, type Report } from './types';
 
 /**
  * Store the filter of activities
@@ -18,3 +18,8 @@ export const activityFilterAtom = atom<ActivityFilter>({
  * Store the activity to be deleted
  */
 export const activityToDeleteAtom = atom<Activity | null>(null);
+
+/**
+ * Store the report to be deleted
+ */
+export const reportToDeleteAtom = atom<Report | null>(null);
