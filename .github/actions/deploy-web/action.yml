@@ -25,6 +25,7 @@ runs:
       uses: ./.github/actions/setup-node-env
 
     - name: Build application
+      shell: bash
       run: |
         echo "${{ inputs.web_env_vars }}" > apps/web/.env
         pnpm -F web build
