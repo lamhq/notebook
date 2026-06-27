@@ -12,7 +12,7 @@ import reactDom from 'react-dom/client';
 import type { AuthProviderProps } from 'react-oidc-context';
 import { AuthProvider } from 'react-oidc-context';
 import { BrowserRouter } from 'react-router';
-import { axiosRequest } from './api/request';
+import { apiClient } from './api-client';
 import App from './App';
 import { IndexedDBStorage } from './auth';
 import { getAbsoluteURL } from './common/utils';
@@ -21,6 +21,7 @@ import { EventProvider } from './event';
 import { AUTH_CALLBACK_ROUTE } from './routes';
 import './styles.css';
 import { theme } from './theme';
+import { ToastProvider } from './toast';
 
 const oidcAuthority = import.meta.env.VITE_OIDC_AUTHORITY;
 const oidcClientId = import.meta.env.VITE_OIDC_CLIENT_ID;
@@ -43,7 +44,7 @@ const customEnLocale: Locale = {
 // #region Auth
 function attachTokenToAPIRequest(user: User | undefined | null) {
   if (!user?.id_token) return;
-  axiosRequest.defaults.headers.common.Authorization = `Bearer ${user.id_token}`;
+  apiClient.defaults.headers.common.Authorization = `Bearer ${user.id_token}`;
 }
 
 const userManager = new UserManager({
@@ -88,20 +89,23 @@ if (rootEl) {
           dateAdapter={AdapterDateFns}
           adapterLocale={customEnLocale}
         >
-          {/* React Router */}
-          <BrowserRouter>
-            {/* react-oidc-context */}
-            <AuthProvider {...oidcConfig}>
-              {/* Event emitter */}
-              <EventProvider emitter={eventEmitter}>
-                {/* TanStack Query */}
-                <QueryClientProvider client={queryClient}>
-                  <App />
-                </QueryClientProvider>
-              </EventProvider>
-            </AuthProvider>
-            <Dialog />
-          </BrowserRouter>
+          {/* Toast Notifications */}
+          <ToastProvider>
+            {/* React Router */}
+            <BrowserRouter>
+              {/* react-oidc-context */}
+              <AuthProvider {...oidcConfig}>
+                {/* Event emitter */}
+                <EventProvider emitter={eventEmitter}>
+                  {/* TanStack Query */}
+                  <QueryClientProvider client={queryClient}>
+                    <App />
+                  </QueryClientProvider>
+                </EventProvider>
+              </AuthProvider>
+              <Dialog />
+            </BrowserRouter>
+          </ToastProvider>
         </LocalizationProvider>
       </ThemeProvider>
     </StrictMode>,

@@ -123,6 +123,7 @@ Verify that clicking the "Delete" button in the confirmation dialog successfully
 - Delete button shows a loading state (spinner or disabled state) during API call
 - API DELETE request is sent to `/diary/activities/{id}` with correct activity ID
 - Activity is successfully deleted from the database (API returns 200/204)
+- A success toast notification is displayed (e.g., "Activity deleted successfully")
 - Confirmation dialog closes after successful deletion
 - The deleted activity is no longer visible in the activity list
 - Activity list is refreshed and updated
@@ -166,9 +167,10 @@ Verify that a 404 error is handled gracefully when the activity no longer exists
 
 - API returns 404 Not Found error
 - Confirmation dialog remains visible
-- An error message is displayed to the user (e.g., "Activity not found")
+- An error message is displayed inside the confirmation dialog (e.g., "Activity not found")
 - Delete button returns to normal state (not loading)
 - User can see the error and optionally retry or cancel
+- User can click "Cancel" or press Escape to close the dialog
 
 ### Postconditions
 
@@ -208,10 +210,11 @@ Verify that network errors during the deletion API request are handled gracefull
 ### Expected Result
 
 - Network error is caught and handled gracefully
-- User is shown an error message (e.g., "Network error. Please try again.")
+- User is shown an error message inside the confirmation dialog (e.g., "Network error. Please try again.")
 - Delete button returns to normal state
 - Confirmation dialog remains open allowing retry
 - No app crash or unexpected behavior occurs
+- User can click "Delete" to retry the deletion or "Cancel" to close the dialog
 
 ### Postconditions
 

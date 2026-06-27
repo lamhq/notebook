@@ -14,10 +14,10 @@ import { Suspense, useCallback, useEffect, useState } from 'react';
 import { Outlet } from 'react-router';
 import { Alert } from '../../../alert';
 import { ErrorBoundary } from '../../../error';
-import HideOnScroll from '../../atoms/HideOnScroll/HideOnScroll';
-import ScrollOnClick from '../../atoms/ScrollOnClick/ScrollOnClick';
-import Typography from '../../atoms/Typography';
-import LoadingFallback from '../../organism/LoadingFallback';
+import HideOnScroll from '../../components/HideOnScroll/HideOnScroll';
+import LoadingFallback from '../../components/LoadingFallback';
+import ScrollOnClick from '../../components/ScrollOnClick/ScrollOnClick';
+import Typography from '../../components/Typography';
 import { pageTitleAtom } from './atoms';
 import Sidebar from './Sidebar';
 

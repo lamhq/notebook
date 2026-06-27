@@ -1,6 +1,7 @@
 import { ThemeProvider } from '@mui/material/styles';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { Locale } from 'date-fns';
 import { enUS } from 'date-fns/locale/en-US';
 import EventEmitter from 'eventemitter3';
@@ -26,6 +27,12 @@ const customEnLocale: Locale = {
 const eventEmitter = new EventEmitter();
 // #endregion
 
+// #region TanStack Query
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { staleTime: 60_000, retry: false } },
+});
+// #endregion
+
 // #region MockProvider
 export type MockProviderProps = {
   children: ReactNode;
@@ -45,7 +52,11 @@ export default function MockProvider({ children }: MockProviderProps) {
         <MemoryRouter>
           {/* react-oidc-context */}
           <AuthContext.Provider value={authContextValue}>
-            <EventProvider emitter={eventEmitter}>{children}</EventProvider>
+            <EventProvider emitter={eventEmitter}>
+              <QueryClientProvider client={queryClient}>
+                {children}
+              </QueryClientProvider>
+            </EventProvider>
           </AuthContext.Provider>
           <Dialog />
         </MemoryRouter>

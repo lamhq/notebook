@@ -1,5 +1,4 @@
 import { atom } from 'jotai';
-import type { AtomState } from './types';
+import type { DialogState } from './types';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const dialogAtom = atom<AtomState<any> | undefined>();
+export const dialogAtom = atom<DialogState | undefined>();

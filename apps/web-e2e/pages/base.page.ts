@@ -20,4 +20,8 @@ export abstract class BasePage {
   public getTryAgainButton(): Locator {
     return this.page.getByRole('button', { name: /Try Again|Retry/i });
   }
+
+  public getAlert(): Locator {
+    return this.page.getByRole('alert');
+  }
 }

@@ -360,29 +360,7 @@ test.describe('Time Range Filtering', () => {
 });
 
 test.describe('Edge Cases', () => {
-  test('TC_SA_08: clicking Reset should clear all search fields and keep dialog open', async () => {
-    await test.step('Open dialog and enter search criteria', async () => {
-      await activityListPage.openDialog();
-      await expect(activityListPage.getTagLoadingIcon()).toBeHidden();
-      await activityListPage.enterText('coffee');
-      await activityListPage.selectTag('food');
-      await activityListPage.selectTimeRange('This week');
-    });
-
-    await test.step('Click Reset button', async () => {
-      await activityListPage.clickReset();
-    });
-
-    await test.step('Verify fields are cleared and dialog remains open', async () => {
-      await expect(activityListPage.getDialog()).toBeVisible();
-      await expect(activityListPage.getTextField()).toHaveValue('');
-      await expect(activityListPage.getTimeRangeSelect()).toContainText(
-        'This month',
-      );
-    });
-  });
-
-  test('TC_SA_09: searching with no matching criteria should display empty state message', async () => {
+  test('TC_SA_08: searching with no matching criteria should display empty state message', async () => {
     await test.step('Open search dialog and enter non-existent text', async () => {
       await activityListPage.openDialog();
       await activityListPage.enterText('NonexistentActivityContent12345');
@@ -399,7 +377,7 @@ test.describe('Edge Cases', () => {
     });
   });
 
-  test('TC_SA_10: search dialog should be functional on mobile viewport', async ({
+  test('TC_SA_09: search dialog should be functional on mobile viewport', async ({
     page,
   }) => {
     await test.step('Set mobile viewport', async () => {

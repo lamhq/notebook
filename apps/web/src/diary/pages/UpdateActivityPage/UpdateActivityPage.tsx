@@ -1,16 +1,14 @@
-import CircularProgress from '@mui/material/CircularProgress';
-import { Suspense, useCallback } from 'react';
-import type { SubmitHandler } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router';
+import SuspenseWrapper from '../../../common/components/SuspenseWrapper';
 import { Title } from '../../../common/templates/MainLayout';
 import { useErrorHandler } from '../../../error';
-import { useGetActivityQuery, useUpdateActivityMutation } from '../../hooks';
-import UpdateActivityForm from '../../organisms/UpdateActivityForm';
+import UpdateActivityForm from '../../containers/UpdateActivityForm';
+import { useActivity, useUpdateActivity } from '../../hooks';
 import type { UpdateActivityFormData } from '../../types';
 
-function UpdateActivityFormView({ activityId }: { activityId: string }) {
-  const { data: activity } = useGetActivityQuery(activityId);
-  const { mutateAsync: updateActivity } = useUpdateActivityMutation();
+function FetchActivityForm({ activityId }: { activityId: string }) {
+  const activity = useActivity(activityId);
+  const updateActivity = useUpdateActivity();
   const navigate = useNavigate();
   const handleError = useErrorHandler();
   const defaultFormValues: UpdateActivityFormData = {
@@ -20,17 +18,14 @@ function UpdateActivityFormView({ activityId }: { activityId: string }) {
     income: activity.income?.toString(),
     outcome: activity.outcome?.toString(),
   };
-  const handleSubmit: SubmitHandler<UpdateActivityFormData> = useCallback(
-    async (data) => {
-      try {
-        await updateActivity({ id: activityId, data });
-        void navigate('/');
-      } catch (error) {
-        handleError(error);
-      }
-    },
-    [activityId, updateActivity, navigate, handleError],
-  );
+  const handleSubmit = async (data: UpdateActivityFormData) => {
+    try {
+      await updateActivity({ id: activityId, data });
+      void navigate('/');
+    } catch (error) {
+      handleError(error);
+    }
+  };
 
   return (
     <UpdateActivityForm defaultValues={defaultFormValues} onSubmit={handleSubmit} />
@@ -46,9 +41,9 @@ export default function UpdateActivityPage() {
   return (
     <>
       <Title>Update Activity</Title>
-      <Suspense fallback={<CircularProgress />}>
-        <UpdateActivityFormView activityId={activityId} />
-      </Suspense>
+      <SuspenseWrapper style="circular">
+        <FetchActivityForm activityId={activityId} />
+      </SuspenseWrapper>
     </>
   );
 }
