@@ -13,7 +13,6 @@ on:
     paths:
       - 'apps/web/**'
       - 'packages/**'
-      - '.github/workflows/*'
 
   push:
     branches: [main]
@@ -88,9 +87,7 @@ jobs:
           retention-days: 30
 
   deploy-dev:
-    # if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    # TODO: uncomment the above line after fixing deployment issues on dev environment.
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment: dev
 
