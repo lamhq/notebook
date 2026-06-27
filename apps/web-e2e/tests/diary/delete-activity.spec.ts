@@ -187,8 +187,8 @@ test.describe('Error handling', () => {
     // Verify the dialog shows an error message inside it
     await expect(confirmDialog).toContainText('Error');
 
-    // Close the confirmation dialog by pressing Escape
-    await page.keyboard.press('Escape');
+    // Close the confirmation dialog by clicking the Cancel button
+    await confirmDialog.getByRole('button', { name: 'Cancel' }).click();
 
     // Verify dialog closes
     await expect(confirmDialog).toBeHidden();
@@ -227,8 +227,8 @@ test.describe('Error handling', () => {
     // Verify the dialog shows an error message inside it
     await expect(confirmDialog).toContainText('Error');
 
-    // Close the confirmation dialog by pressing Escape
-    await page.keyboard.press('Escape');
+    // Close the confirmation dialog by clicking the Cancel button
+    await confirmDialog.getByRole('button', { name: 'Cancel' }).click();
 
     // Verify dialog closes
     await expect(confirmDialog).toBeHidden();

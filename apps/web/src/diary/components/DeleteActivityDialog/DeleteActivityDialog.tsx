@@ -45,7 +45,7 @@ export default function DeleteActivityDialog({
       <DialogContent sx={{ py: 2 }}>
         <Box sx={{ mb: 2 }}>
           <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
-            Are you sure you want to delete the activity on{' '}
+            Are you sure to delete the activity on{' '}
             <strong>{activity && formatDate(activity.time)}</strong>?
           </Typography>
           <Typography variant="caption" color="error">
@@ -55,7 +55,7 @@ export default function DeleteActivityDialog({
 
         {error && (
           <Alert severity="error" sx={{ mt: 2 }}>
-            {error}
+            Error: {error}
           </Alert>
         )}
       </DialogContent>
