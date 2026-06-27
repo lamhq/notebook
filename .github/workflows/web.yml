@@ -106,8 +106,7 @@ jobs:
           web_env_vars: ${{ vars.WEB_ENV_VARS }}
 
   deploy-prod:
-    # TODO: Uncomment the below line after fixing deployment to production
-    # if: startsWith(github.ref, 'refs/tags/web-v')
+    if: startsWith(github.ref, 'refs/tags/web-v')
     runs-on: ubuntu-latest
     environment: prod
 
