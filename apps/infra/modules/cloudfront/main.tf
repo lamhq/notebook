@@ -82,7 +82,7 @@ resource "aws_cloudfront_distribution" "cdn_distribution" {
   # S3 origin for serving web files
   origin {
     origin_id                = "${var.name}-web-origin"
-    origin_path              = "/${var.s3_bucket_path}"
+    origin_path              = "/${var.s3_web_path}"
     domain_name              = var.s3_bucket_domain
     origin_access_control_id = aws_cloudfront_origin_access_control.s3_oac.id
   }
@@ -97,6 +97,13 @@ resource "aws_cloudfront_distribution" "cdn_distribution" {
       origin_protocol_policy = "https-only"
       origin_ssl_protocols   = ["TLSv1.2"]
     }
+  }
+
+  # S3 origin for serving media files
+  origin {
+    origin_id                = "${var.name}-media-origin"
+    domain_name              = var.s3_bucket_domain
+    origin_access_control_id = aws_cloudfront_origin_access_control.s3_oac.id
   }
 
   # Default cache behavior for web files
@@ -130,12 +137,23 @@ resource "aws_cloudfront_distribution" "cdn_distribution" {
       function_arn = aws_cloudfront_function.remove_prefix_function.arn
     }
   }
+
+  # Cached behavior for media files
+  ordered_cache_behavior {
+    path_pattern           = "/media/*"
+    allowed_methods        = ["GET", "HEAD", "OPTIONS"]
+    cached_methods         = ["HEAD", "GET"]
+    target_origin_id       = "${var.name}-media-origin"
+    compress               = true
+    viewer_protocol_policy = "https-only"
+    cache_policy_id        = "658327ea-f89d-4fab-a63d-7e88639e58f6" # CachingOptimized
+  }
 }
 
 # Upload sample index.html to S3
 resource "aws_s3_object" "index_file" {
   bucket       = var.s3_bucket_id
-  key          = "${var.s3_bucket_path}/index.html"
+  key          = "${var.s3_web_path}/index.html"
   source       = "assets/index.html"
   content_type = "text/html"
 
@@ -158,8 +176,11 @@ resource "aws_s3_bucket_policy" "access_policy" {
         Principal = {
           Service = "cloudfront.amazonaws.com"
         },
-        Action   = "s3:GetObject",
-        Resource = "${var.s3_bucket_arn}/${var.s3_bucket_path}/*",
+        Action = "s3:GetObject",
+        Resource = [
+          "${var.s3_bucket_arn}/${var.s3_web_path}/*",
+          "${var.s3_bucket_arn}/${var.s3_media_path}/*"
+        ],
         Condition = {
           StringEquals = {
             "AWS:SourceArn" = aws_cloudfront_distribution.cdn_distribution.arn

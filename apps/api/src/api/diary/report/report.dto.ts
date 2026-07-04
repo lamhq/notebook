@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsUrl } from 'class-validator';
-import { ActivityQuery } from '../activity/activity.entity';
+import { Type } from 'class-transformer';
+import { IsArray, IsDate, IsNotEmpty, IsOptional, IsUrl } from 'class-validator';
 
 export class CreateReportDto {
   @ApiProperty({ description: 'Name of the report' })
@@ -8,10 +8,28 @@ export class CreateReportDto {
   name: string;
 
   @ApiProperty({ description: 'Bank transfer QR code image URL' })
-  @IsNotEmpty()
+  @IsOptional()
   @IsUrl()
   paymentQR: string;
 
-  @ApiProperty({ description: 'Filter conditions' })
-  filters: ActivityQuery;
+  @ApiProperty({ description: 'Filter activities by text' })
+  @IsOptional()
+  text?: string;
+
+  @ApiProperty({ description: 'Filter activities by tags' })
+  @IsOptional()
+  @IsArray()
+  tags?: string[];
+
+  @ApiProperty({ description: 'Filter activities by date range' })
+  @IsOptional()
+  @Type(() => Date)
+  @IsDate()
+  from?: Date;
+
+  @ApiProperty({ description: 'Filter activities by date range' })
+  @IsOptional()
+  @Type(() => Date)
+  @IsDate()
+  to?: Date;
 }
