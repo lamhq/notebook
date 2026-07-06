@@ -1,10 +1,12 @@
-import { DeleteObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { format } from 'date-fns/format';
 import { mdToPdf } from 'md-to-pdf';
 import { ObjectId } from 'mongodb';
 import { MongoRepository } from 'typeorm';
+import { S3Service } from '../../common/services/s3.service';
+import { slugify } from '../../common/utils';
 import { Activity } from '../activity/activity.entity';
 import { ActivityService } from '../activity/activity.service';
 import { CreateReportDto } from './report.dto';
@@ -12,20 +14,12 @@ import { Report } from './report.entity';
 
 @Injectable()
 export class ReportService {
-  private s3Client: S3Client;
-  private bucketName: string;
-  private s3PublicBaseUrl: string;
-
   constructor(
     @InjectRepository(Report) private reportRepo: MongoRepository<Report>,
+    private readonly configService: ConfigService,
     private readonly activityService: ActivityService,
-  ) {
-    this.bucketName = process.env.S3_BUCKET ?? '';
-    this.s3PublicBaseUrl = process.env.S3_PUBLIC_BASE_URL ?? '';
-    this.s3Client = new S3Client({
-      region: process.env.AWS_REGION ?? 'us-east-1',
-    });
-  }
+    private readonly s3Service: S3Service,
+  ) {}
 
   async findAll(): Promise<Report[]> {
     return this.reportRepo.find({
@@ -42,22 +36,38 @@ export class ReportService {
   }
 
   async create(dto: CreateReportDto): Promise<Report> {
-    // TODO: find the activities based on the filters provided in the dto
     const [transactions] = await this.activityService.findAll({
       offset: 0,
       limit: 1000,
-      ...dto.filters,
+      text: dto.text,
+      tags: dto.tags,
+      from: dto.from,
+      to: dto.to,
     });
+
+    // Generate PDF buffer from markdown
     const markdown = this.generateMarkdown(dto.name, dto.paymentQR, transactions);
-    const pdfBuffer = await this.generatePdf(markdown);
-    const pdfKey = `reports/${Date.now().toString()}-${dto.name.replace(/\s+/g, '-')}.pdf`;
-    const pdfUrl = await this.uploadPdfToS3(pdfBuffer, pdfKey);
+    const pdf = await mdToPdf({ content: markdown }, { document_title: dto.name });
+    const pdfBuffer = pdf.content;
+
+    // Upload PDF to S3
+    const fileName = `${slugify(dto.name)}.pdf`;
+    const s3Key = `media/reports/${Date.now().toString()}-${fileName}`;
+    await this.s3Service.uploadBuffer(s3Key, pdfBuffer, 'application/pdf', fileName);
+    const pdfUrl = `${this.configService.getOrThrow<string>('aws.cloudfrontUrl')}/${s3Key}`;
+
+    // Save report to database
     const report = this.reportRepo.create({
       name: dto.name,
-      paymentQR: dto.paymentQR,
-      filters: dto.filters,
-      activities: transactions,
       pdfUrl,
+      paymentQR: dto.paymentQR,
+      filters: {
+        text: dto.text,
+        tags: dto.tags,
+        from: dto.from,
+        to: dto.to,
+      },
+      activities: transactions,
       createdAt: new Date(),
     });
     return this.reportRepo.save(report);
@@ -67,12 +77,10 @@ export class ReportService {
     const report = await this.findOneOrFail(id);
 
     // Delete PDF from S3
-    if (report.pdfUrl && this.bucketName) {
+    if (report.pdfUrl) {
       const key = this.extractS3Key(report.pdfUrl);
       if (key) {
-        await this.s3Client.send(
-          new DeleteObjectCommand({ Bucket: this.bucketName, Key: key }),
-        );
+        await this.s3Service.deleteObject(key);
       }
     }
 
@@ -97,45 +105,28 @@ export class ReportService {
         const income = t.income ?? 0;
         const outcome = t.outcome ?? 0;
         const amount = (outcome - income) * 1000;
-        return `| ${date} | ${t.content ?? ''} | ${amount.toString()} |`;
+        return `| ${date} | ${t.content ?? ''} | ${amount.toLocaleString('vi-VN')} |`;
       })
       .join('\n');
 
     return `# ${name}
 
-Tổng: ${total.toString()}
+Tổng: ${total.toLocaleString('vi-VN')}
 
 | Ngày | Nội dung | Số tiền |
-| ---- | -------- | ------- |
+| :---- | :-------- | -------: |
 ${rows}
 
-![QR code for bank transfer](${paymentQR})
+![](${paymentQR})
 `;
   }
 
-  private async generatePdf(markdown: string): Promise<Buffer> {
-    const pdf = await mdToPdf({ content: markdown });
-    return pdf.content;
-  }
-
-  private async uploadPdfToS3(buffer: Buffer, key: string): Promise<string> {
-    await this.s3Client.send(
-      new PutObjectCommand({
-        Bucket: this.bucketName,
-        Key: key,
-        Body: buffer,
-        ContentType: 'application/pdf',
-      }),
-    );
-    return `${this.s3PublicBaseUrl}/${key}`;
-  }
-
   private extractS3Key(url: string): string | null {
-    if (!this.s3PublicBaseUrl) return null;
-    const prefix = `${this.s3PublicBaseUrl}/`;
-    if (url.startsWith(prefix)) {
-      return url.slice(prefix.length);
+    try {
+      const u = new URL(url);
+      return u.pathname.startsWith('/') ? u.pathname.slice(1) : u.pathname;
+    } catch {
+      return null;
     }
-    return null;
   }
 }
