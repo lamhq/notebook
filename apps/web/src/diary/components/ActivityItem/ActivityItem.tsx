@@ -6,9 +6,9 @@ import ActivityMenuContainer from '../../containers/ActivityMenuContainer';
 import type { Activity } from '../../types';
 import TimeLabel from '../TimeLabel/TimeLabel';
 
-export type ActivityItemProps = {
+export interface ActivityItemProps {
   activity: Activity;
-};
+}
 
 export default function ActivityItem({ activity }: ActivityItemProps) {
   const html = activity.content.replace(/\n/g, '<br/>');

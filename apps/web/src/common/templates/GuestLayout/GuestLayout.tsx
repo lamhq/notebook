@@ -2,10 +2,10 @@ import Container from '@mui/material/Container';
 import type { ReactNode } from 'react';
 import Typography from '../../components/Typography';
 
-export type GuestLayoutProps = {
+export interface GuestLayoutProps {
   title: string;
   children: ReactNode;
-};
+}
 
 export default function GuestLayout({ title, children }: GuestLayoutProps) {
   return (

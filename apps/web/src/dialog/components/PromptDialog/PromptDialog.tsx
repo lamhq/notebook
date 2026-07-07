@@ -8,9 +8,9 @@ import TextField from '@mui/material/TextField';
 import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
 import type { PromptDialogProps } from '../../types';
 
-type FormData = {
+interface FormData {
   input: string;
-};
+}
 
 export default function PromptDialog({
   isOpen,

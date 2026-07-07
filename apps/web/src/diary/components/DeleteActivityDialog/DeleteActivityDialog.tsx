@@ -12,14 +12,14 @@ import {
 import { formatDate } from '../../../common/utils';
 import type { Activity } from '../../types';
 
-type DeleteActivityDialogProps = {
+interface DeleteActivityDialogProps {
   open: boolean;
   activity: Activity | null;
   error: string | null;
   isDeleting: boolean;
   onDelete: () => void;
   onCancel: () => void;
-};
+}
 
 export default function DeleteActivityDialog({
   open,

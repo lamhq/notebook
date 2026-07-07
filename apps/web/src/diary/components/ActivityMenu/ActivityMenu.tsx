@@ -20,13 +20,13 @@ const UnstyledLink = styled(Link)<LinkProps>(() => ({
   color: 'inherit',
 }));
 
-export type ActivityMenuProps = {
+export interface ActivityMenuProps {
   activity: Activity;
   anchor: Element | null;
   isOpen: boolean;
   onOpen: (e: MouseEvent<HTMLButtonElement>) => void;
   onClose: () => void;
-};
+}
 
 export default function ActivityMenu({
   activity,

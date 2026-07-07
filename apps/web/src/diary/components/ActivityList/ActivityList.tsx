@@ -7,12 +7,12 @@ import { formatDate } from '../../../common/utils';
 import type { Activity } from '../../types';
 import ActivityItem from '../ActivityItem';
 
-export type ActivityListProps = {
+export interface ActivityListProps {
   activities: Activity[];
   currentPage: number;
   pageCount: number;
   onPageChange: (page: number) => void;
-};
+}
 
 export default function ActivityList({
   activities,

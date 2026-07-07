@@ -8,10 +8,10 @@ import Typography from '@mui/material/Typography';
 import type { AxiosError } from 'axios';
 import Actions from '../../../common/components/Actions';
 
-export type ErrorFallbackProps = {
+export interface ErrorFallbackProps {
   error: Error;
   resetErrorBoundary: () => void;
-};
+}
 
 export default function ErrorFallback({
   error,

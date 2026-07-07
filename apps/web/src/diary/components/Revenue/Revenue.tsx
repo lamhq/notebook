@@ -5,7 +5,7 @@ import AmountBadge from '../../../common/components/AmountBadge';
 import Typography from '../../../common/components/Typography';
 import { formatNumber } from '../../../common/utils';
 
-export type RevenueProps = {
+export interface RevenueProps {
   income: number;
   outcome: number;
   popoverId?: string;
@@ -13,7 +13,7 @@ export type RevenueProps = {
   popoverAnchor?: Element;
   showPopover?: MouseEventHandler;
   closePopover?: () => void;
-};
+}
 
 export default function Revenue({
   income,

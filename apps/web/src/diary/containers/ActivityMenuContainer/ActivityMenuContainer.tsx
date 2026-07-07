@@ -3,9 +3,9 @@ import { useState } from 'react';
 import ActivityMenu from '../../components/ActivityMenu/ActivityMenu';
 import type { Activity } from '../../types';
 
-export type ActivityMenuContainerProps = {
+export interface ActivityMenuContainerProps {
   activity: Activity;
-};
+}
 
 export default function ActivityMenuContainer({
   activity,

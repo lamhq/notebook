@@ -7,10 +7,10 @@ import {
   type MobileDatePickerProps as MuiDatePickerProps,
 } from '@mui/x-date-pickers/MobileDatePicker';
 
-type InputFieldProps = {
+interface InputFieldProps {
   error?: boolean;
   helperText?: string;
-};
+}
 
 export type DatePickerProps = Omit<MuiDatePickerProps<Date>, 'renderInput'> &
   InputFieldProps;

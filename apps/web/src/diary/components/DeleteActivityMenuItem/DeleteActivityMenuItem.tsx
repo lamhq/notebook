@@ -5,9 +5,9 @@ import {
   MenuItem,
 } from '../../../common/components/ContextMenu';
 
-export type DeleteActivityMenuItemProps = {
+export interface DeleteActivityMenuItemProps {
   onClick: () => void;
-};
+}
 
 export default function DeleteActivityMenuItem({
   onClick,

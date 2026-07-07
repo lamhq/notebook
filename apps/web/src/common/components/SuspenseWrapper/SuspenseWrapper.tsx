@@ -2,10 +2,10 @@ import type { ReactNode } from 'react';
 import { Suspense } from 'react';
 import LoadingFallback from '../LoadingFallback';
 
-export type SuspenseWrapperProps = {
+export interface SuspenseWrapperProps {
   children?: ReactNode;
   style?: 'empty' | 'circular';
-};
+}
 
 export default function SuspenseWrapper({
   children,

@@ -15,7 +15,7 @@ function formatAmount(income?: number, outcome?: number): string {
   return '0';
 }
 
-function calculateTotal(transactions: Report['transactions']): number {
+function calculateTotal(transactions: Report['activities']): number {
   return transactions.reduce((sum, t) => {
     if (t.income) return sum + t.income * 1000;
     if (t.outcome) return sum - t.outcome * 1000;
@@ -28,7 +28,7 @@ interface ReportContentProps {
 }
 
 export default function ReportContent({ report }: ReportContentProps) {
-  const total = calculateTotal(report.transactions);
+  const total = calculateTotal(report.activities);
 
   return (
     <Box>
@@ -48,7 +48,7 @@ export default function ReportContent({ report }: ReportContentProps) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {report.transactions.map((t) => (
+          {report.activities.map((t) => (
             <TableRow key={t.id}>
               <TableCell sx={{ whiteSpace: 'nowrap' }}>
                 {format(new Date(t.time), 'dd/MM HH:mm')}

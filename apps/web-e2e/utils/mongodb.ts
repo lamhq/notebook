@@ -2,10 +2,10 @@ import { Db, MongoClient, ObjectId } from 'mongodb';
 
 type PlainObject = Record<string, unknown>;
 
-type MongoDocument = {
+interface MongoDocument {
   _id: ObjectId;
   [key: string]: unknown;
-};
+}
 
 const uri = 'mongodb://root:password@localhost:27017/test?authSource=admin';
 const dbName = 'test';

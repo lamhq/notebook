@@ -3,9 +3,9 @@ import Box from '@mui/material/Box';
 import Typography from '../../../common/components/Typography';
 import { formatTime } from '../../../common/utils';
 
-export type TimeLabelProps = {
+export interface TimeLabelProps {
   time: Date;
-};
+}
 
 export default function TimeLabel({ time }: TimeLabelProps) {
   return (

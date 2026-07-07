@@ -3,10 +3,10 @@ import {
   type MobileDateTimePickerProps as MuiDateTimePickerProps,
 } from '@mui/x-date-pickers/MobileDateTimePicker';
 
-type InputFieldProps = {
+interface InputFieldProps {
   error?: boolean;
   helperText?: string;
-};
+}
 
 export type DateTimePickerProps = Omit<MuiDateTimePickerProps<Date>, 'renderInput'> &
   InputFieldProps;

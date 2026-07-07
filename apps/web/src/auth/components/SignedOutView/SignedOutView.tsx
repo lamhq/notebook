@@ -2,10 +2,10 @@ import Button from '@mui/material/Button';
 import { Link } from 'react-router';
 import GuestLayout from '../../../common/templates/GuestLayout';
 
-export type SignedOutViewProps = {
+export interface SignedOutViewProps {
   onSignIn: () => void;
   homeRoute: string;
-};
+}
 
 export default function SignedOutView({ onSignIn, homeRoute }: SignedOutViewProps) {
   return (

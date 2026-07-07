@@ -1,8 +1,8 @@
 import { SnackbarProvider } from 'notistack';
 
-export type ToastProviderProps = {
+export interface ToastProviderProps {
   children: React.ReactNode;
-};
+}
 
 export default function ToastProvider({ children }: ToastProviderProps) {
   return (

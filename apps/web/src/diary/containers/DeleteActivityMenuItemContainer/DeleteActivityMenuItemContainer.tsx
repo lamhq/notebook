@@ -3,10 +3,10 @@ import { activityToDeleteAtom } from '../../atoms';
 import DeleteActivityMenuItem from '../../components/DeleteActivityMenuItem';
 import type { Activity } from '../../types';
 
-export type DeleteActivityMenuItemContainerProps = {
+export interface DeleteActivityMenuItemContainerProps {
   activity: Activity;
   onClick?: () => void;
-};
+}
 
 export default function DeleteActivityMenuItemContainer({
   activity,
