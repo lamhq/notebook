@@ -11,7 +11,12 @@ import storybook from 'eslint-plugin-storybook';
 import testingLibrary from 'eslint-plugin-testing-library';
 import { defineConfig } from 'eslint/config';
 import globals from 'globals';
+import path from 'path';
 import tseslint from 'typescript-eslint';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export default defineConfig(
   {
@@ -51,7 +56,7 @@ export default defineConfig(
     languageOptions: {
       parserOptions: {
         projectService: true,
-        tsconfigRootDir: import.meta.dirname,
+        tsconfigRootDir: __dirname,
       },
     },
     extends: [
@@ -82,7 +87,7 @@ export default defineConfig(
       globals: globals.browser,
       parserOptions: {
         projectService: true,
-        tsconfigRootDir: import.meta.dirname,
+        tsconfigRootDir: __dirname,
       },
     },
     settings: {
@@ -110,8 +115,8 @@ export default defineConfig(
 
   // Storybook
   {
+    ...storybook.configs['flat/recommended'],
     name: 'Storybook',
-    extends: [...storybook.configs['flat/recommended']],
   },
 
   // Jest test files
