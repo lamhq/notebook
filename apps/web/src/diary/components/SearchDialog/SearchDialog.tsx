@@ -3,15 +3,16 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import SearchForm from '../../containers/SearchForm/SearchForm';
-import type { ActivityFilter } from '../../types';
+import SearchActivityForm, {
+  type SearchActivityFormData,
+} from '../../containers/SearchActivityForm/SearchActivityForm';
 
-export type SearchDialogProps = {
+export interface SearchDialogProps {
   open: boolean;
-  defaultFormValues: ActivityFilter;
+  defaultFormValues: SearchActivityFormData;
   onCancel: () => void;
-  onSubmit: (data: ActivityFilter) => void;
-};
+  onSubmit: (data: SearchActivityFormData) => void;
+}
 
 export default function SearchDialog({
   open,
@@ -23,7 +24,7 @@ export default function SearchDialog({
     <Dialog open={open} onClose={onCancel} keepMounted={false}>
       <DialogTitle>Search activities</DialogTitle>
       <DialogContent>
-        <SearchForm defaultValues={defaultFormValues} onSubmit={onSubmit} />
+        <SearchActivityForm defaultValues={defaultFormValues} onSubmit={onSubmit} />
       </DialogContent>
       <DialogActions>
         <Button

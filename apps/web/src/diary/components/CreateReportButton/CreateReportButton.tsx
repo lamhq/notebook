@@ -1,18 +1,18 @@
 import AssessmentIcon from '@mui/icons-material/Assessment';
-import Button from '@mui/material/Button';
+import { IconButton } from '@mui/material';
 import { Link as RouterLink } from 'react-router';
 import { CREATE_REPORT_ROUTE } from '../../../routes';
 
 export default function CreateReportButton() {
   return (
-    <Button
-      component={RouterLink}
-      to={CREATE_REPORT_ROUTE}
-      startIcon={<AssessmentIcon />}
+    <IconButton
+      color="default"
       size="small"
-      variant="outlined"
+      to={CREATE_REPORT_ROUTE}
+      component={RouterLink}
+      title="Create Spending Report"
     >
-      Create Report
-    </Button>
+      <AssessmentIcon />
+    </IconButton>
   );
 }

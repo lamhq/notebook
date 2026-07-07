@@ -11,7 +11,6 @@ import * as yup from 'yup';
 import Actions from '../../../common/components/Actions';
 import DateTimePicker from '../../../common/components/DateTimePicker';
 import TagsSelectContainer from '../../containers/TagsSelectContainer';
-import type { UpdateActivityFormData } from '../../types';
 import { getTotalAmounts as calcAmounts } from '../../utils';
 
 const activityFormSchema = yup.object().shape({
@@ -22,10 +21,18 @@ const activityFormSchema = yup.object().shape({
   outcome: yup.string(),
 });
 
-export type UpdateActivityFormProps = {
+interface UpdateActivityFormData {
+  content: string;
+  time: Date;
+  tags: string[];
+  income?: string;
+  outcome?: string;
+}
+
+export interface UpdateActivityFormProps {
   defaultValues: UpdateActivityFormData;
   onSubmit: (data: UpdateActivityFormData) => void | Promise<void>;
-};
+}
 
 export default function UpdateActivityForm({
   defaultValues,

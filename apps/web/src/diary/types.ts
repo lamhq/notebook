@@ -7,23 +7,6 @@ export interface Activity {
   outcome?: number;
 }
 
-export interface AddActivityFormData {
-  content: string;
-  time: Date;
-  tags: string[];
-  income?: string;
-  outcome?: string;
-  splitByTag?: boolean;
-}
-
-export interface UpdateActivityFormData {
-  content: string;
-  time: Date;
-  tags: string[];
-  income?: string;
-  outcome?: string;
-}
-
 export interface Revenue {
   income: number;
   outcome: number;
@@ -38,28 +21,20 @@ export enum TimeRange {
   Custom = 'custom',
 }
 
-export interface ActivityFilter {
-  text: string;
-  tags: string[];
-  timeRange: TimeRange;
-  page: number;
-  pageSize: number;
-  from?: Date;
-  to?: Date;
-}
-
 export interface Report {
   id: string;
   name: string;
-  paymentQR: string;
-  filters: ActivityFilter;
-  transactions: Activity[];
+  paymentQR?: string;
   pdfUrl: string;
   createdAt: Date;
 }
 
-export interface CreateReportFormData {
-  name: string;
-  paymentQR: string;
-  filters: ActivityFilter;
+export interface ActivityQuery {
+  text?: string;
+  tags?: string[];
+  timeRange?: TimeRange;
+  from?: Date;
+  to?: Date;
+  page: number;
+  pageSize: number;
 }

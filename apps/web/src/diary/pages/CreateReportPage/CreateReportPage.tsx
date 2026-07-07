@@ -1,33 +1,36 @@
-import { useAtomValue } from 'jotai';
 import { useNavigate } from 'react-router';
 import { Title } from '../../../common/templates/MainLayout';
 import { useErrorHandler } from '../../../error';
 import { REPORTS_ROUTE } from '../../../routes';
-import { activityFilterAtom } from '../../atoms';
-import CreateReportForm from '../../containers/CreateReportForm';
-import { useAllActivities, useCreateReport } from '../../hooks';
-import type { CreateReportFormData } from '../../types';
+import CreateReportForm, {
+  type ReportFormData,
+} from '../../containers/CreateReportForm';
+import { useActivityQuery, useCreateReport } from '../../hooks';
 
-function CreateReportPageContent() {
+export default function CreateReportPage() {
   const navigate = useNavigate();
   const handleError = useErrorHandler();
-  const filter = useAtomValue(activityFilterAtom);
-  const activities = useAllActivities(filter);
+  const { query: filter } = useActivityQuery();
   const createReport = useCreateReport();
 
-  const defaultValues: CreateReportFormData = {
+  const defaultValues: ReportFormData = {
     name: '',
-    paymentQR: '',
-    filters: filter,
+    text: filter.text,
+    tags: filter.tags,
+    timeRange: filter.timeRange,
+    from: filter.from,
+    to: filter.to,
   };
 
-  const handleSubmit = async (data: CreateReportFormData) => {
+  const handleSubmit = async (data: ReportFormData) => {
     try {
       const report = await createReport({
         name: data.name,
         paymentQR: data.paymentQR,
-        filters: data.filters,
-        transactions: activities,
+        text: data.text,
+        tags: data.tags,
+        from: data.from,
+        to: data.to,
       });
       void navigate(`/reports/${report.id}`);
     } catch (error) {
@@ -49,8 +52,4 @@ function CreateReportPageContent() {
       />
     </>
   );
-}
-
-export default function CreateReportPage() {
-  return <CreateReportPageContent />;
 }

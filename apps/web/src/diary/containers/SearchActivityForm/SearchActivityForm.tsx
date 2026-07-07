@@ -3,17 +3,21 @@ import TextField from '@mui/material/TextField';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import { DesktopDatePicker } from '../../../common/components/DatePicker';
 import TimeRangeSelect from '../../components/TimeRangeSelect';
-import type { ActivityFilter } from '../../types';
-import { TimeRange } from '../../types';
+import { TimeRange, type ActivityQuery } from '../../types';
 import TagsSelectContainer from '../TagsSelectContainer';
 
-export type SearchFormProps = {
-  defaultValues: ActivityFilter;
-  onSubmit: (data: ActivityFilter) => void;
-};
+export type SearchActivityFormData = Omit<ActivityQuery, 'page' | 'pageSize'>;
 
-export default function SearchForm({ defaultValues, onSubmit }: SearchFormProps) {
-  const { control, handleSubmit } = useForm<ActivityFilter>({
+export interface SearchActivityFormProps {
+  defaultValues: SearchActivityFormData;
+  onSubmit: (data: SearchActivityFormData) => void;
+}
+
+export default function SearchActivityForm({
+  defaultValues,
+  onSubmit,
+}: SearchActivityFormProps) {
+  const { control, handleSubmit } = useForm<SearchActivityFormData>({
     defaultValues,
   });
   const timeRange = useWatch({ control, name: 'timeRange' });

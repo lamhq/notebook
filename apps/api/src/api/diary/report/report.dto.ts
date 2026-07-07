@@ -10,7 +10,7 @@ export class CreateReportDto {
   @ApiProperty({ description: 'Bank transfer QR code image URL' })
   @IsOptional()
   @IsUrl()
-  paymentQR: string;
+  paymentQR?: string;
 
   @ApiProperty({ description: 'Filter activities by text' })
   @IsOptional()
