@@ -1,24 +1,19 @@
-import DeleteIcon from '@mui/icons-material/Delete';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import { format } from 'date-fns/format';
-import { useSetAtom } from 'jotai';
 import { Link as RouterLink } from 'react-router';
 import { Title } from '../../../common/templates/MainLayout';
-import { reportToDeleteAtom } from '../../atoms';
-import DeleteReportDialogContainer from '../../containers/DeleteReportDialogContainer';
+import DeleteReportButton from '../../containers/DeleteReportButton';
 import { useReports } from '../../hooks';
 import type { Report } from '../../types';
 
 function ReportListContent() {
   const reports = useReports();
-  const setReportToDelete = useSetAtom(reportToDeleteAtom);
 
   if (reports.length === 0) {
     return (
@@ -33,19 +28,7 @@ function ReportListContent() {
       {reports.map((report: Report, index: number) => (
         <Box key={report.id}>
           {index > 0 && <Divider />}
-          <ListItem
-            secondaryAction={
-              <IconButton
-                edge="end"
-                color="error"
-                onClick={() => {
-                  setReportToDelete(report);
-                }}
-              >
-                <DeleteIcon />
-              </IconButton>
-            }
-          >
+          <ListItem secondaryAction={<DeleteReportButton report={report} />}>
             <ListItemText
               primary={
                 <Button
@@ -70,7 +53,6 @@ export default function ListReportsPage() {
     <>
       <Title>Reports</Title>
       <ReportListContent />
-      <DeleteReportDialogContainer />
     </>
   );
 }

@@ -47,16 +47,6 @@ export default function ReportContent({ report }: ReportContentProps) {
               <TableCell>{format(report.createdAt, 'yyyy-MM-dd hh:mm a')}</TableCell>
             </TableRow>
             <TableRow>
-              <TableCell sx={{ fontWeight: 'bold' }}>Contain Tags</TableCell>
-              <TableCell>
-                <TagList tags={report.filters.tags ?? []} />
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell sx={{ fontWeight: 'bold' }}>Contain Text</TableCell>
-              <TableCell>{report.filters.text}</TableCell>
-            </TableRow>
-            <TableRow>
               <TableCell sx={{ fontWeight: 'bold' }}>From</TableCell>
               <TableCell>
                 {report.filters.from
@@ -69,6 +59,16 @@ export default function ReportContent({ report }: ReportContentProps) {
               <TableCell>
                 {report.filters.to ? format(report.filters.to, 'yyyy-MM-dd') : ''}
               </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell sx={{ fontWeight: 'bold' }}>Contain Tags</TableCell>
+              <TableCell>
+                <TagList tags={report.filters.tags ?? []} />
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell sx={{ fontWeight: 'bold' }}>Contain Text</TableCell>
+              <TableCell>{report.filters.text}</TableCell>
             </TableRow>
           </TableBody>
         </Table>
