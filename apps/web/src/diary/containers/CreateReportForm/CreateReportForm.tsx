@@ -136,16 +136,11 @@ export default function CreateReportForm({
         )}
         <Grid size={{ xs: 12 }}>
           <Actions>
-            <Button
-              onClick={onCancel}
-              disabled={isSubmitting}
-              variant="contained"
-              color="secondary"
-            >
+            <Button onClick={onCancel} variant="contained" color="secondary">
               Cancel
             </Button>
             <Button
-              disabled={isSubmitting}
+              loading={isSubmitting}
               type="submit"
               variant="contained"
               color="primary"

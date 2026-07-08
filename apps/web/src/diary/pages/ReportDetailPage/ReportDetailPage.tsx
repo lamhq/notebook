@@ -2,10 +2,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import DownloadIcon from '@mui/icons-material/Download';
 import ListIcon from '@mui/icons-material/List';
 import QrCodeIcon from '@mui/icons-material/QrCode';
-import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import IconButton from '@mui/material/IconButton/IconButton';
 import { useSetAtom } from 'jotai';
 import { QRCodeSVG } from 'qrcode.react';
 import { useState } from 'react';
@@ -18,7 +18,7 @@ import ReportContent from '../../components/ReportContent';
 import DeleteReportDialogContainer from '../../containers/DeleteReportDialogContainer';
 import { useReport } from '../../hooks';
 
-function ReportDetailContent() {
+export default function ReportDetailPage() {
   const { id } = useParams<{ id: string }>();
   const report = useReport(id ?? '');
   const setReportToDelete = useSetAtom(reportToDeleteAtom);
@@ -36,43 +36,34 @@ function ReportDetailContent() {
       <Title>{report.name}</Title>
       <Toolbar>
         <LeftArea>
-          <Button
-            component={RouterLink}
-            to={REPORTS_ROUTE}
-            startIcon={<ListIcon />}
-            size="small"
-          >
-            Reports
-          </Button>
-          <Button
-            onClick={handleDownload}
-            startIcon={<DownloadIcon />}
-            size="small"
-            variant="outlined"
-          >
-            Download
-          </Button>
-          <Button
+          <IconButton component={RouterLink} to={REPORTS_ROUTE} title="Reports">
+            <ListIcon />
+          </IconButton>
+
+          <IconButton onClick={handleDownload} title="Download" size="small">
+            <DownloadIcon />
+          </IconButton>
+
+          <IconButton
             onClick={() => {
               setQrOpen(true);
             }}
-            startIcon={<QrCodeIcon />}
+            title="View QR Code"
             size="small"
-            variant="outlined"
           >
-            View QR Code
-          </Button>
-          <Button
+            <QrCodeIcon />
+          </IconButton>
+
+          <IconButton
             onClick={() => {
               setReportToDelete(report);
             }}
-            startIcon={<DeleteIcon />}
+            title="Delete"
             size="small"
             color="error"
-            variant="outlined"
           >
-            Delete
-          </Button>
+            <DeleteIcon />
+          </IconButton>
         </LeftArea>
       </Toolbar>
 
@@ -95,8 +86,4 @@ function ReportDetailContent() {
       <DeleteReportDialogContainer />
     </>
   );
-}
-
-export default function ReportDetailPage() {
-  return <ReportDetailContent />;
 }

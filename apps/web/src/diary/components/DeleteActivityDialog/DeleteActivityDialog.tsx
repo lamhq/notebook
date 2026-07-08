@@ -2,7 +2,6 @@ import {
   Alert,
   Box,
   Button,
-  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -67,8 +66,7 @@ export default function DeleteActivityDialog({
           variant="contained"
           color="error"
           onClick={onDelete}
-          disabled={isDeleting}
-          startIcon={isDeleting ? <CircularProgress size={20} /> : undefined}
+          loading={isDeleting}
         >
           Delete
         </Button>

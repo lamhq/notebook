@@ -27,6 +27,12 @@ export interface Report {
   paymentQR?: string;
   pdfUrl: string;
   createdAt: Date;
+  filters: {
+    tags?: string[];
+    text?: string;
+    from?: Date;
+    to?: Date;
+  };
 }
 
 export interface ActivityQuery {
@@ -37,4 +43,39 @@ export interface ActivityQuery {
   to?: Date;
   page: number;
   pageSize: number;
+}
+
+export interface SearchActivityDto {
+  text?: string;
+  tags?: string[];
+  from?: string;
+  to?: string;
+  limit?: number;
+  offset?: number;
+}
+
+export interface AddActivityDto {
+  content: string;
+  time: Date;
+  tags: string[];
+  income?: string;
+  outcome?: string;
+  splitByTag?: boolean;
+}
+
+export interface UpdateActivityDto {
+  content: string;
+  time: Date;
+  tags: string[];
+  income?: string;
+  outcome?: string;
+}
+
+export interface CreateReportDto {
+  name: string;
+  paymentQR?: string;
+  text?: string;
+  tags?: string[];
+  from?: Date;
+  to?: Date;
 }

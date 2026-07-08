@@ -6,6 +6,7 @@ import CreateReportForm, {
   type ReportFormData,
 } from '../../containers/CreateReportForm';
 import { useActivityQuery, useCreateReport } from '../../hooks';
+import { getTimeRange } from '../../utils';
 
 export default function CreateReportPage() {
   const navigate = useNavigate();
@@ -23,14 +24,15 @@ export default function CreateReportPage() {
   };
 
   const handleSubmit = async (data: ReportFormData) => {
+    const [from, to] = getTimeRange(data);
     try {
       const report = await createReport({
         name: data.name,
         paymentQR: data.paymentQR,
         text: data.text,
         tags: data.tags,
-        from: data.from,
-        to: data.to,
+        from,
+        to,
       });
       void navigate(`/reports/${report.id}`);
     } catch (error) {
