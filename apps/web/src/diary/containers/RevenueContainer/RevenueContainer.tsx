@@ -2,10 +2,11 @@ import type { MouseEventHandler } from 'react';
 import { useState } from 'react';
 import SuspenseWrapper from '../../../common/components/SuspenseWrapper';
 import Revenue from '../../components/Revenue/Revenue';
-import { useRevenue } from '../../hooks';
+import { useActivityQuery, useRevenue } from '../../hooks';
 
 function FetchRevenue() {
-  const { income, outcome } = useRevenue();
+  const { query } = useActivityQuery();
+  const { income, outcome } = useRevenue(query);
   const [popoverAnchor, setPopoverAnchor] = useState<Element | undefined>();
   const popoverVisible = Boolean(popoverAnchor);
   const popoverId = popoverVisible ? 'revenue-popover' : undefined;

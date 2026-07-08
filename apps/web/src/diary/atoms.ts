@@ -1,5 +1,5 @@
 import { atom } from 'jotai';
-import { type Activity, type ActivityQuery, type Report } from './types';
+import { TimeRange, type Activity, type ActivityQuery, type Report } from './types';
 
 /**
  * Store the filter of activities
@@ -7,6 +7,7 @@ import { type Activity, type ActivityQuery, type Report } from './types';
 export const activityQueryAtom = atom<ActivityQuery>({
   pageSize: 10,
   page: 1,
+  timeRange: TimeRange.ThisMonth,
 });
 
 /**

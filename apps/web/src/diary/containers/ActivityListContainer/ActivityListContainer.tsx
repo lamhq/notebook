@@ -5,13 +5,7 @@ import { useActivityQuery, usePaginatedActivities } from '../../hooks';
 
 function FetchActivityList() {
   const { query, updateQuery } = useActivityQuery();
-  const [activities, total] = usePaginatedActivities({
-    ...query,
-    limit: query.pageSize,
-    offset: (query.page - 1) * query.pageSize,
-    from: query.from?.toISOString(),
-    to: query.to?.toISOString(),
-  });
+  const [activities, total] = usePaginatedActivities(query);
   const pageCount = Math.ceil(total / query.pageSize);
 
   const handlePageChange = (newPage: number) => {
