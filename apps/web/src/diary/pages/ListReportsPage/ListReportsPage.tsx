@@ -5,9 +5,9 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
-import { format } from 'date-fns/format';
 import { Link as RouterLink } from 'react-router';
 import { Title } from '../../../common/templates/MainLayout';
+import { formatDateTime } from '../../../common/utils';
 import DeleteReportButton from '../../containers/DeleteReportButton';
 import { useReports } from '../../hooks';
 import type { Report } from '../../types';
@@ -39,7 +39,7 @@ function ReportListContent() {
                   {report.name}
                 </Button>
               }
-              secondary={format(new Date(report.createdAt), 'dd/MM/yyyy HH:mm')}
+              secondary={formatDateTime(new Date(report.createdAt))}
             />
           </ListItem>
         </Box>

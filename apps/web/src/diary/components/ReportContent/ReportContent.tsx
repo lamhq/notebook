@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
-import { format } from 'date-fns';
+import { formatDate, formatDateTime } from '../../../common/utils';
 import type { Report } from '../../types';
 import TagList from '../TagList';
 
@@ -44,20 +44,20 @@ export default function ReportContent({ report }: ReportContentProps) {
           <TableBody>
             <TableRow>
               <TableCell sx={{ fontWeight: 'bold' }}>Created At</TableCell>
-              <TableCell>{format(report.createdAt, 'yyyy-MM-dd hh:mm a')}</TableCell>
+              <TableCell>
+                {formatDateTime(report.createdAt, 'yyyy-MM-dd hh:mm a')}
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableCell sx={{ fontWeight: 'bold' }}>From</TableCell>
               <TableCell>
-                {report.filters.from
-                  ? format(report.filters.from, 'yyyy-MM-dd')
-                  : ''}
+                {report.filters.from ? formatDate(report.filters.from) : ''}
               </TableCell>
             </TableRow>
             <TableRow>
               <TableCell sx={{ fontWeight: 'bold' }}>To</TableCell>
               <TableCell>
-                {report.filters.to ? format(report.filters.to, 'yyyy-MM-dd') : ''}
+                {report.filters.to ? formatDate(report.filters.to) : ''}
               </TableCell>
             </TableRow>
             <TableRow>
