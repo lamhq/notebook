@@ -46,7 +46,7 @@ export class ReportService {
     });
 
     // Generate PDF buffer from markdown
-    const markdown = this.generateMarkdown(dto.name, dto.paymentQR, transactions);
+    const markdown = this.generateMarkdown(dto.name, transactions, dto.paymentQR);
     const pdf = await mdToPdf({ content: markdown }, { document_title: dto.name });
     const pdfBuffer = pdf.content;
 
@@ -89,8 +89,8 @@ export class ReportService {
 
   private generateMarkdown(
     name: string,
-    paymentQR: string,
     transactions: Activity[],
+    paymentQR?: string,
   ): string {
     const total =
       transactions.reduce((sum, t) => {
@@ -117,7 +117,7 @@ Tổng: ${total.toLocaleString('vi-VN')}
 | :---- | :-------- | -------: |
 ${rows}
 
-![](${paymentQR})
+${paymentQR ? `![](${paymentQR})` : ''}
 `;
   }
 

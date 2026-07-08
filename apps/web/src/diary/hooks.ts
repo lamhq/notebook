@@ -57,7 +57,7 @@ export function usePaginatedActivities(query: SearchActivityDto) {
           method: 'GET',
           params: query,
         });
-        const value = resp.headers['x-total-count'];
+        const value = resp.headers['x-total-count'] as string | undefined;
         const total = typeof value === 'string' ? parseInt(value, 10) : 0;
         return [resp.data.map(transformActivityResponse), total] as const;
       },
@@ -67,7 +67,6 @@ export function usePaginatedActivities(query: SearchActivityDto) {
 }
 
 export function useRevenue(query: SearchActivityDto): Revenue {
-  const { limit: _l, offset: _o, ...rest } = query;
   const { data } = useSuspenseQuery(
     queryOptions({
       queryKey: [...REVENUE_QUERY_KEY, query],
@@ -75,7 +74,7 @@ export function useRevenue(query: SearchActivityDto): Revenue {
         const resp = await apiClient<Revenue>({
           url: '/diary/stat/revenue',
           method: 'GET',
-          params: rest,
+          params: query,
         });
         return resp.data;
       },

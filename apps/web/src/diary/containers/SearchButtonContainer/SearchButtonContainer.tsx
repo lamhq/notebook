@@ -55,7 +55,7 @@ function getTimeRange(formData: SearchActivityFormData): [Date?, Date?] {
 }
 
 function buildActivityQuery(filter: SearchActivityFormData): ActivityQuery {
-  const result: ActivityQuery = { limit: 10, offset: 0 };
+  const result: ActivityQuery = { page: 1, pageSize: 10 };
 
   // text filter
   if (filter.text) {
@@ -68,12 +68,15 @@ function buildActivityQuery(filter: SearchActivityFormData): ActivityQuery {
   }
 
   // time range filter
+  result.timeRange = filter.timeRange;
+
+  // from/to filter
   const [from, to] = getTimeRange(filter);
   if (from) {
-    result.from = from.toISOString();
+    result.from = from;
   }
   if (to) {
-    result.to = to.toISOString();
+    result.to = to;
   }
 
   return result;
@@ -85,7 +88,7 @@ export default function SearchButtonContainer() {
   const defaultFormValues: SearchActivityFormData = {
     text: query.text ?? '',
     tags: query.tags ?? [],
-    timeRange: TimeRange.ThisMonth,
+    timeRange: query.timeRange ?? TimeRange.ThisMonth,
     from: query.from ? new Date(query.from) : undefined,
     to: query.to ? new Date(query.to) : undefined,
   };

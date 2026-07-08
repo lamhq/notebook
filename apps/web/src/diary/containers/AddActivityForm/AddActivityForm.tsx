@@ -15,7 +15,7 @@ import DateTimePicker from '../../../common/components/DateTimePicker';
 import { getTotalAmounts as calcAmounts } from '../../utils';
 import TagsSelectContainer from '../TagsSelectContainer';
 
-interface AddActivityFormData {
+export interface AddActivityFormData {
   content: string;
   time: Date;
   tags: string[];

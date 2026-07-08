@@ -15,7 +15,6 @@ export interface AppConfig extends ConfigObject {
 }
 
 export const configFactory: ConfigFactory<AppConfig> = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { entities, ...dbConfig } = dbConfigFactory();
 
   const region = process.env.AWS_REGION;

@@ -21,7 +21,7 @@ const activityFormSchema = yup.object().shape({
   outcome: yup.string(),
 });
 
-interface UpdateActivityFormData {
+export interface UpdateActivityFormData {
   content: string;
   time: Date;
   tags: string[];

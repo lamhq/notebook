@@ -35,7 +35,7 @@ export class S3Service {
       Body: buffer,
       ContentType: contentType,
       ContentDisposition: downloadName
-        ? `attachment; filename="${downloadName}"`
+        ? `inline; filename="${downloadName}"`
         : undefined,
     });
 

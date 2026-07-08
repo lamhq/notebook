@@ -10,16 +10,16 @@ import { useActivityQuery, useCreateReport } from '../../hooks';
 export default function CreateReportPage() {
   const navigate = useNavigate();
   const handleError = useErrorHandler();
-  const { query: filter } = useActivityQuery();
+  const { query } = useActivityQuery();
   const createReport = useCreateReport();
 
   const defaultValues: ReportFormData = {
     name: '',
-    text: filter.text,
-    tags: filter.tags,
-    timeRange: filter.timeRange,
-    from: filter.from,
-    to: filter.to,
+    text: query.text,
+    tags: query.tags,
+    timeRange: query.timeRange,
+    from: query.from,
+    to: query.to,
   };
 
   const handleSubmit = async (data: ReportFormData) => {

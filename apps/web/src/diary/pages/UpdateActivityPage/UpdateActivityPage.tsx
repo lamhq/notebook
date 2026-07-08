@@ -2,9 +2,10 @@ import { useNavigate, useParams } from 'react-router';
 import SuspenseWrapper from '../../../common/components/SuspenseWrapper';
 import { Title } from '../../../common/templates/MainLayout';
 import { useErrorHandler } from '../../../error';
-import UpdateActivityForm from '../../containers/UpdateActivityForm';
+import UpdateActivityForm, {
+  type UpdateActivityFormData,
+} from '../../containers/UpdateActivityForm';
 import { useActivity, useUpdateActivity } from '../../hooks';
-import type { UpdateActivityFormData } from '../../types';
 
 function FetchActivityForm({ activityId }: { activityId: string }) {
   const activity = useActivity(activityId);
