@@ -1,14 +1,19 @@
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { Link as RouterLink } from 'react-router';
 import { Title } from '../../../common/templates/MainLayout';
 import { formatDateTime } from '../../../common/utils';
 import DeleteReportButton from '../../containers/DeleteReportButton';
+import DownloadReportButton from '../../containers/DownloadReportButton';
+import ReportQRCodeButton from '../../containers/ReportQRCodeButton';
 import { useReports } from '../../hooks';
 import type { Report } from '../../types';
 
@@ -24,27 +29,40 @@ function ReportListContent() {
   }
 
   return (
-    <List disablePadding>
-      {reports.map((report: Report, index: number) => (
-        <Box key={report.id}>
-          {index > 0 && <Divider />}
-          <ListItem secondaryAction={<DeleteReportButton report={report} />}>
-            <ListItemText
-              primary={
+    <TableContainer component={Paper}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>Name</TableCell>
+            <TableCell>Created At</TableCell>
+            <TableCell></TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {reports.map((report: Report) => (
+            <TableRow key={report.id} hover>
+              <TableCell>
                 <Button
                   component={RouterLink}
                   to={`/reports/${report.id}`}
-                  sx={{ p: 0, textTransform: 'none' }}
+                  sx={{ p: 0, textTransform: 'none', justifyContent: 'flex-start' }}
                 >
                   {report.name}
                 </Button>
-              }
-              secondary={formatDateTime(new Date(report.createdAt))}
-            />
-          </ListItem>
-        </Box>
-      ))}
-    </List>
+              </TableCell>
+              <TableCell>{formatDateTime(new Date(report.createdAt))}</TableCell>
+              <TableCell align="right">
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
+                  <ReportQRCodeButton url={report.pdfUrl} />
+                  <DownloadReportButton downloadUrl={report.pdfUrl} />
+                  <DeleteReportButton report={report} />
+                </Box>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 }
 
