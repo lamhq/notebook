@@ -91,7 +91,9 @@ jobs:
           retention-days: 30
 
   deploy-dev:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    # TODO: Uncomment the following line after testing the workflow with pull requests to main branch
+    # if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'pull_request' && github.base_ref == 'main'
     runs-on: ubuntu-latest
     environment: dev
 
