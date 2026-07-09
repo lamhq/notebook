@@ -16,8 +16,22 @@ module "api_service" {
   handler  = "lambda.handler"
 
   environment_variables = {
-    DB_URI   = module.mongodb_cluster.connection_string
-    NO_COLOR = "true"
+    DB_URI             = module.mongodb_cluster.connection_string
+    AWS_REGION         = var.aws_region
+    AWS_S3_BUCKET      = module.app_storage.bucket_id
+    AWS_CLOUDFRONT_URL = var.domain
+    NO_COLOR           = "true"
   }
-  iam_policy_statements = [] # Only needs CloudWatch logs (auto-generated in module)
+
+  iam_policy_statements = [
+    # allow lambda to access s3 bucket for uploading/deleting reports
+    {
+      Effect = "Allow"
+      Action = [
+        "s3:PutObject",
+        "s3:DeleteObject"
+      ]
+      Resource = "${module.app_storage.bucket_arn}/media/reports/*"
+    }
+  ]
 }

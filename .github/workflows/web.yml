@@ -65,6 +65,9 @@ jobs:
 
       # from `apps/api/.env`
       DB_URI: 'mongodb://root:password@localhost:27017/test?authSource=admin'
+      AWS_REGION: 'ap-southeast-1'
+      AWS_S3_BUCKET: 'notebook-dev-puma'
+      AWS_CLOUDFRONT_URL: 'https://nb1.lamhq.com'
 
     steps:
       - name: Checkout code

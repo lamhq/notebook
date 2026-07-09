@@ -71,7 +71,7 @@ Each resource in a module is tightly coupled with each other. For examples:
 - An API Gateway with its stages, resources, methods, and integrations.
 - A Cognito User Pool with its clients, identity providers, domain.
 
-## Prerequisites
+## Set up cloud services & Resources
 
 Before you begin, ensure you have:
 
@@ -80,8 +80,6 @@ Before you begin, ensure you have:
 - `GITHUB_TOKEN` environment variable set (for managing GitHub resources)
 - `CLOUDFLARE_API_TOKEN` environment variable set (for managing Cloudflare DNS)
 - `MONGODB_ATLAS_PUBLIC_KEY` and `MONGODB_ATLAS_PRIVATE_KEY` environment variables set (for managing database credentials)
-
-## Preparation
 
 ### 1. AWS Setup
 
@@ -147,11 +145,17 @@ Set the Terraform token as `GITHUB_TOKEN` environment variable.
 - Create `config/prod.tfvars` with production variable values (see `apps/infra/config/tfvars.example` for template)
 - Create `config/dev.tfvars` with development variable values
 
-## Deployment
+## Create/Update Infrastructure
+
+All commands should be executed in the `apps/infra` directory:
+
+```bash
+cd apps/infra
+```
 
 ### Initialize Terraform Backend
 
-First, initialize the Terraform backend with the S3 configuration:
+Initialize the Terraform backend with the S3 configuration:
 
 ```bash
 terraform init -backend-config=config/s3.tfbackend
