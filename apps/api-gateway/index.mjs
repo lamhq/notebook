@@ -26,6 +26,11 @@ const publicRoute = process.env.PUBLIC_ROUTE
 // Initialize and start server
 async function startServer() {
   try {
+    // Healthcheck endpoint
+    app.get('/api-gtw-health', (req, res) => {
+      res.status(200).json({ status: 'ok', message: 'API Gateway healthy' });
+    });
+
     // Fetch OIDC discovery configuration
     const discoveryResponse = await fetch(discoveryUrl);
     if (!discoveryResponse.ok) {
@@ -59,7 +64,7 @@ async function startServer() {
 
     // Apply unless clause if public route is defined
     if (publicRoute) {
-      checkJwt = checkJwt.unless({ path: publicRoute });
+      checkJwt = checkJwt.unless({ path: [publicRoute, '/api-gtw-health'] });
     }
 
     // Apply JWT validation middleware before proxy

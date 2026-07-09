@@ -15,7 +15,8 @@ setup.beforeAll(async () => {
   const composeFile = 'docker-compose.yml';
   await new DockerComposeEnvironment(composeFilePath, composeFile)
     .withWaitStrategy('mongodb-1', Wait.forLogMessage('Waiting for connections'))
-    .withWaitStrategy('api-gateway-1', Wait.forLogMessage('Proxy server running'))
+    .withWaitStrategy('api-gateway-1', Wait.forHttp('/api-gtw-health', 4068))
+    .withWaitStrategy('api-service-1', Wait.forHttp('/', 4069))
     .withNoRecreate()
     .withAutoCleanup(false)
     .up();

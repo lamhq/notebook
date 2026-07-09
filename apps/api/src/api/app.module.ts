@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { AppController } from './app.controller';
 import { configFactory } from './config';
 import { DiaryModule } from './diary/diary.module';
 
@@ -28,5 +29,6 @@ import { DiaryModule } from './diary/diary.module';
     }),
     DiaryModule,
   ],
+  controllers: [AppController],
 })
 export class AppModule {}

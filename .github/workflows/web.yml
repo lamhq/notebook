@@ -12,7 +12,7 @@ on:
     branches: [main]
     paths:
       - 'apps/web/**'
-      - 'packages/**'
+      - 'apps/web-e2e/**'
       - '.github/workflows/**'
 
   push:
@@ -20,7 +20,7 @@ on:
     tags: ['web-v*']
     paths:
       - 'apps/web/**'
-      - 'packages/**'
+      - 'apps/web-e2e/**'
 
 permissions:
   id-token: write # Allows OIDC token requests
