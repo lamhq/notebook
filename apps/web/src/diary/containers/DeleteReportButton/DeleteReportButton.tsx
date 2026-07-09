@@ -22,7 +22,7 @@ export default function DeleteReportButton({ report }: DeleteReportButtonProps) 
   const handleDelete = async () => {
     try {
       const confirmed = await confirm(
-        `Are you sure you want to delete report "${report.name}"?`,
+        `Are you sure to delete report "${report.name}"?`,
         {
           severity: 'error',
         },

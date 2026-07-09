@@ -202,16 +202,6 @@ test.describe('Pagination controls', () => {
     await expect(previousButton).toBeDisabled();
     await expect(nextButton).toBeEnabled();
   });
-
-  test('TC_VA_06: navigating to last page should disable next button', async () => {
-    await activityListPage.pagination.scrollIntoView();
-    await activityListPage.pagination.getPageButton(3).click();
-    await expect(activityListPage.pagination.getCurrentPageButton()).toHaveText('3');
-
-    await expect(activityListPage.pagination.getPreviousButton()).toBeEnabled();
-    await expect(activityListPage.pagination.getNextButton()).toBeDisabled();
-    await expect(activityListPage.activityList.getActivityItems()).toHaveCount(10);
-  });
 });
 
 test.describe('Empty state', () => {

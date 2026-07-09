@@ -28,7 +28,7 @@ export default function DeleteActivityMenuItemContainer({
     try {
       const activityTime = formatDateTime(new Date(activity.time));
       const confirmed = await confirm(
-        `Are you sure you want to delete the activity at "${activityTime}"?`,
+        `Are you sure to delete the activity at "${activityTime}"?`,
         {
           severity: 'error',
         },
