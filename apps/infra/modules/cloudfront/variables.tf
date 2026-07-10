@@ -28,10 +28,14 @@ variable "s3_bucket_arn" {
   type        = string
 }
 
-variable "s3_bucket_path" {
-  description = "S3 bucket path for web static files"
+variable "s3_web_path" {
+  description = "S3 path that stores web assets"
   type        = string
-  default     = "web"
+}
+
+variable "s3_media_path" {
+  description = "S3 path that stores public files"
+  type        = string
 }
 
 variable "api_domain" {

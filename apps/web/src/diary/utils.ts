@@ -7,9 +7,13 @@ import { startOfMonth } from 'date-fns/startOfMonth';
 import { startOfWeek } from 'date-fns/startOfWeek';
 import { startOfYear } from 'date-fns/startOfYear';
 import { subMonths } from 'date-fns/subMonths';
-
-import type { ActivityFilter } from './types';
-import { TimeRange } from './types';
+import {
+  TimeRange,
+  type Activity,
+  type ActivityQuery,
+  type Report,
+  type SearchActivityDto,
+} from './types';
 
 /**
  * Calculate total amount of a transaction from a note
@@ -46,10 +50,26 @@ export function getTotalAmounts(note: string): [number, number] {
   return [income, outcome];
 }
 
-function getTimeRangeFromFilter(filter: ActivityFilter): [Date?, Date?] {
+export function transformActivityResponse(data: Activity): Activity {
+  return {
+    ...data,
+    time: new Date(data.time),
+  };
+}
+
+export function transformReportResponse(data: Report): Report {
+  return {
+    ...data,
+    createdAt: new Date(data.createdAt),
+  };
+}
+
+export function getTimeRange(
+  query: Pick<ActivityQuery, 'timeRange' | 'from' | 'to'>,
+): [Date?, Date?] {
   let from: Date | undefined = undefined;
   let to: Date | undefined = undefined;
-  switch (filter.timeRange) {
+  switch (query.timeRange) {
     case TimeRange.ThisWeek:
       from = startOfWeek(new Date(), { weekStartsOn: 1 });
       to = endOfWeek(new Date(), { weekStartsOn: 1 });
@@ -71,12 +91,12 @@ function getTimeRangeFromFilter(filter: ActivityFilter): [Date?, Date?] {
       break;
 
     case TimeRange.Custom:
-      if (!filter.from || !filter.to) {
+      if (!query.from || !query.to) {
         throw new Error('Invalid custom time range');
       }
 
-      from = startOfDay(filter.from);
-      to = endOfDay(filter.to);
+      from = startOfDay(new Date(query.from));
+      to = endOfDay(new Date(query.to));
       break;
 
     case TimeRange.All:
@@ -86,29 +106,30 @@ function getTimeRangeFromFilter(filter: ActivityFilter): [Date?, Date?] {
   return [from, to];
 }
 
-export function buildQueryFromFilter(
-  filter?: ActivityFilter,
-): Record<string, string | string[] | number> {
-  const params: ReturnType<typeof buildQueryFromFilter> = {};
-  if (!filter) return params;
+export function buildSearchActivityDto(query: ActivityQuery): SearchActivityDto {
+  const dto: SearchActivityDto = {
+    offset: (query.page - 1) * query.pageSize,
+    limit: query.pageSize,
+  };
 
-  if (filter.text) {
-    params.text = filter.text;
+  // text filter
+  if (query.text) {
+    dto.text = query.text;
   }
 
-  if (filter.tags.length > 0) {
-    params.tags = filter.tags;
+  // tags filter
+  if (Array.isArray(query.tags) && query.tags.length > 0) {
+    dto.tags = query.tags;
   }
 
-  const [from, to] = getTimeRangeFromFilter(filter);
+  // from/to filter
+  const [from, to] = getTimeRange(query);
   if (from) {
-    params.from = from.toISOString();
+    dto.from = from.toISOString();
   }
   if (to) {
-    params.to = to.toISOString();
+    dto.to = to.toISOString();
   }
 
-  params.limit = filter.pageSize;
-  params.offset = (filter.page - 1) * filter.pageSize;
-  return params;
+  return dto;
 }

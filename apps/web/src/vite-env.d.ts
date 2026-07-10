@@ -1,15 +1,15 @@
-type ViteTypeOptions = {
+interface ViteTypeOptions {
   // By adding this line, you can make the type of ImportMetaEnv strict
   // to disallow unknown keys.
   strictImportMetaEnv: unknown;
-};
+}
 
-type ImportMetaEnv = {
+interface ImportMetaEnv {
   readonly VITE_OIDC_AUTHORITY?: string;
   readonly VITE_OIDC_CLIENT_ID?: string;
   // more env variables...
-};
+}
 
-type ImportMeta = {
+interface ImportMeta {
   readonly env: ImportMetaEnv;
-};
+}

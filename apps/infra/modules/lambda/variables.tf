@@ -27,3 +27,21 @@ variable "iam_policy_statements" {
     Resource = string
   }))
 }
+
+variable "layers" {
+  description = "List of Lambda layer ARNs to attach to the function"
+  type        = list(string)
+  default     = []
+}
+
+variable "memory" {
+  description = "Amount of memory available to the Lambda function (in MB)"
+  type        = number
+  default     = 256
+}
+
+variable "timeout" {
+  description = "The amount of time that Lambda allows a function to run before stopping it (in seconds)"
+  type        = number
+  default     = 10
+}

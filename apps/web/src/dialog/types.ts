@@ -1,9 +1,9 @@
 // #region Dialog APIs
-export type DialogAPI = {
+export interface DialogAPI {
   alert: OpenAlertDialogFn;
   confirm: OpenConfirmDialogFn;
   prompt: OpenPromptDialogFn;
-};
+}
 
 /**
  * Open an alert dialog.
@@ -36,7 +36,7 @@ export type OpenPromptDialogFn = (
 // #region Dialog Props
 export type Severity = 'warning' | 'error' | 'info' | 'success';
 
-export type BaseDialogProps = {
+export interface BaseDialogProps {
   /**
    * Whether the dialog is open
    */
@@ -56,7 +56,7 @@ export type BaseDialogProps = {
    * The text to show in the "Ok" button. Defaults to `'Ok'`.
    */
   okText?: string;
-};
+}
 
 export type AlertDialogProps = BaseDialogProps & {
   /**

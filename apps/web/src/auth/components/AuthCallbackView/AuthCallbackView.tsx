@@ -2,11 +2,11 @@ import Button from '@mui/material/Button';
 import { Link } from 'react-router';
 import GuestLayout from '../../../common/templates/GuestLayout';
 
-export type AuthCallbackViewProps = {
+export interface AuthCallbackViewProps {
   state: 'error' | 'loading';
   errorMessage?: string;
   homeRoute: string;
-};
+}
 
 export default function AuthCallbackView({
   state,

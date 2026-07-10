@@ -22,7 +22,7 @@ export const Default: Story = {
 export const Delete: Story = {
   args: {
     isOpen: true,
-    message: 'Are you sure you want to delete this item?',
+    message: 'Are you sure to delete this item?',
     title: 'Confirm Delete',
     okText: 'Delete',
     cancelText: 'Cancel',

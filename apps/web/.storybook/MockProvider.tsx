@@ -34,9 +34,9 @@ const queryClient = new QueryClient({
 // #endregion
 
 // #region MockProvider
-export type MockProviderProps = {
+export interface MockProviderProps {
   children: ReactNode;
-};
+}
 
 export default function MockProvider({ children }: MockProviderProps) {
   const authContextValue = { isAuthenticated: true } as AuthContextProps;

@@ -178,45 +178,6 @@ Verify that the user can navigate back to the previous page by clicking the Prev
 
 ---
 
-## TC_VA_06 - Navigate to last page
-
-### Description
-
-Verify that the user can navigate to the last page and the Next button is disabled.
-
-### Pre-conditions
-
-- User is authenticated and logged in
-- User has more than 10 activities (multiple pages)
-- Activity list is displayed
-
-### Test Data
-
-- 30 activities
-
-### Test Steps
-
-1. Navigate to the homepage
-2. Scroll to pagination controls
-3. Click on the last page button (`>|`)
-
-### Expected Result
-
-- Current page indicator shows the last page number (e.g., `3`)
-- Activities from the last page are displayed
-- Last page may have fewer items than page size (10)
-- Next button (`>`) is disabled
-- Previous button (`<`) is enabled
-- First page button (`|<`) is clickable
-
-### Postconditions
-
-- Page state is set to the last page
-- Next button is disabled
-- Previous button is enabled
-
----
-
 ## TC_VA_07 - Empty state message is displayed
 
 ### Description

@@ -4,31 +4,67 @@ import {
   useQueryClient,
   useSuspenseQuery,
 } from '@tanstack/react-query';
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtom } from 'jotai';
 import { apiClient } from '../api-client';
-import { activityFilterAtom } from './atoms';
-import type {
-  Activity,
-  ActivityFilter,
-  AddActivityFormData,
-  Revenue,
-  UpdateActivityFormData,
+import { activityQueryAtom } from './atoms';
+import {
+  type Activity,
+  type ActivityQuery,
+  type AddActivityDto,
+  type CreateReportDto,
+  type Report,
+  type Revenue,
+  type UpdateActivityDto,
 } from './types';
-import { buildQueryFromFilter } from './utils';
+import {
+  buildSearchActivityDto,
+  transformActivityResponse,
+  transformReportResponse,
+} from './utils';
 
-function transformActivityResponse(data: Activity): Activity {
-  return {
-    ...data,
-    time: new Date(data.time),
-  };
-}
-
-// Query keys
 const TAGS_QUERY_KEY = ['diary', 'tags'] as const;
 const ACTIVITIES_QUERY_KEY = ['diary', 'activities'] as const;
 const REVENUE_QUERY_KEY = ['diary', 'revenue'] as const;
+const REPORTS_QUERY_KEY = ['diary', 'reports'] as const;
 
-// Hooks
+export function usePaginatedActivities(query: ActivityQuery) {
+  const result = useSuspenseQuery(
+    queryOptions({
+      queryKey: [...ACTIVITIES_QUERY_KEY, query],
+      queryFn: async () => {
+        const resp = await apiClient<Activity[]>({
+          url: '/diary/activities',
+          method: 'GET',
+          params: buildSearchActivityDto(query),
+        });
+        const value = resp.headers['x-total-count'] as string | undefined;
+        const total = typeof value === 'string' ? parseInt(value, 10) : 0;
+        return [resp.data.map(transformActivityResponse), total] as const;
+      },
+    }),
+  );
+  return result.data;
+}
+
+export function useRevenue(query: ActivityQuery): Revenue {
+  const dto = buildSearchActivityDto(query);
+  const { limit, offset, ...restDto } = dto;
+  const { data } = useSuspenseQuery(
+    queryOptions({
+      queryKey: [...REVENUE_QUERY_KEY, query],
+      queryFn: async () => {
+        const resp = await apiClient<Revenue>({
+          url: '/diary/stat/revenue',
+          method: 'GET',
+          params: restDto,
+        });
+        return resp.data;
+      },
+    }),
+  );
+  return data;
+}
+
 export function useTags() {
   const result = useSuspenseQuery(
     queryOptions({
@@ -43,45 +79,6 @@ export function useTags() {
     }),
   );
   return result.data;
-}
-
-export function usePaginatedActivities(filter: ActivityFilter) {
-  const result = useSuspenseQuery(
-    queryOptions({
-      queryKey: [...ACTIVITIES_QUERY_KEY, filter],
-      queryFn: async () => {
-        const resp = await apiClient<Activity[]>({
-          url: '/diary/activities',
-          method: 'GET',
-          params: buildQueryFromFilter(filter),
-        });
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        const value = resp.headers['x-total-count'];
-        const total = typeof value === 'string' ? parseInt(value, 10) : 0;
-        const pageCount = Math.ceil(total / filter.pageSize);
-        return [resp.data.map(transformActivityResponse), pageCount] as const;
-      },
-    }),
-  );
-  return result.data;
-}
-
-export function useRevenue(): Revenue {
-  const filter = useAtomValue(activityFilterAtom);
-  const { data } = useSuspenseQuery(
-    queryOptions({
-      queryKey: [...REVENUE_QUERY_KEY, filter],
-      queryFn: async () => {
-        const resp = await apiClient<Revenue>({
-          url: '/diary/stat/revenue',
-          method: 'GET',
-          params: buildQueryFromFilter(filter),
-        });
-        return resp.data;
-      },
-    }),
-  );
-  return data;
 }
 
 export function useActivity(id: string) {
@@ -103,7 +100,7 @@ export function useActivity(id: string) {
 export function useAddActivity() {
   const queryClient = useQueryClient();
   const result = useMutation({
-    mutationFn: async (data: AddActivityFormData) => {
+    mutationFn: async (data: AddActivityDto) => {
       const resp = await apiClient<Activity[]>({
         url: `/diary/activities`,
         method: 'POST',
@@ -122,13 +119,7 @@ export function useAddActivity() {
 export function useUpdateActivity() {
   const queryClient = useQueryClient();
   const result = useMutation({
-    mutationFn: async ({
-      id,
-      data,
-    }: {
-      id: string;
-      data: UpdateActivityFormData;
-    }) => {
+    mutationFn: async ({ id, data }: { id: string; data: UpdateActivityDto }) => {
       const resp = await apiClient<Activity>({
         url: `/diary/activities/${id}`,
         method: 'PUT',
@@ -161,7 +152,73 @@ export function useDeleteActivity() {
   return [result.mutateAsync, result.isPending] as const;
 }
 
-export function useActivityFilter() {
-  const [filter, setFilter] = useAtom(activityFilterAtom);
-  return { filter, updateFilter: setFilter };
+export function useActivityQuery() {
+  const [query, setQuery] = useAtom(activityQueryAtom);
+  return { query, updateQuery: setQuery };
+}
+
+export function useReports() {
+  const result = useSuspenseQuery(
+    queryOptions({
+      queryKey: REPORTS_QUERY_KEY,
+      queryFn: async () => {
+        const resp = await apiClient<Report[]>({
+          url: '/diary/reports',
+          method: 'GET',
+        });
+        return resp.data.map(transformReportResponse);
+      },
+    }),
+  );
+  return result.data;
+}
+
+export function useReport(id: string) {
+  const result = useSuspenseQuery(
+    queryOptions({
+      queryKey: [...REPORTS_QUERY_KEY, id],
+      queryFn: async () => {
+        const resp = await apiClient<Report>({
+          url: `/diary/reports/${id}`,
+          method: 'GET',
+        });
+        return transformReportResponse(resp.data);
+      },
+    }),
+  );
+  return result.data;
+}
+
+export function useCreateReport() {
+  const queryClient = useQueryClient();
+  const result = useMutation({
+    mutationFn: async (data: CreateReportDto) => {
+      const resp = await apiClient<Report>({
+        url: '/diary/reports',
+        method: 'POST',
+        data,
+      });
+      return transformReportResponse(resp.data);
+    },
+    onSuccess: () => {
+      void queryClient.resetQueries({ queryKey: REPORTS_QUERY_KEY });
+    },
+  });
+  return result.mutateAsync;
+}
+
+export function useDeleteReport() {
+  const queryClient = useQueryClient();
+  const result = useMutation({
+    mutationFn: async (id: string) => {
+      await apiClient<never>({
+        url: `/diary/reports/${id}`,
+        method: 'DELETE',
+      });
+    },
+    onSuccess: () => {
+      void queryClient.resetQueries({ queryKey: REPORTS_QUERY_KEY });
+    },
+  });
+  return [result.mutateAsync, result.isPending] as const;
 }

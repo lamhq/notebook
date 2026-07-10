@@ -9,6 +9,7 @@ export default function AddActivityButton() {
       size="small"
       component={RouterLink}
       to="/activities/new"
+      title="Add Activity"
     >
       <AddCircleIcon />
     </IconButton>

@@ -61,8 +61,10 @@ resource "aws_lambda_function" "function" {
   # source_code_hash intentionally omitted; code updates via CI/CD pipeline
 
   architectures = ["arm64"]
-  memory_size   = 256
-  timeout       = 10
+  memory_size   = var.memory
+  timeout       = var.timeout
+
+  layers = var.layers
 
   environment {
     variables = merge(

@@ -1,9 +1,10 @@
 import { useNavigate } from 'react-router';
 import { Title } from '../../../common/templates/MainLayout';
 import { useErrorHandler } from '../../../error';
-import AddActivityForm from '../../containers/AddActivityForm';
+import AddActivityForm, {
+  type AddActivityFormData,
+} from '../../containers/AddActivityForm';
 import { useAddActivity } from '../../hooks';
-import type { AddActivityFormData } from '../../types';
 
 const defaultValues: AddActivityFormData = {
   content: '',

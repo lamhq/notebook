@@ -15,5 +15,6 @@ export const Default: Story = {
     onClick: () => {
       console.log('Delete clicked');
     },
+    isDeleting: false,
   },
 };

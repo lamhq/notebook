@@ -4,14 +4,14 @@ export function parseTimeString(timeStr: string): Date {
   return parse(timeStr.trim(), 'h:mm aaa', new Date());
 }
 
-type DateParts = {
+interface DateParts {
   year?: number;
   month?: number; // 1–12
   day?: number;
   hour?: number;
   minute?: number;
   second?: number;
-};
+}
 
 export function createDate({
   year,

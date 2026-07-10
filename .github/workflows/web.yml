@@ -12,7 +12,7 @@ on:
     branches: [main]
     paths:
       - 'apps/web/**'
-      - 'packages/**'
+      - 'apps/web-e2e/**'
       - '.github/workflows/**'
 
   push:
@@ -20,7 +20,7 @@ on:
     tags: ['web-v*']
     paths:
       - 'apps/web/**'
-      - 'packages/**'
+      - 'apps/web-e2e/**'
 
 permissions:
   id-token: write # Allows OIDC token requests
@@ -65,6 +65,9 @@ jobs:
 
       # from `apps/api/.env`
       DB_URI: 'mongodb://root:password@localhost:27017/test?authSource=admin'
+      AWS_REGION: 'ap-southeast-1'
+      AWS_S3_BUCKET: 'notebook-dev-puma'
+      AWS_CLOUDFRONT_URL: 'https://nb1.lamhq.com'
 
     steps:
       - name: Checkout code
@@ -88,7 +91,9 @@ jobs:
           retention-days: 30
 
   deploy-dev:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    # TODO: Uncomment the following line after testing the workflow with pull requests to main branch
+    # if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'pull_request' && github.base_ref == 'main'
     runs-on: ubuntu-latest
     environment: dev
 

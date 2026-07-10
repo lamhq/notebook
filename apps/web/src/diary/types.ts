@@ -1,33 +1,16 @@
-export type Activity = {
+export interface Activity {
   id: string;
   content: string;
   time: Date;
   tags: string[];
   income?: number;
   outcome?: number;
-};
+}
 
-export type AddActivityFormData = {
-  content: string;
-  time: Date;
-  tags: string[];
-  income?: string;
-  outcome?: string;
-  splitByTag?: boolean;
-};
-
-export type UpdateActivityFormData = {
-  content: string;
-  time: Date;
-  tags: string[];
-  income?: string;
-  outcome?: string;
-};
-
-export type Revenue = {
+export interface Revenue {
   income: number;
   outcome: number;
-};
+}
 
 export enum TimeRange {
   All = 'all',
@@ -38,12 +21,61 @@ export enum TimeRange {
   Custom = 'custom',
 }
 
-export type ActivityFilter = {
-  text: string;
-  tags: string[];
-  timeRange: TimeRange;
-  page: number;
-  pageSize: number;
+export interface Report {
+  id: string;
+  name: string;
+  paymentQR?: string;
+  pdfUrl: string;
+  createdAt: Date;
+  filters: {
+    tags?: string[];
+    text?: string;
+    from?: Date;
+    to?: Date;
+  };
+}
+
+export interface ActivityQuery {
+  text?: string;
+  tags?: string[];
+  timeRange?: TimeRange;
   from?: Date;
   to?: Date;
-};
+  page: number;
+  pageSize: number;
+}
+
+export interface SearchActivityDto {
+  text?: string;
+  tags?: string[];
+  from?: string;
+  to?: string;
+  limit?: number;
+  offset?: number;
+}
+
+export interface AddActivityDto {
+  content: string;
+  time: Date;
+  tags: string[];
+  income?: string;
+  outcome?: string;
+  splitByTag?: boolean;
+}
+
+export interface UpdateActivityDto {
+  content: string;
+  time: Date;
+  tags: string[];
+  income?: string;
+  outcome?: string;
+}
+
+export interface CreateReportDto {
+  name: string;
+  paymentQR?: string;
+  text?: string;
+  tags?: string[];
+  from?: Date;
+  to?: Date;
+}

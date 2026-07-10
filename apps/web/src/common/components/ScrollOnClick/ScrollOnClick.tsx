@@ -3,10 +3,10 @@ import Zoom from '@mui/material/Zoom';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import { type MouseEventHandler, type ReactNode, useCallback } from 'react';
 
-export type ScrollToProps = {
+export interface ScrollToProps {
   anchorSelector: string;
   children: ReactNode;
-};
+}
 
 export default function ScrollOnClick({ children, anchorSelector }: ScrollToProps) {
   const trigger = useScrollTrigger();

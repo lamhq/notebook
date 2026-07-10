@@ -2,11 +2,11 @@ import Chip from '@mui/material/Chip';
 import type { MouseEventHandler } from 'react';
 import { formatNumber } from '../../utils';
 
-export type AmountProps = {
+export interface AmountProps {
   isIncome: boolean;
   amount: number;
   onClick?: MouseEventHandler;
-};
+}
 
 export default function AmountBadge({
   isIncome: income,

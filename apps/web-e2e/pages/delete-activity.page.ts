@@ -10,16 +10,16 @@ export class DeleteActivityPage extends ActivityListPage {
     return this.page.getByRole('menuitem', { name: 'Delete Activity' });
   }
 
-  public getConfirmDialog(): Locator {
+  public getDialog(): Locator {
     return this.page.getByRole('dialog');
   }
 
   public getCancelButton(): Locator {
-    return this.getConfirmDialog().getByRole('button', { name: 'Cancel' });
+    return this.getDialog().getByRole('button', { name: 'Cancel' });
   }
 
   public getDeleteButton(): Locator {
-    return this.getConfirmDialog().getByRole('button', { name: /Ok|Delete/i });
+    return this.getDialog().getByRole('button', { name: /Ok|Delete/i });
   }
 
   public openItemMenu(activityItem: Locator): Promise<void> {

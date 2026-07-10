@@ -1,8 +1,8 @@
 import Toolbar, { LeftArea, RightArea } from '../../../common/components/Toolbar';
 import { Title } from '../../../common/templates/MainLayout';
 import AddActivityButton from '../../components/AddActivityButton';
+import CreateReportButton from '../../components/CreateReportButton';
 import ActivityListContainer from '../../containers/ActivityListContainer';
-import DeleteActivityDialogContainer from '../../containers/DeleteActivityDialogContainer';
 import RevenueContainer from '../../containers/RevenueContainer';
 import SearchButtonContainer from '../../containers/SearchButtonContainer';
 
@@ -15,6 +15,7 @@ export default function ListActivityPage() {
         <LeftArea>
           <AddActivityButton />
           <SearchButtonContainer />
+          <CreateReportButton />
         </LeftArea>
         <RightArea>
           <RevenueContainer />
@@ -22,7 +23,6 @@ export default function ListActivityPage() {
       </Toolbar>
 
       <ActivityListContainer />
-      <DeleteActivityDialogContainer />
     </>
   );
 }

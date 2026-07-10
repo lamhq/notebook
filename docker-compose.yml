@@ -10,6 +10,60 @@ services:
     volumes:
       - mongodb_data:/data/db
       - ./apps/mongodb:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ['CMD', 'mongosh', '--eval', "db.adminCommand('ping').ok", '--quiet']
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+  api-service:
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile
+    ports:
+      - '4069:4069'
+    environment:
+      NODE_ENV: development
+      DB_URI: 'mongodb://root:password@mongodb:27017/test?authSource=admin'
+      AWS_REGION: 'ap-southeast-1'
+      AWS_S3_BUCKET: 'notebook-dev-puma'
+      AWS_CLOUDFRONT_URL: 'https://nb1.lamhq.com'
+    healthcheck:
+      test: ['CMD', 'node', 'src/healthcheck.mjs']
+      interval: 1s
+      timeout: 1s
+      retries: 10
+      start_period: 5s
+    depends_on:
+      mongodb:
+        condition: service_healthy
+
+  api-gateway:
+    build:
+      context: ./apps/api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - '4068:4068'
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    environment:
+      OIDC_CLIENT_ID: notebook-web
+      OIDC_AUTHORITY: http://keycloak:8080/realms/notebook
+      API_URL: http://api-service:4069
+      PORT: 4068
+      PUBLIC_ROUTE: ^/health$
+    healthcheck:
+      test: ['CMD', 'node', '/healthcheck.mjs']
+      interval: 1s
+      timeout: 1s
+      retries: 10
+      start_period: 5s
+    depends_on:
+      keycloak:
+        condition: service_healthy
+      api-service:
+        condition: service_healthy
 
   keycloak:
     image: quay.io/keycloak/keycloak:26.5.6
@@ -27,26 +81,9 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-      start_period: 20s
-
-  api-gateway:
-    build:
-      context: ./apps/api-gateway
-      dockerfile: Dockerfile
-    ports:
-      - '4068:4068'
-    extra_hosts:
-      - 'host.docker.internal:host-gateway'
-    environment:
-      OIDC_CLIENT_ID: notebook-web
-      OIDC_AUTHORITY: http://keycloak:8080/realms/notebook
-      API_URL: http://host.docker.internal:4069
-      PORT: 4068
-      PUBLIC_ROUTE: ^/health$
-    depends_on:
-      keycloak:
-        condition: service_healthy
+      start_period: 5s
 
 volumes:
   mongodb_data:
   keycloak_data:
+  api_deps:

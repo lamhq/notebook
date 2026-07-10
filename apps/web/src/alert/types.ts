@@ -1,15 +1,15 @@
-export type AlertItem = {
+export interface AlertItem {
   type: 'success' | 'error' | 'warning';
   message: string;
   timestamp: number;
-};
+}
 
-export type AlertViewProps = {
+export interface AlertViewProps {
   items: (AlertItem & { remove: () => void })[];
-};
+}
 
-export type AlertHook = {
+export interface AlertHook {
   showSuccess: (msg: string) => void;
   showError: (msg: string) => void;
   showWarning: (msg: string) => void;
-};
+}

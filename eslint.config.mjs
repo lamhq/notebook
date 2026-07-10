@@ -1,4 +1,3 @@
-// @ts-check
 import eslint from '@eslint/js';
 import vitest from '@vitest/eslint-plugin';
 import eslintConfigPrettier from 'eslint-config-prettier/flat';
@@ -11,7 +10,12 @@ import storybook from 'eslint-plugin-storybook';
 import testingLibrary from 'eslint-plugin-testing-library';
 import { defineConfig } from 'eslint/config';
 import globals from 'globals';
+import path from 'path';
 import tseslint from 'typescript-eslint';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export default defineConfig(
   {
@@ -51,7 +55,7 @@ export default defineConfig(
     languageOptions: {
       parserOptions: {
         projectService: true,
-        tsconfigRootDir: import.meta.dirname,
+        tsconfigRootDir: __dirname,
       },
     },
     extends: [
@@ -59,8 +63,8 @@ export default defineConfig(
       ...tseslint.configs.stylisticTypeChecked,
     ],
     rules: {
-      // use `type` instead of `interface`
-      '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
+      // allow NestJS module classes
+      '@typescript-eslint/no-extraneous-class': 'off',
 
       // fix react-hook-form onSubmit type error
       '@typescript-eslint/no-misused-promises': [
@@ -69,6 +73,19 @@ export default defineConfig(
           checksVoidReturn: {
             attributes: false,
           },
+        },
+      ],
+
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          args: 'all',
+          argsIgnorePattern: '^_',
+          caughtErrors: 'all',
+          caughtErrorsIgnorePattern: '^_',
+          destructuredArrayIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
         },
       ],
     },
@@ -82,7 +99,7 @@ export default defineConfig(
       globals: globals.browser,
       parserOptions: {
         projectService: true,
-        tsconfigRootDir: import.meta.dirname,
+        tsconfigRootDir: __dirname,
       },
     },
     settings: {
@@ -109,10 +126,7 @@ export default defineConfig(
   },
 
   // Storybook
-  {
-    name: 'Storybook',
-    extends: [...storybook.configs['flat/recommended']],
-  },
+  ...storybook.configs['flat/recommended'],
 
   // Jest test files
   {

@@ -66,12 +66,12 @@ test.describe('Cancel deletion', () => {
     await deleteActivityPage.clickDeleteMenuItem();
 
     // Verify confirmation dialog appears
-    const confirmDialog = deleteActivityPage.getConfirmDialog();
+    const confirmDialog = deleteActivityPage.getDialog();
     await expect(confirmDialog).toBeVisible();
 
     // Verify the dialog has correct content
     await expect(confirmDialog).toContainText(
-      'Are you sure to delete the activity on ',
+      'Are you sure to delete the activity at ',
     );
 
     // Click Cancel button
@@ -98,7 +98,7 @@ test.describe('Cancel deletion', () => {
     await deleteActivityPage.clickDeleteMenuItem();
 
     // Verify confirmation dialog appears
-    const confirmDialog = deleteActivityPage.getConfirmDialog();
+    const confirmDialog = deleteActivityPage.getDialog();
     await expect(confirmDialog).toBeVisible();
 
     // Click outside the dialog (on the page background)
@@ -126,7 +126,7 @@ test.describe('Successful deletion', () => {
     await deleteActivityPage.clickDeleteMenuItem();
 
     // Wait for confirmation dialog to appear
-    const confirmDialog = deleteActivityPage.getConfirmDialog();
+    const confirmDialog = deleteActivityPage.getDialog();
     await expect(confirmDialog).toBeVisible();
 
     // Click Delete button - this will trigger the API call
@@ -178,20 +178,20 @@ test.describe('Error handling', () => {
     await deleteActivityPage.clickDeleteMenuItem();
 
     // Wait for confirmation dialog to appear
-    const confirmDialog = deleteActivityPage.getConfirmDialog();
-    await expect(confirmDialog).toBeVisible();
+    const dialog = deleteActivityPage.getDialog();
+    await expect(dialog).toBeVisible();
 
     // Click Delete button
     await deleteActivityPage.clickDialogDeleteButton();
 
-    // Verify the dialog shows an error message inside it
-    await expect(confirmDialog).toContainText('Error');
+    // Verify the alert dialog shows an error message inside it
+    await expect(dialog).toContainText('Error');
 
-    // Close the confirmation dialog by clicking the Cancel button
-    await confirmDialog.getByRole('button', { name: 'Cancel' }).click();
+    // Close the alert dialog by clicking the OK button
+    await dialog.getByRole('button', { name: 'OK' }).click();
 
     // Verify dialog closes
-    await expect(confirmDialog).toBeHidden();
+    await expect(dialog).toBeHidden();
 
     // Verify activity is still visible
     await expect(activity).toBeVisible();
@@ -218,20 +218,20 @@ test.describe('Error handling', () => {
     await deleteActivityPage.clickDeleteMenuItem();
 
     // Wait for confirmation dialog to appear
-    const confirmDialog = deleteActivityPage.getConfirmDialog();
-    await expect(confirmDialog).toBeVisible();
+    const dialog = deleteActivityPage.getDialog();
+    await expect(dialog).toBeVisible();
 
     // Click Delete button
     await deleteActivityPage.clickDialogDeleteButton();
 
     // Verify the dialog shows an error message inside it
-    await expect(confirmDialog).toContainText('Error');
+    await expect(dialog).toContainText('Error');
 
-    // Close the confirmation dialog by clicking the Cancel button
-    await confirmDialog.getByRole('button', { name: 'Cancel' }).click();
+    // Close the confirmation dialog by clicking the Ok button
+    await dialog.getByRole('button', { name: 'OK' }).click();
 
     // Verify dialog closes
-    await expect(confirmDialog).toBeHidden();
+    await expect(dialog).toBeHidden();
 
     // Verify activity is still visible
     await expect(activity).toBeVisible();

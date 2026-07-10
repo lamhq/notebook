@@ -12,9 +12,17 @@ import * as yup from 'yup';
 
 import Actions from '../../../common/components/Actions';
 import DateTimePicker from '../../../common/components/DateTimePicker';
-import type { AddActivityFormData } from '../../types';
 import { getTotalAmounts as calcAmounts } from '../../utils';
 import TagsSelectContainer from '../TagsSelectContainer';
+
+export interface AddActivityFormData {
+  content: string;
+  time: Date;
+  tags: string[];
+  income?: string;
+  outcome?: string;
+  splitByTag?: boolean;
+}
 
 const activityFormSchema = yup.object().shape({
   time: yup.date().required(),
@@ -25,10 +33,10 @@ const activityFormSchema = yup.object().shape({
   splitByTag: yup.boolean().optional(),
 });
 
-export type AddActivityFormProps = {
+export interface AddActivityFormProps {
   defaultValues: AddActivityFormData;
   onSubmit: (data: AddActivityFormData) => Promise<void>;
-};
+}
 
 export default function AddActivityForm({
   defaultValues,

@@ -2,17 +2,17 @@ import Box from '@mui/material/Box/Box';
 import type { ReactNode } from 'react';
 import Actions from '../Actions';
 
-export type ToolbarProps = {
+export interface ToolbarProps {
   children?: ReactNode;
-};
+}
 
-export type LeftAreaProps = {
+export interface LeftAreaProps {
   children?: ReactNode;
-};
+}
 
-export type RightAreaProps = {
+export interface RightAreaProps {
   children?: ReactNode;
-};
+}
 
 export function LeftArea({ children }: LeftAreaProps) {
   return <Actions>{children}</Actions>;

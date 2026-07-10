@@ -2,7 +2,6 @@ import {
   Alert,
   Box,
   Button,
-  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -12,14 +11,14 @@ import {
 import { formatDate } from '../../../common/utils';
 import type { Activity } from '../../types';
 
-type DeleteActivityDialogProps = {
+interface DeleteActivityDialogProps {
   open: boolean;
   activity: Activity | null;
   error: string | null;
   isDeleting: boolean;
   onDelete: () => void;
   onCancel: () => void;
-};
+}
 
 export default function DeleteActivityDialog({
   open,
@@ -67,8 +66,7 @@ export default function DeleteActivityDialog({
           variant="contained"
           color="error"
           onClick={onDelete}
-          disabled={isDeleting}
-          startIcon={isDeleting ? <CircularProgress size={20} /> : undefined}
+          loading={isDeleting}
         >
           Delete
         </Button>

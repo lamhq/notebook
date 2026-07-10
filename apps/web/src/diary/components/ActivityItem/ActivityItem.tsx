@@ -4,11 +4,12 @@ import Typography from '../../../common/components/Typography';
 import { formatNumber } from '../../../common/utils';
 import ActivityMenuContainer from '../../containers/ActivityMenuContainer';
 import type { Activity } from '../../types';
+import TagList from '../TagList';
 import TimeLabel from '../TimeLabel/TimeLabel';
 
-export type ActivityItemProps = {
+export interface ActivityItemProps {
   activity: Activity;
-};
+}
 
 export default function ActivityItem({ activity }: ActivityItemProps) {
   const html = activity.content.replace(/\n/g, '<br/>');
@@ -47,13 +48,7 @@ export default function ActivityItem({ activity }: ActivityItemProps) {
             </Typography>
           )}
         </Box>
-        <Box sx={{ display: 'flex', columnGap: 1 }}>
-          {activity.tags.map((tag) => (
-            <Typography key={tag} variant="body2" sx={{ color: 'primary.main' }}>
-              {`#${tag}`}
-            </Typography>
-          ))}
-        </Box>
+        <TagList tags={activity.tags} />
       </Grid>
     </article>
   );
