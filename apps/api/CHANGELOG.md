@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.0](https://github.com/lamhq/notebook/compare/api-v0.3.0...api-v0.4.0) (2026-07-10)
+
+
+### Features
+
+* implement report feature ([#22](https://github.com/lamhq/notebook/issues/22)) ([a540a52](https://github.com/lamhq/notebook/commit/a540a52aadef4c10af0548286d67c863237bca10))
+
+
+### Bug Fixes
+
+* remove path trigger in CI workflows ([#24](https://github.com/lamhq/notebook/issues/24)) ([68b7914](https://github.com/lamhq/notebook/commit/68b7914182df48c30441b5469606b036db57dda6))
+
 ## [0.3.0](https://github.com/lamhq/notebook/compare/api-v0.2.0...api-v0.3.0) (2026-06-21)
 
 
