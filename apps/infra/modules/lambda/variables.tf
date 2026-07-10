@@ -27,3 +27,8 @@ variable "iam_policy_statements" {
     Resource = string
   }))
 }
+variable "layers" {
+  description = "List of Lambda layer ARNs to attach to the function"
+  type        = list(string)
+  default     = []
+}

@@ -64,6 +64,8 @@ resource "aws_lambda_function" "function" {
   memory_size   = 256
   timeout       = 10
 
+  layers = var.layers
+
   environment {
     variables = merge(
       {

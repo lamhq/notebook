@@ -17,7 +17,6 @@ module "api_service" {
 
   environment_variables = {
     DB_URI             = module.mongodb_cluster.connection_string
-    AWS_REGION         = var.aws_region
     AWS_S3_BUCKET      = module.app_storage.bucket_id
     AWS_CLOUDFRONT_URL = var.domain
     NO_COLOR           = "true"
