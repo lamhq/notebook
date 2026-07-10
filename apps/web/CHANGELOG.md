@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/lamhq/notebook/compare/web-v0.2.3...web-v0.3.0) (2026-07-10)
+
+
+### Features
+
+* implement report feature ([#22](https://github.com/lamhq/notebook/issues/22)) ([a540a52](https://github.com/lamhq/notebook/commit/a540a52aadef4c10af0548286d67c863237bca10))
+
 ## [0.2.3](https://github.com/lamhq/notebook/compare/web-v0.2.2...web-v0.2.3) (2026-06-27)
 
 
