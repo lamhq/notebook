@@ -19,6 +19,7 @@ await build({
     '@mdpdf/mdpdf-darwin-x64',
     '@mdpdf/mdpdf-linux-arm64',
     '@mdpdf/mdpdf-linux-x64',
+    '@mdpdf/mdpdf-linux-x64-gnu',
     '@mdpdf/mdpdf-win32-arm64.exe',
     '@mdpdf/mdpdf-win32-x64.exe',
   ],
