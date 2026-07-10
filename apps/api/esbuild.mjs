@@ -20,8 +20,10 @@ await build({
     '@mdpdf/mdpdf-linux-arm64',
     '@mdpdf/mdpdf-linux-x64',
     '@mdpdf/mdpdf-linux-x64-gnu',
+    '@mdpdf/mdpdf-linux-x64-musl',
     '@mdpdf/mdpdf-win32-arm64.exe',
     '@mdpdf/mdpdf-win32-x64.exe',
+    '@mdpdf/mdpdf-linux-arm64-gnu',
   ],
   plugins: [
     esbuildPluginDecorator({
