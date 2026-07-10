@@ -14,11 +14,13 @@ module "api_service" {
   name     = "${local.name_prefix}-api-handler"
   filename = data.archive_file.api_service_code.output_path
   handler  = "lambda.handler"
+  memory   = 512
+  timeout  = 15
 
   environment_variables = {
     DB_URI             = module.mongodb_cluster.connection_string
     AWS_S3_BUCKET      = module.app_storage.bucket_id
-    AWS_CLOUDFRONT_URL = var.domain
+    AWS_CLOUDFRONT_URL = "https://${var.domain}"
     NO_COLOR           = "true"
   }
 
@@ -32,5 +34,9 @@ module "api_service" {
       ]
       Resource = "${module.app_storage.bucket_arn}/media/reports/*"
     }
+  ]
+
+  layers = [
+    module.api_layer.layer_version_arn
   ]
 }

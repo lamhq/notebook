@@ -1,8 +1,8 @@
+import { markdownToPdf } from '@mdpdf/mdpdf';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { format } from 'date-fns/format';
-import { mdToPdf } from 'md-to-pdf';
 import { ObjectId } from 'mongodb';
 import { MongoRepository } from 'typeorm';
 import { S3Service } from '../../common/services/s3.service';
@@ -47,8 +47,7 @@ export class ReportService {
 
     // Generate PDF buffer from markdown
     const markdown = this.generateMarkdown(dto.name, transactions, dto.paymentQR);
-    const pdf = await mdToPdf({ content: markdown }, { document_title: dto.name });
-    const pdfBuffer = pdf.content;
+    const pdfBuffer = await markdownToPdf(markdown);
 
     // Upload PDF to S3
     const fileName = `${slugify(dto.name)}.pdf`;

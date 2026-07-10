@@ -14,6 +14,13 @@ await build({
     '@nestjs/microservices',
     '@nestjs/websockets/socket-module',
     'class-transformer/storage',
+    '@aws-sdk/client-s3',
+    '@mdpdf/mdpdf-darwin-arm64',
+    '@mdpdf/mdpdf-darwin-x64',
+    '@mdpdf/mdpdf-linux-arm64',
+    '@mdpdf/mdpdf-linux-x64',
+    '@mdpdf/mdpdf-win32-arm64.exe',
+    '@mdpdf/mdpdf-win32-x64.exe',
   ],
   plugins: [
     esbuildPluginDecorator({
