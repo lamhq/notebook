@@ -6,6 +6,7 @@ if (!process.env.DB_URI) {
 
 async function bootstrap() {
   const app = await getNestApp();
+
   await app.listen(4069);
 }
 
