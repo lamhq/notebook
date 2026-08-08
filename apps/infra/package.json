@@ -4,7 +4,11 @@
   "description": "Terraform configuration for AWS infrastructure",
   "private": true,
   "scripts": {
-    "output": "terraform output",
-    "validate": "terraform validate"
+    "init": "terraform init -backend-config=config/s3.tfbackend",
+    "plan:dev": "terraform workspace select -or-create dev && terraform plan -var-file=config/dev.tfvars",
+    "deploy:dev": "terraform workspace select -or-create dev && terraform apply -var-file=config/dev.tfvars -auto-approve",
+    "plan:prod": "terraform workspace select -or-create prod && terraform plan -var-file=config/prod.tfvars",
+    "deploy:prod": "terraform workspace select -or-create prod && terraform apply -var-file=config/prod.tfvars -auto-approve",
+    "output": "terraform output"
   }
 }

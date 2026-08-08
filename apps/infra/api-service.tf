@@ -22,6 +22,7 @@ module "api_service" {
     AWS_S3_BUCKET      = module.app_storage.bucket_id
     AWS_CLOUDFRONT_URL = "https://${var.domain}"
     NO_COLOR           = "true"
+    TZ                 = "Asia/Ho_Chi_Minh"
   }
 
   iam_policy_statements = [
