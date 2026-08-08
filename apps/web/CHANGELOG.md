@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/lamhq/notebook/compare/web-v0.3.0...web-v0.3.1) (2026-08-08)
+
+
+### Bug Fixes
+
+* time format in report ([#27](https://github.com/lamhq/notebook/issues/27)) ([0a709c4](https://github.com/lamhq/notebook/commit/0a709c4c23d2df673cc1b3c8d2b6f74f79094913))
+
 ## [0.3.0](https://github.com/lamhq/notebook/compare/web-v0.2.3...web-v0.3.0) (2026-07-10)
 
 
