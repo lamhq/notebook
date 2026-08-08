@@ -10,7 +10,7 @@ This Terraform codebase includes:
 - `variables.tf`: Contains all variables used in the project, with values from `*.tfvars`.
 - `outputs.tf`: Lists all outputs for external systems (e.g., CI/CD pipelines) or applications (e.g., web app API endpoint URLs).
 - `modules/`: Contains reusable Terraform modules, each with its own `main.tf`, `variables.tf`, and `outputs.tf`.
-- Other `*.tf` files describing system components (e.g., `api-gateway.tf`, `cdn.tf`, `database.tf`) using local modules.
+- `*.tf` files describing system components (e.g., `api-gateway.tf`, `cdn.tf`, `database.tf`) using local modules.
 - `config/`: Environment-specific configuration files and Terraform backend configuration.
 - `assets/`: Lambda function code and static assets (HTML, JavaScript).
 

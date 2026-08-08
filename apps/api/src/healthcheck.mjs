@@ -5,7 +5,7 @@ async function checkStatus() {
     const req = http.request(
       {
         hostname: 'localhost',
-        port: 4069,
+        port: process.env.PORT || 4069,
         method: 'GET',
       },
       (res) => {

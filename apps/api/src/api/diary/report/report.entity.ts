@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Transform } from 'class-transformer';
 import { ObjectId } from 'mongodb';
 import { Column, Entity, ObjectIdColumn } from 'typeorm';
-import { Activity, ActivityQuery } from '../activity/activity.entity';
+import { Activity, type ActivityQuery } from '../activity/activity.entity';
 
 @Entity({ name: 'reports' })
 export class Report {

@@ -1,30 +1,35 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "ES2021",
-    "sourceMap": true,
+    "target": "es2022",
+    "sourceMap": false,
+    "rootDir": ".",
     "outDir": "./dist",
     "incremental": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
+    "isolatedModules": true,
+    "resolvePackageJsonExports": true,
+    "types": ["node", "jest", "express", "supertest"],
 
-    "strictNullChecks": true, // Ensures strict handling of null and undefined
-    "strictBindCallApply": true, // Checks correctness of arguments passed to call, apply, and bind
+    "strictNullChecks": true,
+    "strictBindCallApply": true,
     "strictFunctionTypes": true, // Ensures function parameters are more strictly checked
     "strictPropertyInitialization": false, // Makes sure class properties are correctly initialized
-    "noImplicitAny": true, // Requires explicit type declarations
+    "noImplicitAny": true,
     "noImplicitThis": true, // Disallows `this` keyword with an implicit `any` type
     "alwaysStrict": true, // Ensures `use strict` is always used
     "noUnusedLocals": true, // Reports unused local variables
     "noUnusedParameters": true, // Reports unused function parameters
     "noImplicitReturns": true, // Ensures all code paths in a function return a value
-    "noFallthroughCasesInSwitch": true, // Checks for fallthrough cases in switch statements
-    "forceConsistentCasingInFileNames": true, // Ensures consistent casing in file names
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true // Allows importing JSON modules
   }
 }

@@ -9,8 +9,10 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { Link as RouterLink } from 'react-router';
+import Toolbar from '../../../common/components/Toolbar/Toolbar';
 import { Title } from '../../../common/templates/MainLayout';
 import { formatDateTime } from '../../../common/utils';
+import CreateReportButton from '../../components/CreateReportButton';
 import DeleteReportButton from '../../containers/DeleteReportButton';
 import DownloadReportButton from '../../containers/DownloadReportButton';
 import ReportQRCodeButton from '../../containers/ReportQRCodeButton';
@@ -29,40 +31,50 @@ function ReportListContent() {
   }
 
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>Created At</TableCell>
-            <TableCell></TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {reports.map((report: Report) => (
-            <TableRow key={report.id} hover>
-              <TableCell>
-                <Button
-                  component={RouterLink}
-                  to={`/reports/${report.id}`}
-                  sx={{ p: 0, textTransform: 'none', justifyContent: 'flex-start' }}
-                >
-                  {report.name}
-                </Button>
-              </TableCell>
-              <TableCell>{formatDateTime(new Date(report.createdAt))}</TableCell>
-              <TableCell align="right">
-                <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
-                  <ReportQRCodeButton url={report.pdfUrl} />
-                  <DownloadReportButton downloadUrl={report.pdfUrl} />
-                  <DeleteReportButton report={report} />
-                </Box>
-              </TableCell>
+    <>
+      <Toolbar>
+        <CreateReportButton />
+      </Toolbar>
+
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell>Created At</TableCell>
+              <TableCell></TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {reports.map((report: Report) => (
+              <TableRow key={report.id} hover>
+                <TableCell>
+                  <Button
+                    component={RouterLink}
+                    to={`/reports/${report.id}`}
+                    sx={{
+                      p: 0,
+                      textTransform: 'none',
+                      justifyContent: 'flex-start',
+                    }}
+                  >
+                    {report.name}
+                  </Button>
+                </TableCell>
+                <TableCell>{formatDateTime(new Date(report.createdAt))}</TableCell>
+                <TableCell align="right">
+                  <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
+                    <ReportQRCodeButton url={report.pdfUrl} />
+                    <DownloadReportButton downloadUrl={report.pdfUrl} />
+                    <DeleteReportButton report={report} />
+                  </Box>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
   );
 }
 

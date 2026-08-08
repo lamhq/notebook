@@ -2,11 +2,10 @@ import { markdownToPdf } from '@mdpdf/mdpdf';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
-import { format } from 'date-fns/format';
 import { ObjectId } from 'mongodb';
 import { MongoRepository } from 'typeorm';
 import { S3Service } from '../../common/services/s3.service';
-import { slugify } from '../../common/utils';
+import { UtilsService } from '../../common/services/utils.service';
 import { Activity } from '../activity/activity.entity';
 import { ActivityService } from '../activity/activity.service';
 import { CreateReportDto } from './report.dto';
@@ -19,6 +18,7 @@ export class ReportService {
     private readonly configService: ConfigService,
     private readonly activityService: ActivityService,
     private readonly s3Service: S3Service,
+    private readonly utilsService: UtilsService,
   ) {}
 
   async findAll(): Promise<Report[]> {
@@ -50,7 +50,7 @@ export class ReportService {
     const pdfBuffer = await markdownToPdf(markdown);
 
     // Upload PDF to S3
-    const fileName = `${slugify(dto.name)}.pdf`;
+    const fileName = `${this.utilsService.slugify(dto.name)}.pdf`;
     const s3Key = `media/reports/${Date.now().toString()}-${fileName}`;
     await this.s3Service.uploadBuffer(s3Key, pdfBuffer, 'application/pdf', fileName);
     const pdfUrl = `${this.configService.getOrThrow<string>('aws.cloudfrontUrl')}/${s3Key}`;
@@ -100,11 +100,11 @@ export class ReportService {
 
     const rows = transactions
       .map((t) => {
-        const date = format(t.time, 'dd/MM HH:mm');
+        const date = this.utilsService.formatDateTime(t.time);
         const income = t.income ?? 0;
         const outcome = t.outcome ?? 0;
         const amount = (outcome - income) * 1000;
-        return `| ${date} | ${t.content ?? ''} | ${amount.toLocaleString('vi-VN')} |`;
+        return `| ${date} | ${t.content?.replace(/\n+/g, ', ') ?? ''} | ${amount.toLocaleString('vi-VN')} |`;
       })
       .join('\n');
 
