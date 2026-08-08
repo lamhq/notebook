@@ -6,6 +6,7 @@ import {
 } from '../database/config';
 
 export interface AppConfig extends ConfigObject {
+  timezone: string;
   typeorm: TypeOrmModuleOptions & DatabaseConfig;
   aws: {
     region: string;
@@ -34,6 +35,7 @@ export const configFactory: ConfigFactory<AppConfig> = () => {
   }
 
   return {
+    timezone: process.env.TZ ?? 'Asia/Ho_Chi_Minh',
     typeorm: {
       ...dbConfig,
       autoLoadEntities: true, // any entity registered through `forFeature()` will be automatically added to TypeORM entity list

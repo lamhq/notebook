@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { S3Service } from '../common/services/s3.service';
+import { CommonModule } from '../common/common.module';
 import { ActivityController } from './activity/activity.controller';
 import { Activity } from './activity/activity.entity';
 import { ActivityService } from './activity/activity.service';
@@ -14,8 +14,8 @@ import { Tag } from './tag/tag.entity';
 import { TagService } from './tag/tag.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Activity, Tag, Report])],
+  imports: [CommonModule, TypeOrmModule.forFeature([Activity, Tag, Report])],
   controllers: [ActivityController, TagController, StatController, ReportController],
-  providers: [ActivityService, TagService, StatService, ReportService, S3Service],
+  providers: [ActivityService, TagService, StatService, ReportService],
 })
 export class DiaryModule {}
