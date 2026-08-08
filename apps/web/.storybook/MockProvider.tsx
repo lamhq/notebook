@@ -4,13 +4,11 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { Locale } from 'date-fns';
 import { enUS } from 'date-fns/locale/en-US';
-import EventEmitter from 'eventemitter3';
 import type { ReactNode } from 'react';
 import type { AuthContextProps } from 'react-oidc-context';
 import { AuthContext } from 'react-oidc-context';
 import { MemoryRouter } from 'react-router';
 import { Dialog } from '../src/dialog';
-import { EventProvider } from '../src/event';
 import { theme } from '../src/theme';
 
 // #region Locale
@@ -21,10 +19,6 @@ const customEnLocale: Locale = {
     weekStartsOn: 1, // Sunday = 0, Monday = 1.
   },
 };
-// #endregion
-
-// #region Event
-const eventEmitter = new EventEmitter();
 // #endregion
 
 // #region TanStack Query
@@ -52,11 +46,9 @@ export default function MockProvider({ children }: MockProviderProps) {
         <MemoryRouter>
           {/* react-oidc-context */}
           <AuthContext.Provider value={authContextValue}>
-            <EventProvider emitter={eventEmitter}>
-              <QueryClientProvider client={queryClient}>
-                {children}
-              </QueryClientProvider>
-            </EventProvider>
+            <QueryClientProvider client={queryClient}>
+              {children}
+            </QueryClientProvider>
           </AuthContext.Provider>
           <Dialog />
         </MemoryRouter>

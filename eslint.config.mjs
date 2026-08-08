@@ -21,14 +21,14 @@ export default defineConfig(
   {
     name: 'Ignores',
     ignores: [
+      '.turbo/**',
       '**/*.js',
-      'eslint.config.mjs',
       '**/dist',
       '**/build',
       '**/node_modules',
-      '**/.turbo',
       '**/playwright-report',
       '**/test-results',
+      'eslint.config.mjs',
     ],
   },
 
@@ -91,7 +91,7 @@ export default defineConfig(
     },
   },
 
-  // React & TypeScript files
+  // React TypeScript
   {
     name: 'React (TypeScript) files',
     files: ['**/*.tsx'],
@@ -108,14 +108,8 @@ export default defineConfig(
     extends: [
       react.configs.flat['jsx-runtime'],
       reactHooks.configs.flat.recommended,
+      reactRefresh.configs.vite,
     ],
-  },
-
-  // React Refresh (Vite Fast Refresh)
-  {
-    name: 'React Refresh (Vite)',
-    files: ['**/*.tsx'],
-    extends: [reactRefresh.configs.vite],
   },
 
   // React Testing Library

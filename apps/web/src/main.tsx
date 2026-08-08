@@ -4,7 +4,6 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { Locale } from 'date-fns';
 import { enUS } from 'date-fns/locale/en-US';
-import EventEmitter from 'eventemitter3';
 import type { User } from 'oidc-client-ts';
 import { UserManager, WebStorageStateStore } from 'oidc-client-ts';
 import { StrictMode } from 'react';
@@ -17,7 +16,6 @@ import App from './App';
 import { IndexedDBStorage } from './auth';
 import { getAbsoluteURL } from './common/utils';
 import { Dialog } from './dialog';
-import { EventProvider } from './event';
 import { AUTH_CALLBACK_ROUTE } from './routes';
 import './styles.css';
 import { theme } from './theme';
@@ -67,10 +65,6 @@ const oidcConfig: AuthProviderProps = {
 userManager.getUser().then(attachTokenToAPIRequest, console.error);
 // #endregion
 
-// #region Event
-const eventEmitter = new EventEmitter();
-// #endregion
-
 // #region TanStack Query
 const queryClient = new QueryClient({
   defaultOptions: { queries: { staleTime: 60_000, retry: false } },
@@ -95,13 +89,10 @@ if (rootEl) {
             <BrowserRouter>
               {/* react-oidc-context */}
               <AuthProvider {...oidcConfig}>
-                {/* Event emitter */}
-                <EventProvider emitter={eventEmitter}>
-                  {/* TanStack Query */}
-                  <QueryClientProvider client={queryClient}>
-                    <App />
-                  </QueryClientProvider>
-                </EventProvider>
+                {/* TanStack Query */}
+                <QueryClientProvider client={queryClient}>
+                  <App />
+                </QueryClientProvider>
               </AuthProvider>
               <Dialog />
             </BrowserRouter>

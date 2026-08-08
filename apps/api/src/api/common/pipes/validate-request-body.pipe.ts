@@ -11,7 +11,7 @@ import { Errors } from '../types';
 export class ValidateRequestBodyPipe extends ValidationPipe {
   constructor() {
     super({
-      // we want to validate required properties if missing
+      // required properties cannot be omitted from the request body
       skipMissingProperties: false,
 
       // properties that don't have validation decorators will be removed from the transformed result
@@ -26,7 +26,7 @@ export class ValidateRequestBodyPipe extends ValidationPipe {
       // transform plain JavaScript objects to class object
       transform: true,
 
-      // transform validation error to error detail
+      // transform validation error to form-field error
       exceptionFactory: (validationErrors) => {
         const errors = this.transformValidationErrors(validationErrors);
         throw new ValidationException(errors);
